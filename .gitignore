@@ -1,3 +1,5 @@
+docs/*.aux
+docs/*.log
 output/
 packrat/lib*/
 .Rprofile
