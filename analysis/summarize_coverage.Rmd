@@ -99,24 +99,24 @@ save_latex_coverage_table=function(df,methodnames,filename,SCENARIONAMES=c("spik
   
 }
   
-save_latex_coverage_table(reslong.neg %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"../paper/tables/coverage_neg.tex")
-save_latex_coverage_table(reslong.pos %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"../paper/tables/coverage_pos.tex")
-save_latex_coverage_table(reslong %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"../paper/tables/coverage_all.tex")
+save_latex_coverage_table(reslong.neg %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"table/coverage_neg.tex")
+save_latex_coverage_table(reslong.pos %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"table/coverage_pos.tex")
+save_latex_coverage_table(reslong %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"table/coverage_all.tex")
 
-save_latex_coverage_table(reslong.neg %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"../paper/tables/coverage_neg_nopen.tex")
-save_latex_coverage_table(reslong.pos %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"../paper/tables/coverage_pos_nopen.tex")
-save_latex_coverage_table(reslong %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"../paper/tables/coverage_all_nopen.tex")
+save_latex_coverage_table(reslong.neg %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"table/coverage_neg_nopen.tex")
+save_latex_coverage_table(reslong.pos %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"table/coverage_pos_nopen.tex")
+save_latex_coverage_table(reslong %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"table/coverage_all_nopen.tex")
 ```
 
 These tables show 1-the left tail instead of the left tail.
 ```{r}
-save_latex_coverage_table(reslong.neg %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"../paper/tables/scoverage_neg.tex",switch=TRUE)
-save_latex_coverage_table(reslong.pos %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"../paper/tables/scoverage_pos.tex",switch=TRUE)
-save_latex_coverage_table(reslong %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"../paper/tables/scoverage_all.tex",switch=TRUE)
+save_latex_coverage_table(reslong.neg %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"table/scoverage_neg.tex",switch=TRUE)
+save_latex_coverage_table(reslong.pos %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"table/scoverage_pos.tex",switch=TRUE)
+save_latex_coverage_table(reslong %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n","ash.u","ash.hu"),"table/scoverage_all.tex",switch=TRUE)
 
-save_latex_coverage_table(reslong.neg %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"../paper/tables/scoverage_neg_nopen.tex",switch=TRUE)
-save_latex_coverage_table(reslong.pos %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"../paper/tables/scoverage_pos_nopen.tex",switch=TRUE)
-save_latex_coverage_table(reslong %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"../paper/tables/scoverage_all_nopen.tex",switch=TRUE)
+save_latex_coverage_table(reslong.neg %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"table/scoverage_neg_nopen.tex",switch=TRUE)
+save_latex_coverage_table(reslong.pos %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"table/scoverage_pos_nopen.tex",switch=TRUE)
+save_latex_coverage_table(reslong %>% group_by(scenario,method) %>% summarize(lt = mean(value<coverthresh)),c("ash.n.s","ash.u.s","ash.hu.s"),"table/scoverage_all_nopen.tex",switch=TRUE)
 ```
 
 
