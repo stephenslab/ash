@@ -69,17 +69,17 @@ plot_mean_cdf = function(SEEDS,PLOTMETHODS=c("ash.n","ash.u","ash.hu","truth","m
 }
 ```
 
-```{r egcdf}
+```{r egcdf, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
 #pdf("../paper/figures/egcdf.pdf",height=3,width=9)
 plot_mean_cdf(1)
 ```
 
-```{r mean_cdf}
+```{r mean_cdf, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
 #pdf("../paper/figures/mean_cdf.pdf",height=3,width=9)
 plot_mean_cdf(1:100,PLOTMETHODS=c("ash.n","ash.u","ash.hu","truth"),pi0filter=TRUE)
 ```
 
-```{r mean_cdf_nopen}
+```{r mean_cdf_nopen, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
 #pdf("../paper/figures/mean_cdf_nopen.pdf",height=3,width=9)
 names(myColors) <- c("mixfdr.tnull","ash.hu.s","ash.n.s","ash.u.s","qvalue","locfdr","truth")
 colScale <- scale_colour_manual(name = "method",values = myColors)

@@ -37,7 +37,8 @@ df$scenario = factor(df$scenario,levels=PLOTSCENARIOS)
 levels(df$scenario)= PLOTNAMES
 ```
 
-```{r scenario_density}
+
+```{r scenario_density, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
 #pdf(PLOTFILE,height=3,width=9)
 ggplot(df, aes(x=x,y=y)) + geom_line(size=1.2,linetype=1) + facet_grid(.~scenario) + ylab("density")
 #dev.off()

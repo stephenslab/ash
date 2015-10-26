@@ -671,19 +671,19 @@ which, although we view as generally unrealistic, we include to assess robustnes
 \begin{figure} 
 \begin{center}
 \begin{subfigure}{\textwidth}
-	\includegraphics[height=1.8in]{figures/scenarios_density.pdf} 
+	\includegraphics[width=\textwidth]{../analysis/figure/plot_egdens.Rmd/scenario_density-1.pdf} 
 	\caption{Densities of non-zero effects, $g_1$, used in simulations.} \label{fig:altdens}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\includegraphics[height=1.8in]{figures/pi0_est.pdf} 
+\includegraphics[width=\textwidth]{../analysis/figure/plot_pi0est.Rmd/plot_pi0est-1.pdf} 
 \caption{Comparison of true and estimated values of $\pi_0$. When the UA holds all methods yield conservative (over-)estimates for $\pi_0$, with \ashr being least conservative, and hence most accurate. When the UA does not hold (``bimodal" scenario) the \ashr estimates are slightly anti-conservative.} \label{fig:pi0sims}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\includegraphics[height=1.8in]{figures/lfdr_est.png} 
+\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfdr-1.pdf} 
 \caption{Comparison of true and estimated $\lfdr$ from \ashr (ash.n). Black line is $y=x$ and red line is $y=2x$. Estimates of $\lfdr$ are conservative when UA holds, due to conservative estimates of $\pi_0$.} \label{fig:lfdr}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\includegraphics[height=1.8in]{figures/lfsr_est.png} 
+\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfsr-1.pdf} 
 \caption{As in c), but for $\lfsr$ instead of $\lfdr$. Estimates of $\lfsr$ are consistently less conservative than $\lfdr$ when UA holds, and also less anti-conservative in bimodal scenario.}  \label{fig:lfsr}
 \end{subfigure}
 \end{center}
@@ -848,15 +848,15 @@ under-estimating $\pi_0$ (Figure \ref{fig:egcdf}c).
 
 \begin{figure}[h!] 
 \begin{subfigure}{\textwidth}
-	\includegraphics[height=2in]{figures/egcdf.pdf}
+	\includegraphics[height=2in]{../analysis/figure/plot_cdf_eg.Rmd/egcdf-1.png}
 	\caption{Example estimated cdfs for single data sets compared with truth. The unimodal assumption made by the ash methods effectively regularizes estimates compared with \mixfdr.}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\includegraphics[height=2in]{figures/mean_cdf.pdf}
+\includegraphics[height=2in]{../analysis/figure/plot_cdf_eg.Rmd/mean_cdf-1.png}
 \caption{Average estimated cdfs across $\sim10$ data sets compared with truth; methods here use penalty (\ref{eqn:penalty}) so $\pi_0$ is systematically overestimated.}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\includegraphics[height=2in]{figures/mean_cdf_nopen.pdf}
+\includegraphics[height=2in]{../analysis/figure/plot_cdf_eg.Rmd/mean_cdf_nopen-1.png}
 \caption{Average estimated cdfs across $\sim10$ data sets compared with truth; methods here do not use penalty (\ref{eqn:penalty}) so $\pi_0$ is not systematically overestimated. Systematic differences from the truth in ``skew" and ``bimodal" scenarios highlight the effects of model mis-specification.}
 \end{subfigure}
 \caption{Comparisons of estimated cdfs of $g$ and true cdf of $g$. See Figure \ref{fig:pi0sims} for simulation scenarios.} \label{fig:egcdf}
@@ -931,19 +931,19 @@ as adequate for practical applications. The strongest deviations from nominal ra
 
 \begin{table}[!ht]
 \begin{subtable}{\textwidth}
-	\centering\input{tables/scoverage_all.tex}
+	\centering\input{../analysis/table/scoverage_all.tex}
 	\caption{All observations. Coverage rates are generally satisfactory, except for the extreme ``spiky" scenario. This is due to the penalty term (\ref{eqn:penalty}) which tends to cause over-shrinking towards zero. Removing this penalty term produces coverage rates closer to the nominal levels for uniform and normal methods (Table \ref{tab:nopen}). Removing the penalty in the half-uniform case is not recommended (see Appendix).}
 \end{subtable}
 
 \begin{subtable}{\textwidth}
-\centering\input{tables/scoverage_neg.tex}
+\centering\input{../analysis/table/scoverage_neg.tex}
 \caption{``Significant" negative discoveries. Coverage rates are generally satisfactory, except for the uniform-based methods in the spiky and near-normal scenarios,
 and the normal-based method in the flat-top scenario. These results likely reflect inaccurate estimates of the tails of $g$ due to a disconnect between the tail of $g$ and the component distributions in these cases. For example, the uniform methods sometimes substantially underestimate the length of the tail of $g$ in these long-tailed scenarios, 
 causing over-shrinkage of the tail toward 0.}
 \end{subtable}
 
 \begin{subtable}{\textwidth}
-\centering\input{tables/scoverage_pos.tex}
+\centering\input{../analysis/table/scoverage_pos.tex}
 \caption{``Significant" positive discoveries. Coverage rates are generally satisfactory, except for the symmetric methods under the asymmetric (``skew") scenario. }
 \end{subtable}
 
@@ -1491,11 +1491,11 @@ a larger or denser grid. For a specific data set one can of course check this by
 \begin{figure}
 \begin{center}
 \begin{subfigure}{\textwidth}
-\includegraphics[height=1.8in]{figures/lfsr_est_s_nn.png} 
+\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfsr_s_nn-1.pdf} 
 \caption{Comparison of true and estimated $\lfsr$ when data are simulated with no point mass at zero ($\pi_0=0$), and also analyzed by \ashr with no point mass on 0 (and mixture of normal components for $g$). Black line is $y=x$ and red line is $y=2x$. The results illustrate how estimates of $\lfsr$ can be more accurate in this case. That is, assuming there is no point mass can be beneficial if that is indeed true.}  \label{fig:lfsr-nn}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\includegraphics[height=1.8in]{figures/lfsr_est_s.png} 
+\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfsr_s-1.pdf} 
 \caption{Comparison of true and estimated $\lfsr$ when data are simulated with point mass at zero (drawn uniformly from [0,1] in each simulation), but analyzed by \ashr with no point mass on 0 (and mixture of normal components for $g$). Black line is $y=x$ and red line is $y=2x$. The results illustrate how estimates of $\lfsr$ can be anti-conservative if we assume there is no point mass when the truth is that there is a point mass.} \label{fig:lfsr-s}
 \end{subfigure}
 \end{center}
@@ -1521,17 +1521,17 @@ bimodal & $0.5 N(-2,1^2) + 0.5 N(2,1^2)$ \\ \bottomrule
 
 \begin{table}[!ht]
 \begin{subtable}{\textwidth}
-	\centering\input{tables/scoverage_all_nopen.tex}
+	\centering\input{../analysis/table/scoverage_all_nopen.tex}
 	\caption{All observations}
 \end{subtable}
 
 \begin{subtable}{\textwidth}
-\centering\input{tables/scoverage_neg_nopen.tex}
+\centering\input{../analysis/table/scoverage_neg_nopen.tex}
 \caption{``Significant" negative discoveries.}
 \end{subtable}
 
 \begin{subtable}{\textwidth}
-\centering\input{tables/scoverage_pos_nopen.tex}
+\centering\input{../analysis/table/scoverage_pos_nopen.tex}
 \caption{``Significant" positive discoveries.}
 \end{subtable}
 
