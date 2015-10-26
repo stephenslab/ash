@@ -13,6 +13,9 @@ title: "Home"
 
 ## DSC Shrink (the main simulation study in the paper)
 
+*  [Plot Densities of simulations](plot_egdens.html)
+*  [Plot CDFs](plot_cdf_eg.html)
+
 *  [Investigate coverage of hu method without penalty](investigate_hu_badcoverage.html)
 *  [Run mixfdr on low noise bimodal situation](check_mixfdr_lownoise.html)
 *  [Make coverage tables](summarize_coverage.html)
