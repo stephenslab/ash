@@ -11,6 +11,7 @@ title: "Home"
 
 *  [Illustrate Zero Assumption](makefig_FDReg.html)
 *  [Illustatrate dilution effect of low-precision observations](make_GOODPOOR_figs.html)
+*  [Adpative Shrinkage](adaptive_shrinkage.html)
 
 ## DSC Robust (Simulation study to assess EM convergence)
 
