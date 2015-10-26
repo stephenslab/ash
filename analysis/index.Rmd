@@ -1,0 +1,17 @@
+---
+title: "Home"
+---
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+
+## DSC Robust (Simulation study to assess EM convergence)
+
+*  [Check robustness simulation study](summarize_dsc_robust.html)
+
+
+## DSC Shrink (the main simulation study in the paper)
+
+*  [Make coverage tables](summarize_coverage.html)
+
