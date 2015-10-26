@@ -1,3 +1,4 @@
+*.Rout
 paper/*.aux
 paper/*.log
 analysis/*.html
