@@ -1,0 +1,51 @@
+---
+title: "Summarize distribution of LR statistic under null"
+author: "Matthew Stephens"
+date: 2015-10-26
+---
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+
+```{r chunk-options, include=FALSE}
+source("chunk-options.R")
+```
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+load("../output/dsc-znull-files/res.znull.RData")
+temp=ungroup(res %>% group_by(scenario,method) %>% summarise(gt0=mean(logLR>0)))
+xtabs(gt0~method+scenario,temp)
+
+```
+
+
+Note that the ash.n.s basically conforms exactly to the null expectation
+of 0.5 chi2_0 +0.5 chi2_1 from Stram and Lee, Biometrics
+
+conjecture: the uniform has the same asymptotic behaviour
+and the half uniform is like the sum of two of these?
+
+From this
+
+a 95% procedure would need to check for logLR > `r qchisq(0.9,df=1)/2`.
+
+```{r}
+ggplot(res %>% filter(logLR!=0) %>% filter(grepl("ash.hu",method)) , aes(sample = logLR)) + facet_grid(scenario~method) +
+  stat_qq(dist = qchisq, dparams=list(df=1)) + geom_abline() + ggtitle("qqplot under null vs chisq-1; line slope=1")
+ggplot(res %>% filter(logLR!=0) %>% filter(grepl("ash.u",method)) , aes(sample = logLR)) + facet_grid(scenario~method) +
+  stat_qq(dist = qchisq, dparams=list(df=1)) + geom_abline(intercept=0,slope=0.5) + ggtitle("qqplot under null vs chisq-1; line slope=0.5")
+ggplot(res %>% filter(logLR!=0) %>% filter(grepl("ash.n",method)), aes(sample = logLR)) + facet_grid(scenario~method) +
+  stat_qq(dist = qchisq, dparams=list(df=1)) + geom_abline(intercept=0,slope=0.5) + ggtitle("qqplot under null vs chisq-1; line slope=0.5")
+
+```
+
+## Session information
+
+```{r info}
+sessionInfo()
+```
+
