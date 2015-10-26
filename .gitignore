@@ -1,6 +1,6 @@
-docs/*.aux
-docs/*.log
-output/
+paper/*.aux
+paper/*.log
+output/*
 packrat/lib*/
 .Rprofile
 .Rhistory
