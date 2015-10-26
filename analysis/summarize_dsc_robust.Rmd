@@ -44,9 +44,7 @@ Now check out the example that showed the biggest convergence problem
 ```{r}
 #check out which one showed biggest convergence problem
 prob = res[which.max(res$score.diff1),]
-setwd("../output")
-prob_eg = loadExample(dsc_robust,seed=prob$seed,scenario=as.character(prob$scenario),method=as.character(prob$method))
-setwd("../analysis")
+prob_eg = load_example(dsc_robust,seed=prob$seed,scenario=as.character(prob$scenario),method=as.character(prob$method),homedir="../output")
 ```
 
 Run ash on the example to check we can recapitulate the convergence problem.
