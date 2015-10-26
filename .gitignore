@@ -3,6 +3,7 @@ paper/*.log
 analysis/*.html
 output/*
 packrat/lib*/
+*.png
 .Rprofile
 .Rhistory
 .Rproj.user
