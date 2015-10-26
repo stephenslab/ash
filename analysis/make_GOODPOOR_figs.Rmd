@@ -13,7 +13,7 @@ source("chunk-options.R")
 ```
 
 First perform a simple simulated example to illustrate high and low signal.
-True values of beta simulated from $(0.5 N(0,1) + 0.5 delta_0)$.
+True values of beta simulated from $(0.5 N(0,1) + 0.5 \delta_0)$.
 ```{r}
 ntest = 10000
 set.seed(112)
