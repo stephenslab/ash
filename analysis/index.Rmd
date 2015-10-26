@@ -6,6 +6,12 @@ title: "Home"
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
+
+## Simple illustrations
+
+*  [Illustrate Zero Assumption](makefig_FDReg.html)
+*  [Illustatrate dilution effect of low-precision observations](make_GOODPOOR_figs.html)
+
 ## DSC Robust (Simulation study to assess EM convergence)
 
 *  [Check robustness simulation study](summarize_dsc_robust.html)

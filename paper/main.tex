@@ -612,7 +612,7 @@ To briefly summarize the results in this section:
 \subsubsection*{The UA and ZA can produce different inferences}
 
 \begin{figure}
-\center \includegraphics[height=6in]{figures/decomp_ZA.pdf}
+\center \includegraphics[height=6in]{../analysis/figure/makefig_FDReg.Rmd/decomp_ZA-1.pdf}
 \caption{Illustration that the unimodal assumption (UA) in \ashr can produce very different results from existing methods.
 The figure shows, for a single simulated dataset, the way different methods decompose $p$ values (left) and $z$ scores (right) into a null component (dark blue) and an alternative component (cyan). In the $z$ score space the alternative distribution is placed on the bottom to highlight the differences in its shape among methods.
 The three existing methods (\qvalue, \locfdr, \mixfdr) all effectively make the Zero Assumption, which results in a ``hole" in the alternative $z$ score distribution around 0.
@@ -990,12 +990,12 @@ for the good-precision observations are unaffected by including the low-precisio
 
 \begin{figure}
 \begin{subfigure}{\textwidth}
-\centering\includegraphics[width=4in]{figures/GOODPOOReg_hist.pdf} 
+\centering\includegraphics[width=4in]{../analysis/figure/make_GOODPOOR_figs.Rmd/GOODPOOReg_hist-1.pdf} 
     \label{fig:goodpoor-hist}
     \caption{Density histograms of $p$ values for good-precision, poor-precision, and combined observations}
  \end{subfigure}
 \begin{subfigure}{\textwidth}
-\centering\includegraphics[width=4in]{figures/GOODPOOReg_scatter.pdf}
+\centering\includegraphics[width=4in]{../analysis/figure/make_GOODPOOR_figs.Rmd/GOODPOOReg_scatter-1.pdf}
     \caption{Comparison of results of different methods applied to good-precision observations only ($x$ axis) and combined data ($y$ axis). Each point shows the ``significance" ($q$ values from \qvalue; $\lfdr$ for \locfdr; $\lfsr$ for \ashr) of a good-precision observation under the two different analyses.} \label{fig:goodpoor-scatter}
 \end{subfigure}
 \caption{Simulation illustrating how, for existing FDR methods, 
@@ -1080,7 +1080,7 @@ which has been implemented in our software by C. Dai.
 
 
 \begin{figure}
-\centering\includegraphics[width=4in]{figures/lfsr_vs_pval_GOODPOOR.pdf}
+\centering\includegraphics[width=4in]{../analysis/figure/make_GOODPOOR_figs.Rmd/lfsr_vs_pval_GOODPOOR-1.pdf}
 \caption{Figure illustrating affects of prior assumptions on re-ordering of significance. Left panel shows results under our ``default prior" which assumes that effects $\beta_j$ are identically distributed, independent of $s_j$. Right panel shows results under the ``$p$-value prior", which assumes that $z$ scores $\beta_j/s_j$ are identically distributed, independent of $s_j$.} \label{fig:lfsr_pval}
 \end{figure}
 

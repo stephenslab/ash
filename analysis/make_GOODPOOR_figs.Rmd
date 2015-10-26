@@ -1,0 +1,129 @@
+---
+title: "Make figures for simple simulation with good and poor precision observations"
+author: "Matthew Stephens"
+date: 2015-10-26
+---
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+
+```{r chunk-options, include=FALSE}
+source("chunk-options.R")
+```
+
+First perform a simple simulated example to illustrate high and low signal.
+True values of beta simulated from $(0.5 N(0,1) + 0.5 delta_0)$.
+```{r}
+ntest = 10000
+set.seed(112)
+require(ashr)
+require(qvalue)
+require(locfdr)
+require(mixfdr)
+source("../R/plot_FDReg_hist.R")
+
+null_alt = rbinom(ntest,1,0.5)
+beta = rnorm(ntest)
+beta = ifelse(null_alt==1,beta,0)
+GOOD= 1:(ntest/2)
+sebetahat = rep(1,ntest)
+sebetahat[-GOOD] = 10
+
+betahat = beta + rnorm(ntest, 0, sebetahat)
+zscore = betahat/sebetahat
+pval = pchisq(zscore^2,df=1,lower.tail=F)
+```
+
+Show how poor precision observations dilute good ones:
+```{r, GOODPOOReg_hist, dev='pdf',fig.width=6.5, fig.height=3}
+par(mai=c(0.3,0.3,0.2,0.2),mgp = c(3, 0.5, 0))
+layout(matrix(1:3,ncol=3,byrow=TRUE))
+plot_FDReg_hist(pval[GOOD],1,type=1,title="Good-precision observations",ylab="",nc=20,cex.axis=1,cex.main=1.2,ylim=c(0,2.5))
+plot_FDReg_hist(pval[-GOOD],1,type=1,title="Poor-precision observations",ylab="",nc=20,yaxt='n',cex.axis=1,cex.main=1.2,ylim=c(0,2.5))
+axis(side=2, labels=FALSE,tck=-0.01)
+plot_FDReg_hist(pval,1,type=1,title="Combined",yaxt='n',ylab="",nc=20,cex.axis=1,cex.main=1.2,ylim=c(0,2.5))
+axis(side=2, labels=FALSE,tck=-0.01)
+```
+
+
+Apply different methods
+```{r}
+res.qvalue = qvalue(pval)
+res.locfdr = locfdr(zscore,nulltype=0,plot=0)
+res.ash = ash(betahat,sebetahat,method="fdr")
+
+res.qvalue.good = qvalue(pval[GOOD])
+res.locfdr.good = locfdr(zscore[GOOD],nulltype=0,plot=0)
+res.ash.good = ash(betahat[GOOD],sebetahat[GOOD],method="fdr")
+```
+
+```{r}
+par(mai=c(0.3,0.3,0.2,0.2),mgp = c(3, 0.5, 0))
+layout(matrix(1:3,ncol=3,byrow=TRUE))
+plot(res.qvalue.good$q,res.qvalue$q[GOOD],main="qvalue",xlim=c(0,1),ylim=c(0,1),axes=F)
+axis(side=2)
+axis(side=1)
+abline(a=0,b=1,col=2)
+plot(res.locfdr.good$fdr,res.locfdr$fdr[GOOD],main="locfdr",xlim=c(0,1),ylim=c(0,1),axes=F)
+axis(side=1)
+abline(a=0,b=1,col=2)
+plot(res.ash.good$lfsr,res.ash$lfsr[GOOD],main="ashr",xlim=c(0,1),ylim=c(0,1),axes=F)
+axis(side=1)
+abline(a=0,b=1,col=2)
+```
+
+```{r GOODPOOReg_scatter, dev='pdf', fig.width=6.5, fig.height=3}
+res = rbind(data.frame(x= res.qvalue.good$qvalues, y = res.qvalue$qvalues[GOOD],type="qvalue"),
+            data.frame(x=res.locfdr.good$fdr,y=res.locfdr$fdr[GOOD],type='locfdr'), 
+            data.frame(x=res.ash.good$lfsr,y=res.ash$lfsr[GOOD],type="ashr"))
+
+library("ggplot2")
+pp= ggplot(data=res,aes(x,y)) +geom_point(shape=1) +
+  facet_grid(. ~ type) +
+  geom_abline(colour = "red") +
+  xlab("Analysing good-precision data only") +
+  ylab("Analysing combined data")
+
+
+print(pp +scale_y_continuous(limits=c(0,1)) +
+        scale_x_continuous(limits=c(0,1))  +
+        coord_equal(ratio=1))
+
+```
+
+```{r lfsr_vs_pval_GOODPOOR, dev='pdf', fig.width=6.5, fig.height=3}
+make_df_for_pval=function(ash,method="default"){
+  df = data.frame(p=pnorm(-abs(ash$data$betahat/ash$data$sebetahat)),lfsr=ash$lfsr,s=ash$data$sebetahat,method=method)
+}
+
+plot_pval_vs_lfsr=function(df,plot.it=TRUE){
+  if(length(unique(df$s))>2){df$s = log(df$s)} else{ df$s=as.factor(df$s)}
+  
+  p=ggplot(df,aes(x=p,y=lfsr,color=s)) + geom_point() +facet_grid(. ~ method) +xlim(c(0, 0.025)) + xlab("p value") + ylab("lfsr")
+  
+  if(length(unique(df$s))>2){
+    p = p+scale_colour_gradient2(midpoint = 1, low="blue", mid="white", high="red", space="Lab")
+  } 
+  if(plot.it){print(p)}
+  return(p)
+}
+
+res.ash.ET = ash(betahat,sebetahat,method="fdr",model="ET",mixcompdist="normal")
+p=plot_pval_vs_lfsr(rbind(
+  make_df_for_pval(res.ash,method="Default prior (alpha=0)"),
+  make_df_for_pval(res.ash.ET,method="p-value prior (alpha=1)")))
+print(p+ theme(axis.text.x = element_text(size = 8,angle=45)) + 
+        scale_colour_manual(values=c("blue","red")))
+
+res.ash.ET$logLR
+res.ash$logLR
+
+```
+
+## Session information
+
+```{r info}
+sessionInfo()
+```
+
