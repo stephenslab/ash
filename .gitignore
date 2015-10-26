@@ -3,4 +3,5 @@ docs/*.log
 output/
 packrat/lib*/
 .Rprofile
+.Rhistory
 .Rproj.user
