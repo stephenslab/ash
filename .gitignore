@@ -4,6 +4,7 @@ paper/*.log
 analysis/*.html
 output/*
 packrat/lib*/
+packrat/src/
 *.png
 .Rhistory
 .Rproj.user
