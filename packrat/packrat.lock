@@ -1,6 +1,6 @@
 PackratFormat: 1.4
 PackratVersion: 0.4.4
-RVersion: 3.2.0
+RVersion: 3.2.2
 Repos: CRAN=http://cran.rstudio.com,
     BioCsoft=http://bioconductor.org/packages/3.2/bioc,
     BioCann=http://bioconductor.org/packages/3.2/data/annotation,
@@ -29,6 +29,11 @@ Package: DBI
 Source: CRAN
 Version: 0.3.1
 Hash: 096699d1ac1cf530acfc646a0c90ee5d
+
+Package: MASS
+Source: CRAN
+Version: 7.3-44
+Hash: 3a901d1f70036f5b1e11bcdf8fdb66d9
 
 Package: R6
 Source: CRAN
@@ -97,6 +102,11 @@ Source: CRAN
 Version: 1.6.3
 Hash: 90b6c60390d3001934a4a0f70b975fc0
 
+Package: codetools
+Source: CRAN
+Version: 0.2-14
+Hash: 127e7e68dfa21d3f17c022df1e727d0a
+
 Package: colorspace
 Source: CRAN
 Version: 1.2-6
@@ -151,7 +161,7 @@ Package: foreach
 Source: CRAN
 Version: 1.4.3
 Hash: cd53ef4cf29dc59ce3f8c5c1af735fd1
-Requires: iterators
+Requires: codetools, iterators
 
 Package: formatR
 Source: CRAN
@@ -162,7 +172,7 @@ Package: ggplot2
 Source: CRAN
 Version: 1.0.1
 Hash: 4aff1b269135bd2cdea378f4f2f2895e
-Requires: digest, gtable, plyr, proto, reshape2, scales
+Requires: MASS, digest, gtable, plyr, proto, reshape2, scales
 
 Package: gtable
 Source: CRAN
@@ -207,10 +217,20 @@ Source: CRAN
 Version: 0.3
 Hash: ecf589b42cd284b03a4beb9665482d3e
 
+Package: lattice
+Source: CRAN
+Version: 0.20-33
+Hash: d7158cf4e63e8c12cb227738076b37d8
+
 Package: lazyeval
 Source: CRAN
 Version: 0.1.10
 Hash: 9679f1ac7f6bc07bc79755f34cd15e1f
+
+Package: locfdr
+Source: CRAN
+Version: 1.1-8
+Hash: d267ae300fd73b9cb6686175519402c3
 
 Package: magrittr
 Source: CRAN
@@ -227,6 +247,11 @@ Package: mime
 Source: CRAN
 Version: 0.4
 Hash: b08c52dae92a0a11e64a4deea032ec33
+
+Package: mixfdr
+Source: CRAN
+Version: 1.0
+Hash: 8aa5ecb4434d568fd75010689b69bf2c
 
 Package: mnormt
 Source: CRAN
@@ -259,12 +284,23 @@ Package: pscl
 Source: CRAN
 Version: 1.4.9
 Hash: b89db41fa250ee766e0be58c8b4227b0
+Requires: MASS, lattice
 
 Package: psych
 Source: CRAN
 Version: 1.5.8
 Hash: 68c4e1212b52e8bf12ef1bfa1e950409
 Requires: mnormt
+
+Package: qvalue
+Source: github
+Version: 2.1.1
+Hash: ad35373b6d521d6bcf802b06acf1b386
+Requires: ggplot2, reshape2
+GithubRepo: qvalue
+GithubUsername: jdstorey
+GithubRef: master
+GithubSha1: b3e906542ce4b56ee131503b44236cea75b9f6cc
 
 Package: reshape2
 Source: CRAN
