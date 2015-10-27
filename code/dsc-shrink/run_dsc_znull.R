@@ -3,7 +3,7 @@
 
 library(dscr)
 
-dsc_znull=new.dsc("znull","dsc-znull-files")
+dsc_znull=new.dsc("znull","../../output/dsc-znull-files")
 source("add_scenarios.null.R")
 source("add_methods.null.R")
 
@@ -12,5 +12,5 @@ add_score(dsc_znull,score_logLR,"logLR","ash_output")
 
 
 res=run_dsc(dsc_znull)
-save(res,dsc_znull,file="dsc-znull-files/res.znull.RData")
+save(res,dsc_znull,file="../../output/dsc-znull-files/res.znull.RData")
 

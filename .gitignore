@@ -7,3 +7,4 @@ packrat/lib*/
 *.png
 .Rhistory
 .Rproj.user
+packrat/src/
