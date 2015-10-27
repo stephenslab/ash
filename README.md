@@ -12,7 +12,8 @@ Step-by-step instructions:
 1. Install `R v3.2.2`.
 2. Clone (or download and unzip) this repository.
 3. Within this repository directory, enter `R`. It will try to use `packrat` to install all the packages you need.
-If this does not work, you may prefer to install the packages yourself.
+If this does not work you may need to tell it to do this by hand by typing `packrat::restore()` within `R`.
+If this does not work, you may prefer to remove the packrat subdirectory and install the packages you need yourself.
 4. Enter the `code` directory (`cd code`) and type `make`. This should run all the code for the simulation studies.
 It will take a while (hours), so you might want to run it overnight. This should create a bunch of output files in the `output` directory. 
 5. Enter the `analysis` directory (`cd ../analysis`) and type `make`. This will create a bunch of
