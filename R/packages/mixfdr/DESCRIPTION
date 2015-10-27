@@ -1,0 +1,20 @@
+Package: mixfdr
+Type: Package
+Title: Computes false discovery rates and effect sizes using normal
+        mixtures
+Version: 1.0
+Date: 2009-07-21
+Author: Omkar Muralidharan, with many suggestions from Bradley Efron
+Maintainer: Omkar Muralidharan <omkar@stanford.edu>
+Description: This package fits normal mixture models to data and uses
+        them to compute effect size estimates and local and tail area
+        false discovery rates. To make this precise, suppose you have
+        many normally distributed z's, and each z[i] has mean delta[i].
+        This package will estimate delta[i] based on the z's (effect
+        sizes), P(delta[i]=0|z[i]) (local false discovery rates) and
+        P(delta[i]=0||z[i]|>z) (tail area false discovery rates).
+License: GPL-2
+LazyLoad: yes
+Packaged: 2012-10-29 08:59:12 UTC; ripley
+Repository: CRAN
+Date/Publication: 2012-10-29 08:59:12
