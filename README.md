@@ -9,16 +9,24 @@ it may be easier to install all the packages you need by hand.
 
 Step-by-step instructions:
 
-1. Install `R v3.2.2`.
+1. Preliminaries: I made the paper with `R v3.2.2`, so you might start by installing this version.  Install `pandoc v1.12.3` or higher. You will also need a working `pdflatex` installation to make the paper. Possibly other
+dependencies you will come across as you run the following steps.
 2. Clone (or download and unzip) this repository.
-3. Within this repository directory, enter `R`. It will try to use `packrat` to install all the packages you need.
+3. Within this repository directory, enter `R`. It will try to use the R package
+`packrat` to install all the packages you need.
 If this does not work you may need to tell it to do this by hand by typing `packrat::restore()` within `R`.
-If this does not work, you may prefer to remove the packrat subdirectory and install the packages you need yourself.
-4. Enter the `code` directory (`cd code`) and type `make`. This should run all the code for the simulation studies.
+If this does not work, you may prefer to remove the packrat subdirectory and install the packages you need yourself. Quit R.
+4. Within the repository directory type `make`. This will try to:
+ 
+      i) Run all the code for the simulation studies.
 It will take a while (hours), so you might want to run it overnight. This should create a bunch of output files in the `output` directory. Particularly you will know that it worked iff you can find the files `dsc-shrink-files/res.RData` and `dsc-robust-files/dsc_robust.RData`.
-5. Enter the `analysis` directory (`cd ../analysis`) and type `make`. This will create a bunch of
-`html` output files, and also figures. You can open `analysis/index.html` to see a list of all the outputs created. 
-6. Enter the `paper` directory (`cd ../paper`) and you should be able to latex the paper.
+
+      ii) Build/render the .Rmd files in the `analysis` directory. If successful you should have a file `analysis/index.html` that you can open to see a list of all the rendered files.
+      
+      iii)  `pdflatex` the paper.
+
+If you have problems (more than likely!) you might like to try each of these steps in turn, by sequentially typing
+`make output`, `make analysis` and `make paper`.
 
 
 # Directory Structure
