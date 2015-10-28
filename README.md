@@ -5,7 +5,8 @@ from the paper 'False Discovery Rates: A New Deal'.
 
 The hardest part may be making sure R is set up with all the right packages installed.
 I have used the R package `packrat` to try to make this easier, but on some systems
-it may be easier to install all the packages you need by hand.
+it may be easier to install all the packages you need by hand. If things go wrong, look also at
+[If things go wrong](if-things-go-wrong).
 
 Step-by-step instructions:
 
@@ -27,6 +28,13 @@ It will take a while (hours), so you might want to run it overnight. This should
 If you have problems (more than likely!) you might like to try each of these steps in turn, by sequentially typing
 `make output`, `make analysis` and `make paper`.
 
+# If things go wrong
+
+- If things go wrong in making the output files, try looking at the `.Rout` files
+created in  the appropriate output subdirectory (`output/dsc-shrink/`, `output/dsc-znull` or `output/dsc-robust`) 
+to see what went wrong.
+
+- If things go wrong in making the anlaysis files, try looking at the `.hmtl` files produced to see what went wrong.
 
 # Directory Structure
 
