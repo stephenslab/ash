@@ -12,10 +12,9 @@ Step-by-step instructions:
 1. Preliminaries: I made the paper with `R v3.2.2`, so you might start by installing this version.  Install `pandoc v1.12.3` or higher. You will also need a working `pdflatex` installation to make the paper. Possibly other
 dependencies you will come across as you run the following steps.
 2. Clone (or download and unzip) this repository.
-3. Within this repository directory, enter `R`. It will try to use the R package
-`packrat` to install all the packages you need.
-If this does not work you may need to tell it to do this by hand by typing `packrat::restore()` within `R`.
-If this does not work, you may prefer to remove the packrat subdirectory and install the packages you need yourself. Quit R.
+3. Install the `R` packages you need. I have tried to use the `packrat` package to automate this process, with some level of success. To do it this way, enter `R` within the repository directory. The first time you enter `R` the hidden `.Rprofile` file will cause `R` to try to install all the packages you need to a local library in the `packrat` subdirectory.
+If this does not work first time then, on subsequently entering `R` you may need to tell it to do this by hand by typing `packrat::restore()` within `R`.
+If this still does not work for you, or you already have the packages you need installed then you may prefer to remove the packrat subdirectory and install the packages you need yourself. Quit `R`.
 4. Within the repository directory type `make`. This will try to:
  
       i) Run all the code for the simulation studies.
