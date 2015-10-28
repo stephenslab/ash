@@ -10,3 +10,4 @@ analysis:
 
 paper:
 	cd paper && $(MAKE)
+
