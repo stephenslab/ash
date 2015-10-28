@@ -3,7 +3,7 @@ dsc:	../output/dsc-shrink-files/res.RData	../output/dsc-znull-files/res.znull.RD
 ../output/dsc-shrink-files/res.RData:
 	cd dsc-shrink; R CMD BATCH run_dsc.R
 
-../output/dsc-znull-files/res.znull.RData
+../output/dsc-znull-files/res.znull.RData:
 	cd dsc-shrink; R CMD BATCH run_dsc_znull.R
 
 ../output/dsc-robust-files/dsc_robust.RData:
