@@ -7,10 +7,10 @@ all: html
 html: $(HTML_FILES)
 
 %.html: %.Rmd
-	R --slave -e "set.seed(100);rmarkdown::render('$<')"
+	export R_LIBS_USER=../packrat/lib/*/*; R --slave -e "set.seed(100);rmarkdown::render('$<')"
 
 %.html: %.md
-	R --slave -e "set.seed(100);rmarkdown::render('$<')"
+	export R_LIBS_USER=../packrat/lib/*/*; R --slave -e "set.seed(100);rmarkdown::render('$<')"
 
 .PHONY: clean
 clean:
