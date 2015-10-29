@@ -5,21 +5,36 @@ from the paper 'False Discovery Rates: A New Deal'.
 
 The hardest part may be making sure R is set up with all the right packages installed.
 I have used the R package `packrat` to try to make this easier, but on some systems
-it may be easier to install all the packages you need by hand.
+it may be easier to install all the packages you need by hand. If things go wrong, look also at
+[If things go wrong](if-things-go-wrong).
 
 Step-by-step instructions:
 
-1. Install `R v3.2.2`.
+1. Preliminaries: I made the paper with `R v3.2.2`, so you might start by installing this version.  Install `pandoc v1.12.3` or higher. You will also need a working `pdflatex` installation to make the paper. Possibly other
+dependencies you will come across as you run the following steps.
 2. Clone (or download and unzip) this repository.
-3. Within this repository directory, enter `R`. It will try to use `packrat` to install all the packages you need.
-If this does not work you may need to tell it to do this by hand by typing `packrat::restore()` within `R`.
-If this does not work, you may prefer to remove the packrat subdirectory and install the packages you need yourself.
-4. Enter the `code` directory (`cd code`) and type `make`. This should run all the code for the simulation studies.
+3. Install the `R` packages you need. I have tried to use the `packrat` package to automate this process, with some level of success. To do it this way, enter `R` within the repository directory. The first time you enter `R` the hidden `.Rprofile` file will cause `R` to try to install all the packages you need to a local library in the `packrat` subdirectory.
+If this does not work first time then, on subsequently entering `R` you may need to tell it to do this by hand by typing `packrat::restore()` within `R`.
+If this still does not work for you, or you already have the packages you need installed then you may prefer to remove the packrat subdirectory and install the packages you need yourself. Quit `R`.
+4. Within the repository directory type `make`. This will try to:
+ 
+      i) Run all the code for the simulation studies.
 It will take a while (hours), so you might want to run it overnight. This should create a bunch of output files in the `output` directory. Particularly you will know that it worked iff you can find the files `dsc-shrink-files/res.RData` and `dsc-robust-files/dsc_robust.RData`.
-5. Enter the `analysis` directory (`cd ../analysis`) and type `make`. This will create a bunch of
-`html` output files, and also figures. You can open `analysis/index.html` to see a list of all the outputs created. 
-6. Enter the `paper` directory (`cd ../paper`) and you should be able to latex the paper.
 
+      ii) Build/render the .Rmd files in the `analysis` directory. If successful you should have a file `analysis/index.html` that you can open to see a list of all the rendered files.
+      
+      iii)  `pdflatex` the paper.
+
+If you have problems (more than likely!) you might like to try each of these steps in turn, by sequentially typing
+`make output`, `make analysis` and `make paper`.
+
+# If things go wrong
+
+- If things go wrong in making the output files, try looking at the `.Rout` files
+created in  the appropriate output subdirectory (`output/dsc-shrink/`, `output/dsc-znull` or `output/dsc-robust`) 
+to see what went wrong.
+
+- If things go wrong in making the anlaysis files, try looking at the `.hmtl` files produced to see what went wrong.
 
 # Directory Structure
 
