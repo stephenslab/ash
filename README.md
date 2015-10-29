@@ -13,8 +13,8 @@ Step-by-step instructions:
 1. Preliminaries: I made the paper with `R v3.2.2`, so you might start by installing this version.  Install `pandoc v1.12.3` or higher. You will also need a working `pdflatex` installation to make the paper. Possibly other
 dependencies you will come across as you run the following steps.
 2. Clone (or download and unzip) this repository.
-3. Install the `R` packages you need. I have tried to use the `packrat` package to automate this process, with some level of success. To do it this way, enter `R` within the repository directory. The first time you enter `R` the hidden `.Rprofile` file will cause `R` to try to install all the packages you need to a local library in the `packrat` subdirectory.
-If this does not work first time then, on subsequently entering `R` you may need to tell it to do this by hand by typing `packrat::restore()` within `R`.
+3. Install the `R` packages you need. I have tried to use the [`packrat`](https://rstudio.github.io/packrat/) package to automate this process, with some level of success. To do it this way, start up `R` (e.g. from the command line) within the repository directory. The first time you enter `R` the hidden `.Rprofile` file will cause `R` to try to install all the packages you need to a local library in the `packrat` subdirectory. (Specifically it should create a `packrat\lib` directory with more files in a subdirectory whose name will depend on your architecture.)  
+If this does not work first time - e.g. because you don't have some dependencies installed - then install the dependencies and try again. This time on entering `R` you will have to tell `packrat` to try again yourself by typing `packrat::restore()`.
 If this still does not work for you, or you already have the packages you need installed then you may prefer to remove the packrat subdirectory and install the packages you need yourself. Quit `R`.
 4. Within the repository directory type `make`. This will try to:
  
