@@ -3,7 +3,7 @@
 
 library(dscr)
 
-dsc_znull=new.dsc("znull","../../output/dsc-znull-files")
+dsc_znull=new_dsc("znull","../../output/dsc-znull-files")
 source("add_scenarios.null.R")
 source("add_methods.null.R")
 
