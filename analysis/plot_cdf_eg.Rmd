@@ -26,7 +26,7 @@ load("../output/dsc-shrink-files/res.RData")
 #df is a list with components method,seed, scenario
 #cdf is evaluated at x
 #returns list of x,y,pi0, where cdf values are in y
-get_cdf = function(df,dsc=dsc_shrink,x=seq(-6,6,length=100),homedir="../output/dsc-shrink-files"){
+get_cdf = function(df,dsc=dsc_shrink,x=seq(-6,6,length=100),homedir="../code/dsc-shrink"){
   m=df$method
   if(m=="truth"){m="ash.n"}
   temp=load_example(dsc,df$seed,df$scenario,m,homedir)

@@ -25,26 +25,26 @@ Here we summarize the results of the simulation study to look at convergence of 
 ```
 
 ```{r}
-  quantile((res %>% filter(method=="ash.n"))$score.diff1,c(0.8,0.9,0.95,0.99,1))
-  quantile((res %>% filter(method=="ash.hu"))$score.diff1,c(0.8,0.9,0.95,0.99,1))
-  quantile((res %>% filter(method=="ash.u"))$score.diff1,c(0.8,0.9,0.95,0.99,1))
+  quantile((res %>% filter(method=="ash.n"))$diff1,c(0.8,0.9,0.95,0.99,1))
+  quantile((res %>% filter(method=="ash.hu"))$diff1,c(0.8,0.9,0.95,0.99,1))
+  quantile((res %>% filter(method=="ash.u"))$diff1,c(0.8,0.9,0.95,0.99,1))
   
-  plot(ecdf((res %>% filter(method %in% c("ash.u","ash.hu")))$score.diff1),ylim=c(0.8,1))
-  plot(ecdf((res %>% filter(method %in% c("ash.n")))$score.diff1),ylim=c(0.8,1))
+  plot(ecdf((res %>% filter(method %in% c("ash.u","ash.hu")))$diff1),ylim=c(0.8,1))
+  plot(ecdf((res %>% filter(method %in% c("ash.n")))$diff1),ylim=c(0.8,1))
 ```
 
 ```{r}
-  mean((res %>% filter(method %in% c("ash.u","ash.hu")))$score.diff1<0.02)
-  mean((res %>% filter(method %in% c("ash.u","ash.hu")))$score.diff1>1)
-  mean((res %>% filter(method %in% c("ash.n")))$score.diff1<0.02)  
+  mean((res %>% filter(method %in% c("ash.u","ash.hu")))$diff1<0.02)
+  mean((res %>% filter(method %in% c("ash.u","ash.hu")))$diff1>1)
+  mean((res %>% filter(method %in% c("ash.n")))$diff1<0.02)  
 ```
 
 
 Now check out the example that showed the biggest convergence problem
 ```{r}
 #check out which one showed biggest convergence problem
-prob = res[which.max(res$score.diff1),]
-prob_eg = load_example(dsc_robust,seed=prob$seed,scenario=as.character(prob$scenario),method=as.character(prob$method),homedir="../output")
+prob = res[which.max(res$diff1),]
+prob_eg = load_example(dsc_robust,seed=prob$seed,scenario=as.character(prob$scenario),method=as.character(prob$method),homedir="../code/dsc-robust")
 ```
 
 Run ash on the example to check we can recapitulate the convergence problem.

@@ -52,7 +52,7 @@ head(ash.hu.ft)
 ```
 
 ```{r}
-  eg=load_example(dsc_shrink,42,"flat-top",method="ash.hu.s","../output/dsc-shrink-files/")
+  eg=load_example(dsc_shrink,42,"flat-top",method="ash.hu.s","../code/dsc-shrink")
   eg$output$fitted.g
 ```
 
@@ -72,7 +72,7 @@ So what seems to be happening here is that the uniform tail is too short; when o
 Can we find an example?
 ```{r}
   table((ash.u.s.spiky %>% filter(value==0))$seed)
-  eg =load_example(dsc_shrink,seed = 39,method="ash.u.s",scenario="spiky","../output/dsc-shrink-files")
+  eg =load_example(dsc_shrink,seed = 39,method="ash.u.s",scenario="spiky","../code/dsc-shrink")
 ```
 
 
