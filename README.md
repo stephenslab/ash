@@ -34,7 +34,7 @@ If you have problems (more than likely!) you might like to try each of these ste
 created in  the appropriate output subdirectory (`output/dsc-shrink/`, `output/dsc-znull` or `output/dsc-robust`)
 to see what went wrong.
 
-- If things go wrong in making the analysis files, try looking at the `.hmtl` files produced to see what went wrong.
+- If things go wrong in making the analysis files, try looking at the `.html` files produced to see what went wrong.
 
 # Directory Structure
 
