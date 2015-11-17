@@ -63,13 +63,13 @@ Hash: e2282cd322c70a2d16a35880428f84ec
 
 Package: ashr
 Source: github
-Version: 0.9.3
-Hash: 021764eee9fe0f6d432a853d13bc0cef
+Version: 0.9.4
+Hash: 104245e87c5622875f83bcaa537a4078
 Requires: Rcpp, SQUAREM, doParallel, plyr, pscl, testthat, truncnorm
 GithubRepo: ashr
 GithubUsername: stephens999
 GithubRef: master
-GithubSha1: dd8f444f2729e864056fcddff274611702f5d58b
+GithubSha1: d7cff3ce3a2f2bd0a0e8fd9a735cb933c916294b
 
 Package: assertthat
 Source: CRAN
@@ -137,7 +137,7 @@ Requires: foreach, iterators
 Package: dplyr
 Source: CRAN
 Version: 0.4.3
-Hash: 677f96760b6a978617d5f65272080296
+Hash: 6747c41888a187a26ac4b03789b52a06
 Requires: BH, DBI, R6, Rcpp, assertthat, lazyeval, magrittr
 
 Package: dscr
@@ -199,7 +199,7 @@ Requires: digest
 Package: httpuv
 Source: CRAN
 Version: 1.3.3
-Hash: 4583c19dcd3fde328f264b5a0f76f7bb
+Hash: ad41c96192683a69d291a45192ec8e2b
 Requires: Rcpp
 
 Package: iterators
@@ -284,7 +284,7 @@ Hash: aed7d17407538df551a57caf6289c8bf
 Package: plyr
 Source: CRAN
 Version: 1.8.3
-Hash: 36f23123a89bfe6d93b2d219387ae795
+Hash: 5cf4672c5940e265f2602d5d806d303d
 Requires: Rcpp
 
 Package: praise
@@ -322,7 +322,7 @@ GithubSha1: b3e906542ce4b56ee131503b44236cea75b9f6cc
 Package: reshape2
 Source: CRAN
 Version: 1.4.1
-Hash: 5990382c4af41f623890b1aeb63ffab5
+Hash: 193899598711fc9776f383bbdf266118
 Requires: Rcpp, plyr, stringr
 
 Package: rmarkdown
@@ -334,7 +334,7 @@ Requires: caTools, htmltools, knitr, yaml
 Package: scales
 Source: CRAN
 Version: 0.3.0
-Hash: a93601b5e242b11f68322541c64996ae
+Hash: 323f8f5a7f2823f19bd3fd3c15fc196a
 Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
 
 Package: sendmailR
