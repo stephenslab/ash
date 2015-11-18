@@ -1,4 +1,4 @@
-source_dir("datamakers")
+dscr::source_dir("datamakers")
 
 gdef = list(spiky=normalmix(c(.4,.2,.2,.2),c(0,0,0,0),c(.25,.5,1,2)),
             skew=normalmix(c(1/4,1/4,1/3,1/6),c(-2,-1,0,1),c(2,1.5,1,1)),

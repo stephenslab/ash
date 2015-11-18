@@ -1,21 +1,21 @@
 library(dscr)
-source_dir("methods")
+dscr::source_dir("methods")
 
 ###### Initialize #######
 
 dsc_robust=new_dsc("robust","../../output/dsc-robust-files")
 
 ###### Add Scenarios #####
-source_dir("../dsc-shrink/datamakers")
+dscr::source_dir("../dsc-shrink/datamakers")
 source("../dsc-shrink/add_named_scenarios.R")
 add_named_scenarios(dsc_robust,c("spiky","near-normal","flat-top","skew","big-normal","bimodal"))
 
 
 ###### Add Methods #####
 
-add_method(dsc_robust,"ash.u",ash.wrapper,args=list(mixcompdist="uniform",cxx=TRUE))
-add_method(dsc_robust,"ash.hu",ash.wrapper,args=list(mixcompdist="halfuniform",cxx=TRUE))
-add_method(dsc_robust,"ash.n",ash.wrapper,args=list(mixcompdist="normal",cxx=TRUE))
+add_method(dsc_robust,"ash.u",ash.wrapper,args=list(mixcompdist="uniform"))
+add_method(dsc_robust,"ash.hu",ash.wrapper,args=list(mixcompdist="halfuniform"))
+add_method(dsc_robust,"ash.n",ash.wrapper,args=list(mixcompdist="normal"))
 
 
 
