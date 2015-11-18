@@ -1,4 +1,4 @@
-source_dir("methods")
+dscr::source_dir("methods")
 
 add_method(dsc_znull,name="ash.hu",fn =ash.wrapper,args=list(mixcompdist="halfunif"),outputtype = "ash_output")
 add_method(dsc_znull,name="ash.u",fn =ash.wrapper,args=list(mixcompdist="unif"),outputtype = "ash_output")
