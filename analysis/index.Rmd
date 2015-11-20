@@ -13,10 +13,6 @@ title: "Home"
 *  [Illustatrate dilution effect of low-precision observations](make_GOODPOOR_figs.html)
 *  [Adpative Shrinkage](adaptive_shrinkage.html)
 
-## DSC Robust (Simulation study to assess EM convergence)
-
-*  [Check robustness simulation study](summarize_dsc_robust.html)
-
 
 ## DSC Shrink (the main simulation study in the paper)
 
@@ -29,6 +25,10 @@ title: "Home"
 *  [Investigate coverage of hu method without penalty](investigate_hu_badcoverage.html)
 *  [Run mixfdr on low noise bimodal situation](check_mixfdr_lownoise.html)
 *  [Make coverage tables](summarize_coverage.html)
+
+
+## Optimization method: EM vs Interior Point
+*  [Compare loglik achieved by EM vs Interior Point](checkIP.html)
 
 ## DSC Znull (assess behaviour of ash LR under null)
 

@@ -75,13 +75,13 @@ Hash: e2282cd322c70a2d16a35880428f84ec
 
 Package: ashr
 Source: github
-Version: 0.9.5
-Hash: a8dac94b0e754b9563d04bcf526df2e3
+Version: 0.9.6
+Hash: b8448f02007d4ea6b526b20eddfa7d1e
 Requires: Rcpp, SQUAREM, doParallel, plyr, pscl, testthat, truncnorm
 GithubRepo: ashr
 GithubUsername: stephens999
 GithubRef: master
-GithubSha1: 42a10fba94544f24a70e7a4d27a208265e0dcad0
+GithubSha1: 80ca1a93fa404e04a2a17ee14e03341768aec50b
 
 Package: assertthat
 Source: CRAN
