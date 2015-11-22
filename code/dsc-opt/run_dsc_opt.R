@@ -23,10 +23,7 @@ add_method(dsc_opt,"ash.n",ash.multiopt.wrapper,args=list(mixcompdist="normal",m
 
 score = function(data, output){
   x=output$loglik
-  #names(x)=paste0('C',1:length(x))
-  #class(x)<-'data.frame'
-  #return(list(diff1 = max(x)-x[1],diff2=(max(x)-min(x))))
-  return(list(diff1 = x[1]-x[2],diff2=0))
+  return(list(diff1 = x[1]-x[2])) 
 }
 
 add_score(dsc_opt,score)
