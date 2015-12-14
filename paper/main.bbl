@@ -109,11 +109,15 @@ Leek JT, Storey JD (2007) Capturing heterogeneity in gene expression studies by
 \newblock PLoS Genet 3: 1724-35.
 \bibAnnoteFile{leek:2007}
 
-\bibitem{dempster77}
-Dempster AP, Laird NM, Rubin DB (1977) Maximum likelihood estimation from
-  incomplete data via the {EM} algorithm (with discussion).
-\newblock Journal of the Royal Statistical Society, series B 39: 1--38.
-\bibAnnoteFile{dempster77}
+\bibitem{boyd2004convex}
+Boyd S, Vandenberghe L (2004) Convex optimization.
+\newblock Cambridge university press.
+\bibAnnoteFile{boyd2004convex}
+
+\bibitem{koenker2013convex}
+Koenker R, Mizera I (2013) Convex optimization in {R}.
+\newblock Journal of Statistical Software .
+\bibAnnoteFile{koenker2013convex}
 
 \bibitem{tukey1991philosophy}
 Tukey JW (1991) The philosophy of multiple comparisons.
@@ -248,6 +252,25 @@ Shepp L (1962) Symmetric random walk.
 Feller W (1971) An introduction to probability and its applications, vol. ii.
 \newblock Wiley, New York .
 \bibAnnoteFile{feller1971introduction}
+
+\bibitem{REBayes}
+Koenker R (2015) REBayes: Empirical Bayes Estimation and Inference in R.
+\newblock \urlprefix\url{http://CRAN.R-project.org/package=REBayes}.
+\newblock R package version 0.58.
+\bibAnnoteFile{REBayes}
+
+\bibitem{Rmosek}
+Aps M Rmosek: The R to MOSEK Optimization Interface.
+\newblock \urlprefix\url{http://rmosek.r-forge.r-project.org/,
+  http://www.mosek.com/}.
+\newblock R package version 7.1.2.
+\bibAnnoteFile{Rmosek}
+
+\bibitem{dempster77}
+Dempster AP, Laird NM, Rubin DB (1977) Maximum likelihood estimation from
+  incomplete data via the {EM} algorithm (with discussion).
+\newblock Journal of the Royal Statistical Society, series B 39: 1--38.
+\bibAnnoteFile{dempster77}
 
 \bibitem{varadhan2008simple}
 Varadhan R, Roland C (2008) Simple and globally convergent methods for
