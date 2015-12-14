@@ -1,7 +1,6 @@
 *.Rout
 paper/*.aux
 paper/*.log
-analysis/*.html
 output/*
 packrat/lib*/
 *.png
