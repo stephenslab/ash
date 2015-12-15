@@ -10,7 +10,7 @@ it may be easier to install all the packages you need by hand. If things go wron
 
 Step-by-step instructions:
 
-1. Preliminaries: I made the paper with `R v3.2.2`, so you might start by installing this version. Or more recent versions should (!) also work. Install `pandoc v1.12.3` or higher. You will also need a working `pdflatex` installation to make the paper. The `Rmosek` package needs [`mosek`](https://www.mosek.com/resources/downloads) installed, so do that now too. Possibly you will come across other
+1. Preliminaries: I made the paper with `R v3.2.2`, so you might start by installing this version. Or more recent versions should (!) also work. Install `pandoc v1.12.3` or higher. You will also need a working `pdflatex` installation to make the paper. The `Rmosek` package needs [`mosek`](https://www.mosek.com/resources/downloads) installed, so do that now too. Don't forget to follow instructions regarding the license file. Possibly you will come across other
 dependencies as you run the following steps.
 2. Clone (or download and unzip) this repository.
 3. Install the `R` packages you need. I have tried to use the [`packrat`](https://rstudio.github.io/packrat/) package to automate this process, with some level of success. To do it this way, start up `R` (e.g. from the command line) within the repository directory. The first time you enter `R` the hidden `.Rprofile` file will cause `R` to try to install all the packages you need to a local library in the `packrat` subdirectory. (Specifically it should create a `packrat/lib` directory with more files in a subdirectory whose name will depend on your architecture.)  
