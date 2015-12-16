@@ -68,8 +68,8 @@ img {
 </div>
 
 
-<p><strong>Last updated:</strong> 2015-12-14</p>
-<p><strong>Code version:</strong> 56efcb045caa67780187045d6941daa90473b6ac</p>
+<p><strong>Last updated:</strong> 2015-12-15</p>
+<p><strong>Code version:</strong> c12bd940df26a36d1f462f2dfa0646e58cc24b19</p>
 <pre class="r"><code>load(&quot;../output/dsc-shrink-files/res.RData&quot;)
 coverthresh = 0.05 # threshold at which we look at coverage
 findthresh=0.95 #threshold at we define a discovery significant
@@ -150,11 +150,11 @@ reslong.pos = inner_join(reslong,poslong)</code></pre>
 <pre class="r"><code>reslong.neg = inner_join(reslong,neglong)</code></pre>
 <pre><code>Joining by: c(&quot;method&quot;, &quot;scenario&quot;, &quot;seed&quot;, &quot;.id&quot;, &quot;variable&quot;)</code></pre>
 <pre class="r"><code>dim(reslong.pos)</code></pre>
-<pre><code>[1] 1207127       7</code></pre>
+<pre><code>[1] 1241553       7</code></pre>
 <pre class="r"><code>dim(reslong.neg)</code></pre>
-<pre><code>[1] 1402884       7</code></pre>
-<p>Overall proportion of negative findings is 0.077938.</p>
-<p>Overall proportion of positive findings is 0.0670626.</p>
+<pre><code>[1] 1440563       7</code></pre>
+<p>Overall proportion of negative findings is 0.0800313.</p>
+<p>Overall proportion of positive findings is 0.0689752.</p>
 <p>Table of lower tail for all observations</p>
 <pre class="r"><code>xtabs(lt~method+scenario,reslong %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh))) %&gt;% round(2)</code></pre>
 <pre><code>              scenario
@@ -169,7 +169,7 @@ method         big-normal big-normal-nn bimodal bimodal-nn flat-top
   ash.u              0.04          0.06    0.04       0.05     0.06
   ash.u.nw2          0.04          0.05    0.04       0.05     0.05
   ash.u.s            0.04          0.05    0.04       0.05     0.05
-  bayes              0.04          0.05    0.04       0.05     0.06
+  bayes              0.04          0.05    0.04       0.05     0.05
   mixfdr.enull       0.05          0.00    0.05       0.05     0.06
   mixfdr.tnull       0.07          0.00    0.12       0.20     0.16
               scenario
@@ -184,7 +184,7 @@ method         flat-top-nn near-normal near-normal-nn skew skew-nn spiky
   ash.u               0.06        0.07           0.07 0.07    0.08  0.13
   ash.u.nw2           0.05        0.06           0.06 0.06    0.07  0.09
   ash.u.s             0.05        0.05           0.06 0.06    0.07  0.06
-  bayes               0.07        0.06           0.06 0.05    0.06  0.10
+  bayes               0.05        0.04           0.05 0.04    0.05  0.05
   mixfdr.enull        0.05        0.06           0.05 0.06    0.06  0.05
   mixfdr.tnull        0.24        0.17           0.28 0.14    0.21  0.22
               scenario
@@ -199,7 +199,7 @@ method         spiky-nn
   ash.u            0.15
   ash.u.nw2        0.10
   ash.u.s          0.07
-  bayes            0.11
+  bayes            0.05
   mixfdr.enull     0.05
   mixfdr.tnull     0.40</code></pre>
 <p>Table of lower tail of positive findings. Because of the unimodal assumption and the favoritism toward the null this should assess problems with``over shrinkage&quot; toward 0.</p>
@@ -216,7 +216,7 @@ method         big-normal big-normal-nn bimodal bimodal-nn flat-top
   ash.u              0.05          0.05    0.05       0.04     0.07
   ash.u.nw2          0.05          0.05    0.05       0.04     0.06
   ash.u.s            0.05          0.05    0.05       0.04     0.08
-  bayes              0.05          0.05    0.04       0.04     0.09
+  bayes              0.05          0.05    0.05       0.05     0.05
               scenario
 method         flat-top-nn near-normal near-normal-nn skew skew-nn spiky
   ash.hu              0.06        0.08           0.07 0.08    0.08  0.08
@@ -229,7 +229,7 @@ method         flat-top-nn near-normal near-normal-nn skew skew-nn spiky
   ash.u               0.06        0.07           0.07 0.16    0.14  0.07
   ash.u.nw2           0.04        0.06           0.06 0.13    0.11  0.06
   ash.u.s             0.05        0.07           0.05 0.12    0.09  0.07
-  bayes               0.10        0.07           0.06 0.05    0.05  0.06
+  bayes               0.05        0.05           0.05 0.06    0.05  0.04
               scenario
 method         spiky-nn
   ash.hu           0.08
@@ -242,7 +242,7 @@ method         spiky-nn
   ash.u            0.08
   ash.u.nw2        0.07
   ash.u.s          0.06
-  bayes            0.07</code></pre>
+  bayes            0.05</code></pre>
 <p>Table of lower tail of negative findings. This should indicate problems with tail behaviour of <span class="math inline">\(g\)</span>. The uniform methods tend to over-shrink.</p>
 <pre class="r"><code>xtabs(lt~method+scenario,reslong.neg %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh))) %&gt;% round(2)</code></pre>
 <pre><code>              scenario
@@ -257,7 +257,7 @@ method         big-normal big-normal-nn bimodal bimodal-nn flat-top
   ash.u              0.06          0.05    0.06       0.04     0.07
   ash.u.nw2          0.06          0.06    0.06       0.04     0.12
   ash.u.s            0.06          0.06    0.06       0.04     0.10
-  bayes              0.05          0.05    0.05       0.05     0.04
+  bayes              0.05          0.05    0.05       0.05     0.05
               scenario
 method         flat-top-nn near-normal near-normal-nn skew skew-nn spiky
   ash.hu              0.08        0.13           0.12 0.07    0.07  0.13
@@ -270,7 +270,7 @@ method         flat-top-nn near-normal near-normal-nn skew skew-nn spiky
   ash.u               0.08        0.10           0.11 0.09    0.09  0.12
   ash.u.nw2           0.10        0.09           0.09 0.08    0.08  0.13
   ash.u.s             0.08        0.08           0.07 0.08    0.08  0.11
-  bayes               0.03        0.04           0.04 0.05    0.05  0.05
+  bayes               0.05        0.05           0.05 0.05    0.05  0.05
               scenario
 method         spiky-nn
   ash.hu           0.12
@@ -307,7 +307,7 @@ method         spiky-nn
   
 save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),&quot;table/coverage_neg.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:39 2015
+% Tue Dec 15 18:12:49 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.07 &amp; 0.06 &amp; 0.00 &amp; 0.06 &amp; 0.05 &amp; 0.02 \\ 
@@ -316,7 +316,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% su
    \bottomrule \end{tabular}</code></pre>
 <pre class="r"><code>save_latex_coverage_table(reslong.pos %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),&quot;table/coverage_pos.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:39 2015
+% Tue Dec 15 18:12:49 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.06 &amp; 0.06 &amp; 0.06 &amp; 0.14 &amp; 0.05 &amp; 0.04 \\ 
@@ -325,7 +325,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% su
    \bottomrule \end{tabular}</code></pre>
 <pre class="r"><code>save_latex_coverage_table(reslong %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),&quot;table/coverage_all.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:40 2015
+% Tue Dec 15 18:12:50 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.10 &amp; 0.06 &amp; 0.05 &amp; 0.06 &amp; 0.04 &amp; 0.04 \\ 
@@ -334,7 +334,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% su
    \bottomrule \end{tabular}</code></pre>
 <pre class="r"><code>save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),&quot;table/coverage_neg_nopen.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:40 2015
+% Tue Dec 15 18:12:50 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.05 &amp; 0.05 &amp; 0.02 &amp; 0.07 &amp; 0.05 &amp; 0.03 \\ 
@@ -343,7 +343,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% su
    \bottomrule \end{tabular}</code></pre>
 <pre class="r"><code>save_latex_coverage_table(reslong.pos %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),&quot;table/coverage_pos_nopen.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:40 2015
+% Tue Dec 15 18:12:50 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.06 &amp; 0.06 &amp; 0.08 &amp; 0.12 &amp; 0.05 &amp; 0.06 \\ 
@@ -352,7 +352,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% su
    \bottomrule \end{tabular}</code></pre>
 <pre class="r"><code>save_latex_coverage_table(reslong %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),&quot;table/coverage_all_nopen.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:42 2015
+% Tue Dec 15 18:12:52 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.05 &amp; 0.05 &amp; 0.05 &amp; 0.05 &amp; 0.04 &amp; 0.04 \\ 
@@ -362,7 +362,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% su
 <p>These tables show 1-the left tail instead of the left tail.</p>
 <pre class="r"><code>save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),&quot;table/scoverage_neg.tex&quot;,switch=TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:42 2015
+% Tue Dec 15 18:12:52 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.93 &amp; 0.94 &amp; 1.00 &amp; 0.94 &amp; 0.95 &amp; 0.98 \\ 
@@ -371,7 +371,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% su
    \bottomrule \end{tabular}</code></pre>
 <pre class="r"><code>save_latex_coverage_table(reslong.pos %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),&quot;table/scoverage_pos.tex&quot;,switch=TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:42 2015
+% Tue Dec 15 18:12:52 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.94 &amp; 0.94 &amp; 0.94 &amp; 0.86 &amp; 0.95 &amp; 0.96 \\ 
@@ -380,7 +380,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% su
    \bottomrule \end{tabular}</code></pre>
 <pre class="r"><code>save_latex_coverage_table(reslong %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),&quot;table/scoverage_all.tex&quot;,switch=TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:43 2015
+% Tue Dec 15 18:12:53 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.90 &amp; 0.94 &amp; 0.95 &amp; 0.94 &amp; 0.96 &amp; 0.96 \\ 
@@ -389,7 +389,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% su
    \bottomrule \end{tabular}</code></pre>
 <pre class="r"><code>save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),&quot;table/scoverage_neg_nopen.tex&quot;,switch=TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:43 2015
+% Tue Dec 15 18:12:54 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.95 &amp; 0.95 &amp; 0.98 &amp; 0.93 &amp; 0.95 &amp; 0.97 \\ 
@@ -398,7 +398,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% su
    \bottomrule \end{tabular}</code></pre>
 <pre class="r"><code>save_latex_coverage_table(reslong.pos %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),&quot;table/scoverage_pos_nopen.tex&quot;,switch=TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:43 2015
+% Tue Dec 15 18:12:54 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.94 &amp; 0.94 &amp; 0.92 &amp; 0.88 &amp; 0.95 &amp; 0.94 \\ 
@@ -407,7 +407,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;% su
    \bottomrule \end{tabular}</code></pre>
 <pre class="r"><code>save_latex_coverage_table(reslong %&gt;% group_by(scenario,method) %&gt;% summarize(lt = mean(value&lt;coverthresh)),c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),&quot;table/scoverage_all_nopen.tex&quot;,switch=TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.2.3 by xtable 1.7-4 package
-% Mon Dec 14 14:24:45 2015
+% Tue Dec 15 18:12:55 2015
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.95 &amp; 0.95 &amp; 0.95 &amp; 0.95 &amp; 0.96 &amp; 0.96 \\ 

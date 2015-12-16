@@ -21,6 +21,8 @@
 % include graphics with the command \includegraphics
 \usepackage{graphicx}
 
+\usepackage{endfloat}
+
 \usepackage{sectsty}
 \subsectionfont{\normalsize}
 \subsubsectionfont{\mdseries\itshape}
@@ -33,8 +35,8 @@
 \usepackage{color} 
 
 % Use doublespacing - comment out for single spacing
-%\usepackage{setspace} 
-%\doublespacing
+\usepackage{setspace} 
+\doublespacing
 
 
 % Text layout
@@ -396,7 +398,7 @@ The usual EB approach to fitting this model would involve two simple steps:
 \item Compute quantities of interest from the conditional distributions $p(\beta_j | \bhat, \shat, \hat{\pi})$. For example, the evidence
 against the null hypothesis $\beta_j=0$ can be summarized by $p(\beta_j \neq 0 | | \bhat, \shat,\hat{\pi})$.
 \end{enumerate}
-Both steps 1 and 2 are very straightforward. Step 1 is a convex optimization problem \cite{}, and can be solved very quickly using interior point methods \cite{boyd2004convex,koenker2013convex}. Our {\tt R} package typically takes a few seconds for $p=100,000$. And the conditional distributions $p(\beta_j | \bhat_j, \shat_j,\hat{\pi})$ in Step 2 are analytically available, each a mixture of a point mass on zero and $K$ normal distributions.
+Both steps 1 and 2 are very straightforward. Step 1 is a convex optimization problem, and can be solved very quickly using interior point methods \cite{boyd2004convex,koenker2013convex}. Our {\tt R} package typically takes a few seconds for $p=100,000$. And the conditional distributions $p(\beta_j | \bhat_j, \shat_j,\hat{\pi})$ in Step 2 are analytically available, each a mixture of a point mass on zero and $K$ normal distributions.
 (The simplicity of step 1 is due to our use of a fixed grid for $\sigma_k$ in (\ref{eqn:mixnorm}), instead of estimating $\sigma_k$,
 which may seem more natural but is not straightforward when $\shat_j$ varies among $j$. This simple device may be useful in other applications.)
 
@@ -1526,6 +1528,7 @@ bimodal & $0.5 N(-2,1^2) + 0.5 N(2,1^2)$ \\ \bottomrule
 % Do NOT remove this, even if you are not including acknowledgments
 \section*{Acknowledgements}
 
+I thank J.~Lafferty for pointing out the convexity of the likelihood function, which lead to our improved implementation with interior point methods. 
 Statistical analyses were conducted in the {\sf R} programming language \cite{Rcore:2012}, Figures produced using the {\tt ggplot2} package \cite{ggplot2}, and text
 prepared using \LaTeX. Development of the methods in this paper was greatly enhanced by the use of the {\tt knitr} package \cite{xie2013dynamic}  within the RStudio GUI, and 
 git and github. The {\tt ashr} R package is available from \url{http://github.com/stephens999/ashr} and includes contributions 

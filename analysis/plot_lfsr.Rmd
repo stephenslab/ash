@@ -16,6 +16,7 @@ source("chunk-options.R")
 load("../output/dsc-shrink-files/res.RData")
 source("../R/set_plot_colors.R")
 library(dplyr)
+library(ggplot2)
 
 #' @param df dataframe of scores for many methods/scenrios etc
 #' @return tall dataframe with columns of scores for each method and the "goldmethod" against which plot is to be made

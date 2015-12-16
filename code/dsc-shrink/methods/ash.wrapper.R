@@ -29,7 +29,7 @@ bayes.wrapper = function(input, meta, args=NULL){
   g$mean = c(0,g1$mean)
   g$sd = c(0,g1$sd)
   #do computations for bayes rule by running ash with g, with 0 iterations
-  res = do.call(ash, args= list(betahat=input$betahat,sebetahat=input$sebetahat,df=input$df,g=g,control=list(maxiter=0)))
+  res = do.call(ash, args= list(betahat=input$betahat,sebetahat=input$sebetahat,df=input$df,g=g,fixg=TRUE))
   return(res)
 }
 

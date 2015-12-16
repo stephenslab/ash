@@ -1,6 +1,9 @@
-.PHONY:	all output analysis paper
+.PHONY:	all clean output analysis paper
 
 all:	output analysis paper
+
+clean:	
+	cd analysis && $(MAKE) clean
 
 output:	
 	cd code && $(MAKE)
