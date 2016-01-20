@@ -162,8 +162,8 @@ We introduce a novel Empirical Bayes approach for large-scale hypothesis testing
 estimating False Discovery Rates (FDRs), and estimating effect sizes. Compared with
 existing approaches to FDR analysis, the method has two key differences. First, it
 assumes that the distribution of the actual (unobserved) effects being tested is unimodal, with a mode at 0.
-This ``unimodal assumption" (UA), which is common in other related contexts, but very different from assumptions usually made
-in FDR analyses, yields more accurate inferences than existing methods provided that the UA holds.
+This ``unimodal assumption" (UA), although natural in many contexts, is very different from assumptions usually made
+in FDR analyses, and yields more accurate inferences than existing methods provided that it holds.
 The UA also facilitates efficient and robust computation because estimating the unimodal distribution involves solving a simple convex optimization problem.
 Second, the method takes as its input two numbers for each test (an effect size estimate, and corresponding standard error),
 rather than the one number usually used ($p$ value, or $z$ score). When available, using two numbers instead of one 
@@ -197,8 +197,8 @@ see also \cite{kendziorski2003parametric,newton2004detecting,
 datta2005empirical,muralidharan2010empirical} for example.
 So what is the ``New Deal" here? We introduce two simple ideas that are new (at least compared with
 existing widely-used FDR pipelines) and can substantially affect
-inference. The first idea is to {\it assume that the distribution of effects is unimodal}. This yields a very simple, fast, and stable computer 
-implementation, as well as improving inference of FDR when the unimodal assumption is correct.  
+inference. The first idea is to {\it assume that the distribution of effects is unimodal}.  We provide a very simple, fast, and stable computer 
+implementation for perfoming EB inference under this assumption, and illustrate how it can improve inference of FDR when the unimodal assumption is correct.  
 The second idea is to use two numbers -- effect sizes, and their standard errors -- rather than just one -- $p$ values, or $z$ scores -- 
 to summarize each measurement. This idea allows variations in measurement precision to be better accounted for,
  and avoids a problem with standard pipelines that poor-precision measurements can inflate estimated FDR.
@@ -220,10 +220,14 @@ the $\lfsr$ and $\lfdr$ can be quite different, and emphasize benefits of the $\
 
 %The methods we provide here can address both problems, and we provide results that highlight important benefits of focussing on estimation, and particularly on assessing the correctness of the {\it sign} of the estimated effects, rather than on testing for non-zero effects.
 
+Although we have focussed here on applications to FDR, the idea of performing Empirical Bayes inference by flexibly esimating an underlying unimodal prior distribution
+could be useful more generally - for example in shrinkage estimation contexts such as wavelet denoising \cite{donoho:1995}. 
+Importantly, our work demonstrates that EB inference under a general unimodal assumption is, if anything, computationally simpler  
+than commonly-used more restrictive assumptions -- such as a spike and slab or Laplace prior distribution \cite{johnstone2004needles} --  as well as being more flexible.
 Our methods are implemented in an R package, \ashr (for {\bf a}daptive {\bf sh}rinkage in {\bf R}), available at \url{http://github.com/stephens999/ashr}.
-(The names comes from the fact that EB methods in general -- and, due to the UA, our EB method in particular -- perform shrinkage estimation,
-and the shrinkage is adaptive to both the amount of signal in the data and the measurement precision of each observation. 
-This will be discussed further in Xing and Stephens (in preparation).) Code and instructions for reproducing analyses and figures in this paper are at
+(The name comes from the fact that our EB approach using a unimodal prior naturally results in shrinkage estimation,
+and the shrinkage is adaptive to both the amount of signal in the data and the measurement precision of each observation.) 
+Code and instructions for reproducing analyses and figures in this paper are at
 \url{https://github.com/stephenslab/ash}.
 
 
@@ -485,7 +489,7 @@ our work here seems most naturally compared with the EB methods of \cite{efron20
 There are two key differences between our approach and all of these three existing methods. First, 
 whereas these existing methods summarize the information on $\beta_j$ by a single number -- either a $z$ score (\locfdr and \mixfdr), or a $p$ value (\qvalue) -- 
 we instead work with two numbers ($\bhat_j,\shat_j$). Here we are building on \cite{wakefield:2009}, who develops Bayesian tests 
-for individual null hypotheses using these two numbers, using the normal approximation \ref{eqn:normlik}.
+for individual null hypotheses using these two numbers, using the normal approximation \ref{eqn:normlik}; see also \cite{efron1993bayes}.
 Using two numbers instead of one clearly has the potential to be more informative, and indeed, results later (Figure \ref{fig:goodpoor}) illustrate 
 how it can improve performance by taking better account of variation in measurement precision among observations.
 %(And in the special case where $\shat_j$ are equal for all $j$, our approach essentially comes down to the same thing as these existing methods.)
