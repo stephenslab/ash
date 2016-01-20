@@ -1,0 +1,57 @@
+\begin{table}[!ht]
+\begin{subtable}{\textwidth}
+\centering\input{../analysis/table/scoverage_all.tex}
+\caption{All observations. Coverage rates are generally satisfactory, except for the extreme ``spiky" scenario. This is due to the penalty term (\ref{eqn:penalty}) which tends to cause over-shrinking towards zero. Removing this penalty term produces coverage rates closer to the nominal levels for uniform and normal methods (Table \ref{tab:nopen}). Removing the penalty in the half-uniform case is not recommended (see Appendix).}
+\end{subtable}
+
+\begin{subtable}{\textwidth}
+\centering\input{../analysis/table/scoverage_neg.tex}
+\caption{``Significant" negative discoveries. Coverage rates are generally satisfactory, except for the uniform-based methods in the spiky and near-normal scenarios,
+and the normal-based method in the flat-top scenario. These results likely reflect inaccurate estimates of the tails of $g$ due to a disconnect between the tail of $g$ and the component distributions in these cases. For example, the uniform methods sometimes substantially underestimate the length of the tail of $g$ in these long-tailed scenarios,
+causing over-shrinkage of the tail toward 0.}
+\end{subtable}
+
+\begin{subtable}{\textwidth}
+\centering\input{../analysis/table/scoverage_pos.tex}
+\caption{``Significant" positive discoveries. Coverage rates are generally satisfactory, except for the symmetric methods under the asymmetric (``skew") scenario. }
+\end{subtable}
+
+\caption{Table of empirical coverage for nominal 95\% lower credible bounds} \label{tab:coverage}
+\end{table}
+\efloatseparator
+ 
+\begin{table}[!ht]
+\centering\begin{tabular}{c c } \toprule
+Scenario & Alternative distribution, $g_1$  \\ \midrule
+spiky & $0.4 N(0,0.25^2) + 0.2 N(0,0.5^2) + 0.2 N(0,1^2), 0.2 N(0,2^2) $\\
+near normal & $2/3 N(0,1^2) + 1/3 N(0,2^2)$ \\
+flattop& $(1/7) [N(-1.5,.5^2) + N(-1,.5^2) + N(-.5,.5^2) +$ \\
+ &  $N(0,.5^2) +N(0.5,.5^2)  +N(1.0,.5^2) + N(1.5,.5^2)]$  \\
+skew & $(1/4) N(-2,2^2) + (1/4) N(-1,1.5^2) +  (1/3) N(0,1^2) + (1/6) N(1,1^2) $\\
+big-normal & $N(0,4^2)$ \\
+bimodal & $0.5 N(-2,1^2) + 0.5 N(2,1^2)$ \\ \bottomrule
+\end{tabular}
+\caption{Summary of simulation scenarios considered} \label{table:scenarios}
+\end{table}
+\efloatseparator
+ 
+\begin{table}[!ht]
+\begin{subtable}{\textwidth}
+\centering\input{../analysis/table/scoverage_all_nopen.tex}
+\caption{All observations}
+\end{subtable}
+
+\begin{subtable}{\textwidth}
+\centering\input{../analysis/table/scoverage_neg_nopen.tex}
+\caption{``Significant" negative discoveries.}
+\end{subtable}
+
+\begin{subtable}{\textwidth}
+\centering\input{../analysis/table/scoverage_pos_nopen.tex}
+\caption{``Significant" positive discoveries.}
+\end{subtable}
+
+\caption{Table of empirical coverage for nominal 95\% lower credible bounds for methods {\it without} the penalty term). } \label{tab:nopen}
+\end{table}
+\efloatseparator
+ 

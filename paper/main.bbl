@@ -98,6 +98,18 @@ Gelman A, Hill J, Yajima M (2012) Why we (usually) don't have to worry about
 \newblock Journal of Research on Educational Effectiveness 5: 189--211.
 \bibAnnoteFile{gelman2012we}
 
+\bibitem{donoho:1995}
+Donoho D, Johnstone I (1995) Adapting to unknown smoothness via wavelet
+  shrinkage.
+\newblock Journal of the American Statistical Association 90: 1200--1224.
+\bibAnnoteFile{donoho:1995}
+
+\bibitem{johnstone2004needles}
+Johnstone IM, Silverman BW (2004) Needles and straw in haystacks: Empirical
+  bayes estimates of possibly sparse sequences.
+\newblock Annals of Statistics : 1594--1649.
+\bibAnnoteFile{johnstone2004needles}
+
 \bibitem{efron2007correlation}
 Efron B (2007) Correlation and large-scale simultaneous significance testing.
 \newblock Journal of the American Statistical Association 102.
@@ -147,6 +159,11 @@ Wakefield J (2009) Bayes factors for genome-wide association studies:
 \newblock Genet Epidemiol 33: 79-86.
 \bibAnnoteFile{wakefield:2009}
 
+\bibitem{efron1993bayes}
+Efron B (1993) Bayes and likelihood calculations from confidence intervals.
+\newblock Biometrika 80: 3--26.
+\bibAnnoteFile{efron1993bayes}
+
 \bibitem{carvalho2010horseshoe}
 Carvalho CM, Polson NG, Scott JG (2010) The horseshoe estimator for sparse
   signals.
@@ -159,12 +176,6 @@ Moser G, Lee SH, Hayes BJ, Goddard ME, Wray NR, et~al. (2015) Simultaneous
   bayesian mixture model.
 \newblock PLoS Genet 11: e1004969.
 \bibAnnoteFile{moser:2015}
-
-\bibitem{johnstone2004needles}
-Johnstone IM, Silverman BW (2004) Needles and straw in haystacks: Empirical
-  bayes estimates of possibly sparse sequences.
-\newblock Annals of Statistics : 1594--1649.
-\bibAnnoteFile{johnstone2004needles}
 
 \bibitem{cordy1997deconvolution}
 Cordy CB, Thomas DR (1997) Deconvolution of a distribution function.
