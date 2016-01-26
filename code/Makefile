@@ -1,3 +1,5 @@
+all:	dsc-shrink dsc-null dsc-opt
+
 dsc-shrink:	../output/dsc-shrink-files/res.RData	
 dsc-null:	../output/dsc-znull-files/res.znull.RData	
 dsc-opt:	../output/dsc-opt-files/dsc_opt.RData

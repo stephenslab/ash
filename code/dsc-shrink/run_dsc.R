@@ -1,4 +1,6 @@
 library(dscr)
+library(ashr)
+sessionInfo()
 
 dsc_shrink=new_dsc("shrink","../../output/dsc-shrink-files")
 source("add_named_scenarios.R")

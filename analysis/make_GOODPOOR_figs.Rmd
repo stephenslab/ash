@@ -51,7 +51,7 @@ Apply different methods
 ```{r}
 res.qvalue = qvalue(pval)
 res.locfdr = locfdr(zscore,nulltype=0,plot=0)
-res.ash = ash(betahat,sebetahat,method="fdr")
+res.ash = ash(betahat,sebetahat,method="fdr",outputlevel=4)
 
 res.qvalue.good = qvalue(pval[GOOD])
 res.locfdr.good = locfdr(zscore[GOOD],nulltype=0,plot=0)
@@ -109,7 +109,7 @@ plot_pval_vs_lfsr=function(df,plot.it=TRUE){
   return(p)
 }
 
-res.ash.ET = ash(betahat,sebetahat,method="fdr",model="ET",mixcompdist="normal")
+res.ash.ET = ash(betahat,sebetahat,method="fdr",model="ET",mixcompdist="normal",outputlevel=4)
 p=plot_pval_vs_lfsr(rbind(
   make_df_for_pval(res.ash,method="Default prior (alpha=0)"),
   make_df_for_pval(res.ash.ET,method="p-value prior (alpha=1)")))

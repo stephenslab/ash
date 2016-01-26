@@ -11,7 +11,8 @@ title: "Home"
 
 *  [Illustrate Zero Assumption](makefig_FDReg.html)
 *  [Illustatrate dilution effect of low-precision observations](make_GOODPOOR_figs.html)
-*  [Adpative Shrinkage](adaptive_shrinkage.html)
+*  [Adaptive Shrinkage](adaptive_shrinkage.html)
+*  [Comparing models: EE vs ET models](CompareEEvsETmodel.html)
 
 
 ## DSC Shrink (the main simulation study in the paper)
