@@ -1,0 +1,99 @@
+---
+title: "Comparing Exchangeable Effects (EE) and Exchangeable Standardized Effects (ET) models"
+output: html_document
+---
+
+The ashr package implements a shrinkage-based Empirical Bayes
+method for estimating the values of effects $\beta_j$ based
+on estimates of the effects ($\hat\beta_j$) and their standard errors ($s_j$).
+
+A key modelling assumption is that the effects $\beta_j$ are identically distributed
+from a unimodal distribution $g$. 
+In particular, ashr assumes that $\beta_j$ is independent of the standard error $s_j$.
+That is,
+$$\beta_j | s_j \sim g(\cdot)     \quad (*).$$
+
+Here we consider an alternative modelling assumption:
+$$\beta_j/s_j | s_j \sim g(\cdot)   \quad (**).$$
+Under this alternative assumption
+the *t statistics* $\betahat_j/s_j$ are identically distributed from a unimodal
+distribution. Under this assumption the expected size of the *unstandardized* effect $\beta_j$ depends on the standard error $s_j$: the larger $s_j$ is, the larger (in absolute value) $\beta_j$ is expected to be. 
+
+By analogy with Wen and Stephens (AoAS), we refer to the model (*) as the EE model ("exchangeable effects"), and the model (**)
+as the ET model ("exchangeable T statistics model")
+
+What might motivate the ET model? 
+We can provide two distinct motivations. First, suppose for concreteness that the effects
+$\beta_j$ reflect differences in gene expression between two conditions. One factor that affects
+$s_j$ is the variance of gene $j$ within each condition. One could imagine that, perhaps, genes with a larger variance within each condition are less tightly regulated, and therefore more likely to show a large difference between conditions (i.e. large $\beta_j$) than genes with a small variance. This provides
+a biological motivation for the possibility that larger $s_j$ might 
+correlate with larger $\beta_j$ (although of course not for the exact functional form above).
+A second motivation is more statistical: it turns out that this assumption is in some sense
+the implicit assumption made by existing methods to fdr analysis based on p values. 
+More specifically, under this alternative assumption, when 
+attempting to identify ``significant" effects, the empirical Bayes approach will rank the genes 
+in the same way as the usual $p$ values computed from $\hat\beta_j/s_j$.
+
+It is straightforward to use the ashr package to perform analysis under the ET model:
+simply specify model="ET". (Internally, this causes ash to 
+replaces betahat with the standardized betahat, $\hat\beta_j/s_j$, and the standard errors
+for these standarized betahat values with 1.) It is also straightforward to compare
+the two competing modelling assumptions (EE vs ET) by computing the log likelihood ratio, $log[p_{EE}(\hat\beta | s, \hat g_{EE})/p_{ET}(\hat\beta | s, \hat g_{ET})]$.
+
+We now illustrate by a simulated example. We assume that the standard errors come
+from a gamma distribution, and then generate the effects $\beta_j$ under the ET model so that genes with bigger standard errors tend to have bigger effects.
+```{r}
+  set.seed(1234)
+  nsamp=1000
+  betahat.se = rgamma(nsamp,1,1)
+  beta = betahat.se * rnorm(nsamp) #simulate effects under the alternative assumption 
+  betahat = rnorm(nsamp,beta,betahat.se)
+  zscore = betahat/betahat.se
+  pval = pchisq(zscore^2,df=1,lower.tail=FALSE)
+  plot(betahat, -log(pval))
+```
+
+Here is the EE analysis.
+```{r}
+  library(ashr)
+  ashEE.res = ash(betahat, betahat.se,method="fdr",model="EE")
+```
+
+And here is how we can perform the ET analysis,
+by replacing betahat with the standardized betahat, and replacing the standard error with 1:
+```{r}
+  ashET.res = ash(betahat, betahat.se,method="fdr", model="ET")
+```
+Note that the posterior distributions computed by ash will now be for the standardized
+effects, and not for the effects $\beta_j$. However, the local false sign rate (lfsr) and
+related quantities are unaffected by this because the standardized effect is positive if and only if the effect is positive.
+
+Now we compare the EE vs ET models:
+```{r}
+  ashEE.res$loglik-ashET.res$loglik
+```
+
+Then the log likelihood ratio is loglikEE-loglikET=`r ashEE.res$loglik-ashET.res$loglik`. This highly negative
+loglikelihood indicate that the data strongly favor 
+the ET model, which is expected because the data were generated under this model.
+(One might be tempted to ask whether the log likelihood ratio is ``significant". We don't 
+know how to address this question, but suggest in practice it doesn't matter: if the loglikelihood ratio is positive then use EE, if it is negative then use ET.)
+
+The above illustrates these ideas on simulations from the ET model. For comparison,
+we now provide results for simulations under the EE model.
+```{r}
+  set.seed(1234)
+  nsamp=1000
+  betahat.se = rgamma(nsamp,1,1)
+  beta = rnorm(nsamp) #simulate effects under the original assumption 
+  betahat = rnorm(nsamp,beta,betahat.se)
+  zscore = betahat/betahat.se
+  pval = pchisq(zscore^2,df=1,lower.tail=FALSE)
+  ashEE.res = ash(betahat, betahat.se,method="fdr",model="EE")
+  ashET.res = ash(betahat, betahat.se, method="fdr",model="ET")
+  ashEE.res$loglik-ashET.res$loglik
+```
+So here the log likelihood ratio is positive, indicating that the EE model is preferred
+(which is expected since the data were generated under that model).
+
+
