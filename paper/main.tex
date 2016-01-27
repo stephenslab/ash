@@ -411,7 +411,7 @@ Here we slightly modify this usual procedure: instead of obtaining $\hat\pi$ by 
 likelihood [see (\ref{eqn:penalty})], where the penalty encourages $\hat\pi_0$ to be as big as possible whilst remaining consistent with the observed data. 
 We introduce this penalty because in FDR applications it is considered desirable to avoid underestimating $\pi_0$ so as to avoid underestimating the FDR. 
 
-Our {\tt R} package implementation typically takes about $~20$ seconds on a modern laptop for $p=100,000$, and scales linearly with $J$. 
+Our {\tt R} package implementation typically takes about $20$ seconds on a modern laptop for $p=100,000$, and scales linearly with $J$. 
 
 \subsection*{The local False Discovery Rate and local False Sign Rate}
 
@@ -690,11 +690,11 @@ which, although we view as generally unrealistic, we include to assess robustnes
 \caption{Comparison of true and estimated values of $\pi_0$. When the UA holds all methods yield conservative (over-)estimates for $\pi_0$, with \ashr being least conservative, and hence most accurate. When the UA does not hold (``bimodal" scenario) the \ashr estimates are slightly anti-conservative.} \label{fig:pi0sims}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfdr-1.pdf} 
+\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfdr-1.png} 
 \caption{Comparison of true and estimated $\lfdr$ from \ashr (ash.n). Black line is $y=x$ and red line is $y=2x$. Estimates of $\lfdr$ are conservative when UA holds, due to conservative estimates of $\pi_0$.} \label{fig:lfdr}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfsr-1.pdf} 
+\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfsr-1.png} 
 \caption{As in c), but for $\lfsr$ instead of $\lfdr$. Estimates of $\lfsr$ are consistently less conservative than $\lfdr$ when UA holds, and also less anti-conservative in bimodal scenario.}  \label{fig:lfsr}
 \end{subfigure}
 \end{center}
@@ -776,7 +776,7 @@ and so inferences are more robust to, say, the inevitable mis-estimation of $\pi
 To provide some intuition, consider an observation with a $z$ score of 0. The $\lfdr$ of this observation can range from 0 (if $\pi_0=0$)
 to 1 (if $\pi_0=1$). But, assuming a symmetric $g$, the $\lfsr>0.5$ whatever the value of $\pi_0$, because the observation $z=0$ says
 nothing about the sign of the effect.
-Thus, are two reasons to use the $\lfsr$ instead of the $\lfdr$: it answers a question that is more generally meaningful (e.g. it applies
+Thus, there are two reasons to use the $\lfsr$ instead of the $\lfdr$: it answers a question that is more generally meaningful (e.g. it applies
 whether or not zero effects truly exist),  and estimation of $\lfsr$ is more robust. 
  
 Given that we argue for using $\lfsr$ rather than $\lfdr$, one might ask whether we even need a point mass on zero in our analysis.
@@ -1480,11 +1480,11 @@ a larger or denser grid. For a specific data set one can of course check this by
 \begin{figure}
 \begin{center}
 \begin{subfigure}{\textwidth}
-\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfsr_s_nn-1.pdf} 
+\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfsr_s_nn-1.png} 
 \caption{Comparison of true and estimated $\lfsr$ when data are simulated with no point mass at zero ($\pi_0=0$), and also analyzed by \ashr with no point mass on 0 (and mixture of normal components for $g$). Black line is $y=x$ and red line is $y=2x$. The results illustrate how estimates of $\lfsr$ can be more accurate in this case. That is, assuming there is no point mass can be beneficial if that is indeed true.}  \label{fig:lfsr-nn}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
-\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfsr_s-1.pdf} 
+\includegraphics[width=\textwidth]{../analysis/figure/plot_lfsr.Rmd/plot_lfsr_s-1.png} 
 \caption{Comparison of true and estimated $\lfsr$ when data are simulated with point mass at zero (drawn uniformly from [0,1] in each simulation), but analyzed by \ashr with no point mass on 0 (and mixture of normal components for $g$). Black line is $y=x$ and red line is $y=2x$. The results illustrate how estimates of $\lfsr$ can be anti-conservative if we assume there is no point mass when the truth is that there is a point mass.} \label{fig:lfsr-s}
 \end{subfigure}
 \end{center}
