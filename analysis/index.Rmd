@@ -30,6 +30,7 @@ title: "Home"
 
 ## Optimization method: EM vs Interior Point
 *  [Compare loglik achieved by EM vs Interior Point](checkIP.html)
+*  [Compare speed of EM vs Interior Point](IPvsEM.html)
 
 ## DSC Znull (assess behaviour of ash LR under null)
 
