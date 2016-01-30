@@ -318,7 +318,7 @@ For the likelihood $p(\bhat | \beta, \shat)$ we assume
 \begin{equation} \label{eqn:normlik}
 p(\bhat | \beta, \shat) = \prod_j N(\bhat_j; \beta_j, \shat_j^2).
 \end{equation}
-Here, in additional to some conditional independence assumptions, we are 
+Here, in addition to some conditional independence assumptions, we are 
 effectively  assuming that the number of observations used to compute $\bhat_j,\shat_j$ are sufficiently large to justify a normal approximation.
 
 This simple model features both the key ideas we want to emphasize in this paper: the UA is encapsulated in (\ref{eqn:mixnorm}) while
@@ -490,7 +490,7 @@ our work here seems most naturally compared with the EB methods of \cite{efron20
 There are two key differences between our approach and all of these three existing methods. First, 
 whereas these existing methods summarize the information on $\beta_j$ by a single number -- either a $z$ score (\locfdr and \mixfdr), or a $p$ value (\qvalue) -- 
 we instead work with two numbers ($\bhat_j,\shat_j$). Here we are building on \cite{wakefield:2009}, who develops Bayesian tests 
-for individual null hypotheses using these two numbers, using the normal approximation \ref{eqn:normlik}; see also \cite{efron1993bayes}.
+for individual null hypotheses using these two numbers, using the normal approximation (\ref{eqn:normlik}); see also \cite{efron1993bayes}.
 Using two numbers instead of one clearly has the potential to be more informative, and indeed, results later (Figure \ref{fig:goodpoor}) illustrate 
 how it can improve performance by taking better account of variation in measurement precision among observations.
 %(And in the special case where $\shat_j$ are equal for all $j$, our approach essentially comes down to the same thing as these existing methods.)
@@ -868,30 +868,30 @@ under-estimating $\pi_0$ (Figure \ref{fig:egcdf}c).
 %of the estimate of the distribution $g(\cdot)$. 
  
  %quote from efron rejoinder , p46:
-%Morris’ Section 3 is especially pertinent. His formula
+%Morris√ï Section 3 is especially pertinent. His formula
 %for p(?|z) is related to my discussion of the
-%Benjamini–Yekutieli False Coverage Rate method in
-%Section 7, particularly (7.2)–(7.4). Originally I had
+%Benjamini√êYekutieli False Coverage Rate method in
+%Section 7, particularly (7.2)√ê(7.4). Originally I had
 %hoped to develop an empirical Bayes method for estimating
 %such models, but the effort foundered on practical
 %difficulties involving the perils of deconvolution.
-%Section 6 on the “one-group model” is the ugly duckling
+%Section 6 on the √íone-group model√ì is the ugly duckling
 %of the current paper, but it bears on some important
 %points raised in the discussion. Figure 7 concerns
 %a fuzzy version of simultaneous hypothesis testing,
-%where, as in Morris’ hospital example, the usual singlepoint
+%where, as in Morris√ï hospital example, the usual singlepoint
 %null hypotheses seem unequal to the task. The
 %development from (6.6) onwards, particularly (6.12),
 %bears on the possibility of nonnormal null distributions,
 %and is about as far as I can go in answering Professors
-%Rice and Spiegelhalter’s penultimate question.
+%Rice and Spiegelhalter√ïs penultimate question.
 %With g(?) a normal distribution, model (6.1) returns
 %us to the realm of Stein estimation, the scene of my
 %happy collaborations with Carl Morris. I continue to
 %be surprised at how much harder bumpy, nonnormal
-%models like (7.1) are to deal with. James–Stein estimation
+%models like (7.1) are to deal with. James√êStein estimation
 %works fine with, say, N = 10 component problems,
-%while the Robbins’ form of empirical Bayes appropriate
+%while the Robbins√ï form of empirical Bayes appropriate
 %to (7.1) seems to require hundreds or thousands.
 %The information calculations in Efron (2008)
 %reinforce this gloomy assessment. Maybe I am trying
@@ -1321,7 +1321,7 @@ assuming that the $t_j =\beta_j/ \shat_j$ have a common distribution. This case 
 it effectively corresponds to the ``$p$ value prior" in \cite{wakefield:2009} and is, implicitly, 
 the assumption made by existing FDR methods that rank tests by their $p$ values (or $z$ or $t$ scores). See Results for further discussion.
  
-The model \ref{eqn:beta-alpha} for general $\alpha$ can be fitted using the algorithm for $\alpha=0$. 
+The model (\ref{eqn:beta-alpha}) for general $\alpha$ can be fitted using the algorithm for $\alpha=0$. 
 To see this, define $b_j:= \beta_j/ \shat_j^\alpha$, and $\hat{b} := \bhat_j/\shat_j^\alpha$. Then $\hat{b}_j$ is an estimate of $b_j$ with
  standard error $\shat'_j:=\shat_j^{1-\alpha}$. 
  Applying the algorithm for $\alpha=0$ to effect estimates $\hat{b}_1,\dots,\hat{b}_J$ with standard errors $\shat'_1,\dots,\shat'_J$
