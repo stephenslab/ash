@@ -472,7 +472,7 @@ And, we can define the ``$s$-value"
 s_j := \widehat \FSR(\{k: \lfsr_k \leq \lfsr_j\}) 
 \end{equation}
 as a measure of significance analogous to Storey's $q$-value \cite{storey.03}.
-(Replacing $\lfsr_j$ with $\lfdr_j$ in these definitions gives estimates for the usual $\FDR(\Gamma)$, and a $q$ value for each observation respectively.)
+(Replacing $\lfsr_j$ with $\lfdr_j$ in these definitions gives an estimate for the usual $\FDR(\Gamma)$, and an estimated $q$ value for each observation respectively.)
 
 %Because our methods involve explicitly modelling effects $\beta_j$, rather than 
 %$p$ values or $z$ scores, they can provide estimates of the local false sign rates.
@@ -648,8 +648,8 @@ We illustrate the effects of the UA, and the difference with existing methods, u
  with the true effects $\beta_j \sim N(0,1)$ (so with $s_j=1$, $\bhat_j  \sim N(0,2)$). Note that none of the effects are truly null,
 but nonetheless there are many $p$ values near 1 and $z$ scores near 0 (Figure \ref{fig:ZA}).  We used each of the methods
 \qvalue, \locfdr, \mixfdr and \ashr to decompose the $z$ scores ($z_j = \bhat_j$), or their corresponding $p$ values, into null and alternative components.
-(Here we are using the fact that these methods all provide an estimate of the \lfdr{} for each observation, which
-implies such a decomposition;  specifically the average \lfdr{} within each histogram bin estimates the fraction of observations in that bin that come from the null vs the alternative component.) The results (Figure \ref{fig:ZA}) illustrate a clear difference between the existing methods and our method:
+Here we are using the fact that these methods all provide an estimate of the \lfdr{} for each observation, which
+implies such a decomposition;  specifically the average \lfdr{} within each histogram bin estimates the fraction of observations in that bin that come from the null vs the alternative component. The results (Figure \ref{fig:ZA}) illustrate a clear difference between the existing methods and our method:
 all the existing methods have a ``hole"  in the alternative $z$ score distribution near 0, whereas \ashr, due to the UA, has a mode near 0.
 %Although \mixfdr does not formally make the \sZA, its decomposition
 %exhibits a similar hole. 
@@ -1565,7 +1565,7 @@ bimodal & $0.5 N(-2,1^2) + 0.5 N(2,1^2)$ \\ \bottomrule
 % Do NOT remove this, even if you are not including acknowledgments
 \section*{Acknowledgements}
 
-I thank J.~Lafferty for pointing out the convexity of the likelihood function, which lead to our improved implementation with interior point methods. 
+I thank J.~Lafferty for pointing out the convexity of the likelihood function, which lead to an improved implementation with interior point methods. 
 Statistical analyses were conducted in the {\sf R} programming language \cite{Rcore:2012}, Figures produced using the {\tt ggplot2} package \cite{ggplot2}, and text
 prepared using \LaTeX. Development of the methods in this paper was greatly enhanced by the use of the {\tt knitr} package \cite{xie2013dynamic}  within the RStudio GUI, and 
 git and github. The {\tt ashr} R package is available from \href{http://github.com/stephens999/ashr}{http://github.com/stephens999/ashr} and includes contributions 
