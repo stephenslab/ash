@@ -36,3 +36,6 @@ title: "Home"
 
 * [Summarize results of null simulations](summarize_dsc_znull.html)
 
+## Check how estimating the mode performs
+
+* [Basic check of non-zero model option](estimate_mode.html)
