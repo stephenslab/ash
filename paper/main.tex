@@ -201,8 +201,10 @@ existing widely-used FDR pipelines) and can substantially affect
 inference. The first idea is to {\it assume that the distribution of effects is unimodal}.  We provide a very simple, fast, and stable computer 
 implementation for perfoming EB inference under this assumption, and illustrate how it can improve inference of FDR when the unimodal assumption is correct.  
 The second idea is to use two numbers -- effect sizes, and their standard errors -- rather than just one -- $p$ values, or $z$ scores -- 
-to summarize each measurement. This idea allows variations in measurement precision to be better accounted for,
- and avoids a problem with standard pipelines that poor-precision measurements can inflate estimated FDR.
+to summarize each measurement. Here we use this idea to allow variation in measurement precision to be better accounted for,
+ avoiding a problem with standard pipelines that poor-precision measurements can inflate estimated FDR.
+(\cite{ploner2006multidimensional} also suggest using more than one number in FDR analyses, taking a
+rather different approach to the one we use here.)
 
 In addition to these two new ideas, we highlight a third idea that is old, but which remains under-used in practice:
 the idea that it may be preferable to focus on estimation rather than on testing.
@@ -221,11 +223,12 @@ the $\lfsr$ and $\lfdr$ can be quite different, and emphasize benefits of the $\
 
 %The methods we provide here can address both problems, and we provide results that highlight important benefits of focussing on estimation, and particularly on assessing the correctness of the {\it sign} of the estimated effects, rather than on testing for non-zero effects.
 
-Although we have focussed here on applications to FDR, the idea of performing Empirical Bayes inference by flexibly esimating an underlying unimodal prior distribution
+Although we have focussed here on applications to FDR, the idea of performing EB inference by flexibly esimating an underlying unimodal prior distribution
 could be useful more generally - for example in shrinkage estimation contexts such as wavelet denoising \cite{donoho:1995}. 
 Importantly, our work demonstrates that EB inference under a general unimodal assumption is, if anything, computationally simpler  
 than commonly-used more restrictive assumptions -- such as a spike and slab or Laplace prior distribution \cite{johnstone2004needles} --  as well as being more flexible.
-Our methods are implemented in an R package, \ashr (for {\bf a}daptive {\bf sh}rinkage in {\bf R}), available at \href{http://github.com/stephens999/ashr}{http://github.com/stephens999/ashr}.
+Our methods are implemented in an R package, \ashr (for {\bf a}daptive {\bf sh}rinkage in {\bf R}), available at 
+\href{http://github.com/stephens999/ashr}{http://github.com/stephens999/ashr}.
 (The name comes from the fact that our EB approach using a unimodal prior naturally results in shrinkage estimation,
 and the shrinkage is adaptive to both the amount of signal in the data and the measurement precision of each observation.) 
 Code and instructions for reproducing analyses and figures in this paper are at
@@ -286,10 +289,10 @@ Code and instructions for reproducing analyses and figures in this paper are at
 %mean expression level between the two conditions, often referred to as the ``log-fold change". 
 Here we describe the simplest version of the method, and briefly discuss embellishments we have also implemented.
 
-Suppose that we are interested in the values of $J$ ``effects" $\beta=(\beta_1,\dots,\beta_J)$. For example, in a typical genomics application
-that aims to identify differentially expressed genes,  $\beta_j$ might be the difference in the mean (log) expression of gene $j$ in two conditions.
+Let $\beta=(\beta_1,\dots,\beta_J)$ denote $J$ ``effects" of interest. For example, in a genomics application 
+$\beta_j$ might be the difference in the mean (log) expression of gene $j$ in two conditions.
 In contexts where FDR methods are applied, interest often focuses on identifying ``significant" non-zero effects;
-that is, in testing the null hypotheses $H_j:\beta_j=0$.  Here we tackle both this problem, and the  
+that is, testing the null hypotheses $H_j:\beta_j=0$.  Here we tackle both this problem, and the  
 more general problem of estimating, and assessing uncertainty in, $\beta_j$.
  
 Assume that the available data are estimates $\bhat=(\bhat_1,\dots,\bhat_J)$ of the effects,
@@ -307,37 +310,37 @@ a mixture of a point mass at 0 and a mixture of {\it zero-mean} normal distribut
 p(\beta | \shat, \pi) & = \prod_j g(\beta_j; \pi), \\   
 g(\cdot; \pi) & = \pi_0 \delta_0(\cdot) + \sum_{k=1}^K \pi_k N(\cdot; 0, \sigma_k^2), \label{eqn:mixnorm}
 \end{align}
-where $N(\cdot; \mu, \sigma^2)$ denotes the density of the normal distribution with mean $\mu$ and variance $\sigma^2$.
+where $\delta_0(\cdot)$ denotes a point mass on 0, and $N(\cdot; \mu, \sigma^2)$ denotes the density of the normal distribution with mean $\mu$ and variance $\sigma^2$.
 Here the mixture proportions $\pi=(\pi_0,\dots,\pi_K)$ are hyper-parameters, which are non-negative and sum to one, and are to be estimated,
 while the mixture component standard deviations $\sigma_1,\dots,\sigma_K$ 
 represent a large and dense grid of {\it fixed} positive numbers spanning a range from very small to very big (so $K$ is fixed and large). 
-(We encourage the reader to think of this grid as becoming infinitely large and dense, as a non-parametric limit,
-although of course in practice we use a finite grid -- see Implementation Details.)
+We encourage the reader to think of this grid as becoming infinitely large and dense, as a non-parametric limit,
+although of course in practice we use a finite grid -- see Implementation Details.
 
-For the likelihood $p(\bhat | \beta, \shat)$ we assume  
+For the likelihood $p(\bhat | \beta, \shat)$ we assume a normal approximation:
 \begin{equation} \label{eqn:normlik}
 p(\bhat | \beta, \shat) = \prod_j N(\bhat_j; \beta_j, \shat_j^2).
 \end{equation}
-Here, in addition to some conditional independence assumptions, we are 
-effectively  assuming that the number of observations used to compute $\bhat_j,\shat_j$ are sufficiently large to justify a normal approximation.
+%Here, in addition to some conditional independence assumptions, we are 
+%effectively  assuming that the number of observations used to compute $\bhat_j,\shat_j$ are sufficiently large to justify a normal approximation.
 
 This simple model features both the key ideas we want to emphasize in this paper: the UA is encapsulated in (\ref{eqn:mixnorm}) while
 the different measurement precision of different observations is encapsulated in the likelihood (\ref{eqn:normlik}) -- specifically, observations
 with larger standard error will have a flatter likelihood, and therefore have less impact on inference.
-However, this simple model also has several additional assumptions that can be relaxed. Specifically,
+However, the model also has several additional assumptions that can be relaxed. Specifically,
 \begin{enumerate}
 \item  The use of a mixture of zero-mean normals (\ref{eqn:mixnorm}) implies that $g$ is symmetric about 0.
-More flexibility can be obtained by replacing the mixture of normals with mixtures of uniforms [see equation (\ref{eqn:g-general})]; indeed this 
+More flexibility can be obtained using mixtures of uniforms [see equation (\ref{eqn:g-general})]; indeed this 
 can allow $g$ to approximate {\it any} unimodal distribution. 
 \item The model (\ref{eqn:beta}) assumes that the effects are identically distributed, independent of their standard errors $\shat$.
-We can relax this to allow for a relationship between these quantities [see (\ref{eqn:beta-alpha})].
-\item The likelihood (\ref{eqn:normlik}) effectively assumes that the number of observations used to compute $\bhat_j,\shat_j$ are sufficiently large to justify a normal approximation. We can generalize this likelihood using a $t$ likelihood [see (\ref{eqn:tlik})].
+This can be relaxed [see (\ref{eqn:beta-alpha})].
+\item The normal likelihood (\ref{eqn:normlik}) can be generalized to a $t$ likelihood [see (\ref{eqn:tlik})].
 \end{enumerate}
 These embellishments are detailed in Detailed Methods.
-Of course there remain limitations that are harder to relax, most notably the independence and conditional independence assumptions encapsulated in our model
-(which are also made by most existing EB approaches to this problem). Correlations among tests certainly arise in practice, either due to genuine correlations
-in the system of study, or due to unmeasured confounders, and their potential to impact results of an FDR analysis is important to consider
-whatever analysis methods are used: see \cite{efron2007correlation,leek:2007} for relevant discussion.
+Of course there remain limitations that are harder to relax, most notably the independence and conditional independence assumptions
+(which are also made by most existing approaches). Correlations among tests certainly arise in practice, either due to genuine correlations 
+or due to unmeasured confounders, and their potential impact on estimated FDRs is important to consider
+whatever analysis methods are used \cite{efron2007correlation,leek:2007}.
 
 %We assume that the observations $\bhat$ are conditionally independent given $\beta,\shat$, and that the distribution of
 %$\bhat_j$ depends only on the corresponding $\beta_j,\shat_j$, so
@@ -389,9 +392,7 @@ whatever analysis methods are used: see \cite{efron2007correlation,leek:2007} fo
 
 \subsection*{Fitting the model}
  
-In words, the model above assumes that the effects $\beta_j$ are independent and identically distributed from a mixture of zero-centered normal distributions, and 
-each observation $\bhat_j$ is a noisy measurement of $\beta_j$ with standard error $\shat_j$.
-Together, these assumptions imply that the observations $\bhat_j$ are also independent observations, each from a mixture of normal distributions:
+Together, (\ref{eqn:beta})-(\ref{eqn:normlik}) imply that $\bhat_j$ are independent observations from a mixture of normal distributions:
 \begin{equation} \label{eqn:marginallik}
 p(\bhat | \shat, \pi) =   \prod_j  \left[\sum_{k=0}^K \pi_k N(\bhat_j; 0, \sigma_k^2 + \shat_j^2) \right],
 \end{equation}
@@ -403,7 +404,8 @@ The usual EB approach to fitting this model would involve two simple steps:
 \item Compute quantities of interest from the conditional distributions $p(\beta_j | \bhat, \shat, \hat{\pi})$. For example, the evidence
 against the null hypothesis $\beta_j=0$ can be summarized by $p(\beta_j \neq 0 | \bhat, \shat,\hat{\pi})$.
 \end{enumerate}
-Both steps 1 and 2 are very straightforward. Step 1 is a convex optimization problem, and can be solved quickly and reliably using interior point methods \cite{boyd2004convex,koenker2013convex}. (Alternatively a simple EM algorithm can be used, and we found this to perform adequately for moderate-sized problems, say $J<2000$). And the conditional distributions $p(\beta_j | \bhat_j, \shat_j,\hat{\pi})$ in Step 2 are analytically available, each a mixture of a point mass on zero and $K$ normal distributions.
+Both steps 1 and 2 are very straightforward. Step 1 is a convex optimization problem, and can be solved quickly and reliably using interior point methods \cite{boyd2004convex,koenker2013convex}. (Alternatively a simple EM algorithm can also work well, particularly for modest $J$, say $J<2000$). 
+And the conditional distributions $p(\beta_j | \bhat_j, \shat_j,\hat{\pi})$ in Step 2 are analytically available, each a mixture of a point mass on zero and $K$ normal distributions.
 (The simplicity of step 1 is due to our use of a fixed grid for $\sigma_k$ in (\ref{eqn:mixnorm}), instead of estimating $\sigma_k$,
 which may seem more natural but is not straightforward when $\shat_j$ varies among $j$. This simple device may be useful in other applications.)
 
@@ -411,7 +413,8 @@ Here we slightly modify this usual procedure: instead of obtaining $\hat\pi$ by 
 likelihood [see (\ref{eqn:penalty})], where the penalty encourages $\hat\pi_0$ to be as big as possible whilst remaining consistent with the observed data. 
 We introduce this penalty because in FDR applications it is considered desirable to avoid underestimating $\pi_0$ so as to avoid underestimating the FDR. 
 
-Our {\tt R} package implementation typically takes about $20$ seconds on a modern laptop for $p=100,000$, and scales linearly with $J$. 
+Our {\tt R} package implementation typically takes $~20s$ on a modern laptop for $J=100,000$, and scales linearly with $J$. 
+
 
 \subsection*{The local False Discovery Rate and local False Sign Rate}
 
@@ -424,8 +427,7 @@ In other words it is the posterior probability that $\beta_j$ is actually zero:
 \fdr_j := \Pr(\beta_j =0  |  \bhat, \shat, \hat{\pi}).
 \end{equation}
 
-
-The $\lfdr$, like most other measures of significance (e.g. $p$ values and $q$ values), is rooted in the hypothesis testing paradigm which focuses on 
+The $\lfdr$, like most other measures of significance, is rooted in the hypothesis testing paradigm which focuses on 
 whether or not an effect is exactly zero. This paradigm is popular, despite the fact that many statistical practitioners have argued that it is often inappropriate because
 the null hypothesis $H_j: \beta_j=0$ is often implausible. For example, Tukey \cite{tukey1991philosophy} argued that
 ``All we know about the world teaches us that the effects of $A$ and $B$ are always different -- in some decimal place -- for any $A$ and $B$. Thus asking `Are the effects different?' is foolish." Instead, Tukey (\cite{tukey1962future}, p32) suggested  that one should address
@@ -438,38 +440,40 @@ focussing on ``type S errors", meaning errors in sign, rather than the more trad
 Motivated by these suggestions, we define the ``local False Sign Rate" for effect $j$, $\lfsr_j$, to be the probability that we
 would make an error in the sign of effect $j$ if we were forced to declare it either positive or negative. Specifically,
 \begin{equation} \label{eqn:lfsr}
-\lfsr_j := \min[ p(\beta_j \geq 0| \hat\pi, \bhat, s), p(\beta_j \leq 0| \hat\pi, \bhat, s) ].
+\lfsr_j := \min[ \Pr(\beta_j \geq 0| \hat\pi, \bhat, s), \Pr(\beta_j \leq 0| \hat\pi, \bhat, s) ].
 \end{equation}
 To illustrate, suppose that 
 \begin{gather*}
-p(\beta_j < 0| \bhat, s, \hat\pi)=0.95, \\
-p(\beta_j =0| \bhat, s, \hat\pi) = 0.03, \\
-p(\beta_j >0| \bhat, s, \hat\pi) = 0.02.
+\Pr(\beta_j < 0| \bhat, s, \hat\pi)=0.95, \\
+\Pr(\beta_j =0| \bhat, s, \hat\pi) = 0.03, \\
+\Pr(\beta_j >0| \bhat, s, \hat\pi) = 0.02.
 \end{gather*} 
 Then 
 from (\ref{eqn:lfsr}) $\lfsr_j=\min(0.05,0.98)=0.05$ (and, from (\ref{eqn:fdr}), $\lfdr_j=0.03$). This $\lfsr$ corresponds to the fact that, given these results, 
-our best guess for the sign of $\beta_j$ is that it is negative, and the probability that this guess is wrong would be $0.05$. 
+we would guess that $\beta_j$ is negative, with probability $0.05$ of being wrong. 
 
-As our notation suggests, $\lfsr_j$ is intended to be compared and contrasted with $\lfdr_j$: whereas small values of $\lfdr_j$ indicate that we can be {\it confident that $\beta_j$ is non-zero}, 
+As our notation suggests, $\lfsr_j$ is analogous to $\lfdr_j$: whereas small values of $\lfdr_j$ indicate that we can be {\it confident that $\beta_j$ is non-zero}, 
 small values of $\lfsr_j$ indicate that we can be {\it confident in the sign of $\beta_j$}. 
 Of course, being confident in the sign of an effect logically implies that we are confident it is non-zero, and
 this is reflected in the fact that $\lfsr_j \geq \lfdr_j$ 
 (this follows from the definition because both the events $\beta_j \geq 0$
 and $\beta_j \leq 0$ in (\ref{eqn:lfsr}) include the event $\beta_j=0$).
 In this sense, as a measure of ``significance", $\lfsr$ is more conservative than $\lfdr$. More importantly, as we illustrate in Results,
-$\lfsr$ can be substantially more robust to modeling assumptions than $\lfdr$.
+$\lfsr$ is more robust to modeling assumptions.
 
 From these ``local" measures of significance, we can also compute average error rates over subsets of observations
-$\Gamma \subset \{1,\dots,J\}$. For example,   
-\begin{equation} \label{eqn:FDRhat}
-\widehat\FDR(\Gamma):= (1/|\Gamma|) \sum_{j \in \Gamma} \fdr_j. 
+$\Gamma \subset \{1,\dots,J\}$. For example, 
+\begin{equation} \label{eqn:FSRhat}
+\widehat\FSR(\Gamma):= (1/|\Gamma|) \sum_{j \in \Gamma} \lfsr_j 
 \end{equation}
-estimates the FDR we would obtain if we were to declare all tests in $\Gamma$ significant.
-And 
+is an estimate of the total proportion of errors made if we were to estimate the sign of all effects in $\Gamma$
+(an error measure analogous to the usual (tail) FDR).
+And, we can define the ``$s$-value" 
 \begin{equation} \label{eqn:qvalue}
-q_j := \widehat \FDR(\{k: \fdr_k \leq \fdr_j\}) 
+s_j := \widehat \FSR(\{k: \lfsr_k \leq \lfsr_j\}) 
 \end{equation}
-provides a measure of significance analogous to Storey's $q$ value \cite{storey.03}.
+as a measure of significance analogous to Storey's $q$-value \cite{storey.03}.
+(Replacing $\lfsr_j$ with $\lfdr_j$ in these definitions gives an estimate for the usual $\FDR(\Gamma)$, and an estimated $q$ value for each observation respectively.)
 
 %Because our methods involve explicitly modelling effects $\beta_j$, rather than 
 %$p$ values or $z$ scores, they can provide estimates of the local false sign rates.
@@ -490,45 +494,54 @@ our work here seems most naturally compared with the EB methods of \cite{efron20
 There are two key differences between our approach and all of these three existing methods. First, 
 whereas these existing methods summarize the information on $\beta_j$ by a single number -- either a $z$ score (\locfdr and \mixfdr), or a $p$ value (\qvalue) -- 
 we instead work with two numbers ($\bhat_j,\shat_j$). Here we are building on \cite{wakefield:2009}, who develops Bayesian tests 
-for individual null hypotheses using these two numbers, using the normal approximation (\ref{eqn:normlik}); see also \cite{efron1993bayes}.
-Using two numbers instead of one clearly has the potential to be more informative, and indeed, results later (Figure \ref{fig:goodpoor}) illustrate 
-how it can improve performance by taking better account of variation in measurement precision among observations.
+for individual null hypotheses in a similar way; see also \cite{efron1993bayes}.
+Using two numbers instead of one clearly has the potential to be more informative, and this is illustrated in Results later (Figure \ref{fig:goodpoor}).
+
 %(And in the special case where $\shat_j$ are equal for all $j$, our approach essentially comes down to the same thing as these existing methods.)
 % Or more generally Section xx illustrates the potential practical effects
 
 %allows for different modelling assumptions to be compared through likelihood comparisons.
-Second, our unimodal assumption (UA) that the effects are unimodal about zero is quite different from assumptions made by $\qvalue, \locfdr$ or $\mixfdr$.
-Indeed, $\locfdr$ assumes that all $z$ scores near 0 are null (Efron calls this the Zero Assumption; ZA), which implies that 
-under the alternative hypothesis the distribution of $z$ scores has {\it no mass at 0}; this contrasts strikingly with the UA, which implies that this distribution has its peak at 0! 
-Similarly, $\qvalue$ assumes that all $p$ values near 1 are null,
-which is the same as the ZA because $p$ values near 1 correspond to $z$ scores near 0. And although \mixfdr does not formally make the ZA,
-we have found that in practice, with default settings, the results often approximately satisfy the ZA (due, we believe, to the default choice of penalty term $\beta$ described in \cite{muralidharan2010empirical}). Thus, not only do these existing methods not make the UA, they actually make assumptions that are, in some sense, as different
-from the UA as they can be. 
+%\def\sZA{ZA}
+Second, our unimodal assumption (UA) that the effects are unimodal about zero, is an assumption 
+not made by existing methods, and one that we argue to be both plausible and beneficial in many contexts.
+Although the UA will not hold in all settings, it will often be reasonable, especially in FDR-related contexts
+that focus on rejecting the null hypotheses $\beta_j=0$. This is because if ``$\beta_j=0$" is a plausible null hypothesis
+then ``$\beta_j$ very near 0" should also be plausible. Further, it seems reasonable to expect that larger effects become
+decreasingly plausible, and so the distribution of the effects will be unimodal about 0. 
+To paraphrase Tukey, ``All we know about the world teaches us that large effects are rare, whereas small effects abound."
+We emphasize that the UA relates to the distribution of {\it all} effects, and not only the {\it detectable} effects (i.e.~those that are significantly different from zero). It is very likely that the distribution of {\it detectable} non-zero effects will be multimodal, with one mode for detectable positive effects and another for detectable negative effects, and the UA does not contradict this.
 
-Given that the UA and ZA are so different, it seems worth discussing why we generally favor the UA. 
-Although the UA will not apply to all situations, we believe that it will often be reasonable, especially in FDR-related contexts
-that have traditionally focussed on rejecting the null hypotheses $\beta_j=0$. This is because if ``$\beta_j=0$" is a plausible null hypothesis,  
-it seems reasonable to expect that ``$\beta_j$ very near 0" is also plausible. Further, it seems reasonable to expect that larger effects become
-decreasingly plausible, and so the distribution of the effects will be unimodal about 0. To paraphrase Tukey, ``All we know about the world teaches us that large effects are rare, whereas small effects abound."
-We emphasize that the UA relates to the distribution of {\it all} effects, and not only the {\it detectable} effects (i.e.~those that are significantly different from zero). It is very likely that the distribution of {\it detectable} non-zero effects will be multimodal, with one mode for detectable positive effects and another for detectable negative effects, and the UA does not contradict this. 
+% Indeed, neither $\locfdr$ nor $\qvalue$ explicitly model the effect distribution at all:  they effectively avoid this by simply subtracting a null distribution 
+%(of $z$ scores or $p$ values) from the observed empirical distribution, with the remains necessarily 
+%representing the alternative distribution. When doing this they assume that all the $z$ scores near zero (or, equivalently,
+%all $p$ values near 1) are null, which results in a ``hole" in the alternative distribution
 
+%Indeed, $\locfdr$ \cite{efron2008microarrays} assumes that all $z$ scores near 0 are null 
+%(which we call the Zero Assumption, \sZA), which implies that 
+%under the alternative hypothesis the distribution of $z$ scores has {\it no support at 0}.  
+%(Although \cite{efron2008microarrays} motivates and defines the \sZA as ``most $z$ scores near 0 are null",
+%results from $\locfdr$ actually obey the stronger version of the \sZA  that we use here: {\it all} $z$ scores near 0 are null.)
+%Similarly, $\qvalue$ assumes -- when estimating $\pi_0$ -- that all $p$ values near 1 are null.
+%which, if the $p$ values were derived from $z$ scores, is the ZA because $p$ values near 1 correspond to $z$ scores near 0.
+%And although \mixfdr does not formally make the \sZA,
+%we have found that in practice, with default settings, the results often approximately satisfy this assumption (due, we believe, to the default choice of penalty term $\beta$ described in \cite{muralidharan2010empirical}).
 %Tukey "peri-null"
 
 %Interestingly, although the unimodal assumption seems natural, much previous related work on estimating False Discovery Rates  
 %has assumed, either explicitly or implicitly, that the distribution of effects is multimodal - see Figure \ref{fig:ZA}. 
 
-In further support of the UA for FDR applications, we note that almost all analogous work in sparse regression models make the UA for the regression coefficients -- 
-common choices of uni-modal distribution being the spike and slab, Laplace, $t$, normal-gamma, normal-inverse-gamma, or horseshoe priors \cite{carvalho2010horseshoe}.
-These are all less flexible than the approach we take here, which provides for general uni-modal distributions, and 
+In further support of the UA, note that large-scale regression methods almost always make the UA for the regression coefficients,
+which are analogous to the ``effects" we estimate here. 
+Common choices of uni-modal distribution for regression coefficients 
+include the spike and slab, Laplace, $t$, normal-gamma, normal-inverse-gamma, or horseshoe priors \cite{carvalho2010horseshoe}.
+These are all less flexible than our approach, which provides for general uni-modal distributions, and 
 it may be fruitful to apply our methods to the regression context; indeed see \cite{moser:2015} for work in this vein. 
-The UA assumption on regression coefficients is directly analagous to our UA here, and so its
-widespread use in the regression context supports its use here. 
-
-Alternatively, we could motivate the UA by its effect on point estimates, which is to ``shrink" the estimates towards the mode - 
+Additionally, the UA can be motivated by its effect on point estimates, which is to ``shrink" the estimates towards the mode - 
 such shrinkage is desirable from several standpoints for improving estimation accuracy. Indeed most model-based approaches to shrinkage
 make parametric assumptions that obey the UA (e.g. \cite{johnstone2004needles}).
 
-Finally, the UA also has a considerable practical benefit: it yields simple algorithms that are both computationally
+Besides its plausibility, the UA has two important practical benefits: it facilitates more accurate estimates
+of FDR-related quantities, and it yields simple algorithms that are both computationally
 and statistically stable (see Results).
 
 \subsubsection*{Other work}
@@ -537,14 +550,14 @@ There is also a very considerable literature that does not directly focus on the
  Among these, a paper about deconvolution \cite{cordy1997deconvolution} is most similar, methodologically, to our work here:
 indeed, this paper includes all the elements of our approach outlined above, except for the point mass on 0 and corresponding penalty term.
 This said, the focus is very different: \cite{cordy1997deconvolution} focuses entirely on estimating $g$, whereas our primary focus is on estimating $\beta_j$.
-Also, they provide no software implementation.  More generally, the related literature is too large to review comprehensively, but relevant key-words include ``empirical bayes", ``shrinkage", ``deconvolution", ``semi-parametric", ``shape-constrained", and ``heteroskedastic". Some pointers to recent papers in which other relevant
+Also, they provide no software implementation.  
+
+More generally, the related literature is too large to review comprehensively, but relevant key-words include ``empirical bayes", ``shrinkage", ``deconvolution", ``semi-parametric", ``shape-constrained", and ``heteroskedastic". Some pointers to recent papers in which other relevant
 citations can be found include \cite{xie2012sure, sarkar:2014, koenker2014convex}. Much of the literature focusses on the homoskedastic case (i.e. $\shat_j$ all equal) whereas we allow for heteroskedasticity. And much of the recent shrinkage-oriented literature focuses only on point estimation of $\beta_j$, whereas for FDR-related applications measures of uncertainty are essential. Several recent papers consider more flexible non-parametric assumptions on 
 $g$ than the UA assumption we make here. In particular, \cite{jiang2009general,koenker2014convex} consider the unconstrained non-parametric maximum likelihood
 estimate (NPMLE) for $g$. These methods may provide alternatives to our approach in settings where the UA assumption is considered too restrictive. However, the  NPMLE for $g$ is a discrete distribution, which will induce a discrete posterior distribution on $\beta_j$, and so although the NPMLE
 may perform well for point estimation, it may not adequately reflect uncertainty in $\beta_j$, and some regularization on $g$ may be necessary.
 Indeed, one way of thinking about the UA is as a way to regularize $g$.
-
-
 
 
 %The conditional distributions $p(\beta_j | \bhat, \shat, \hat{\pi})$ 
@@ -609,45 +622,61 @@ to \locfdr using {\tt nulltype=0} and to \mixfdr using {\tt theonull=TRUE}. Othe
 
 \subsection*{Effects of the Unimodal Assumption}
 
-Here we consider the effects of making the UA. To isolate these effects we consider the simplest case, where every observation has the same
+Here we consider the effects of making the UA. 
+To isolate these effects we consider the simplest case, where every observation has the same
 standard error, $s_j=1$ and all methods are provided that information. That is,
-$\bhat_j | \beta_j \sim N(\beta_j,1)$ and $\shat_j=s_j=1$. In this case the $z$ scores $z_j:=\bhat_j/\shat_j=\bhat_j$, so modelling the $z$ scores is the same as modelling the $\bhat_j$, and so the only difference between our method and methods like $\locfdr$ and $\mixfdr$ are in how they estimate $g$.
+$\bhat_j | \beta_j \sim N(\beta_j,1)$ and $\shat_j=s_j=1$. In this case the $z$ scores $z_j:=\bhat_j/\shat_j=\bhat_j$, so modelling the $z$ scores is the same as modelling the $\bhat_j$, and so the primary difference among methods lies in how they estimate $g$.
 
 To briefly summarize the results in this section:
 \begin{enumerate}
-\item The UA can produce very different inferences compared with the ZA made by existing methods.
+\item The UA can produce quite different results from existing methods.
 \item The UA can yield conservative estimates of the proportion of true nulls, $\pi_0$, and hence conservative estimates of $\lfdr$ and $\FDR$.
 \item The UA results in a stable procedure, both numerically and statistically, and is somewhat robust to deviations from unimodality.
 \end{enumerate}
 
-\subsubsection*{The UA and ZA can produce different inferences}
+\subsubsection*{The UA can produce quite different results from existing methods.}
 
 \begin{figure}
 \center \includegraphics[height=6in]{../analysis/figure/makefig_FDReg.Rmd/decomp_ZA-1.pdf}
 \caption{Illustration that the unimodal assumption (UA) in \ashr can produce very different results from existing methods.
-The figure shows, for a single simulated dataset, the ways different methods decompose $p$ values (left) and $z$ scores (right) into a null component (dark blue) and an alternative component (cyan). In the $z$ score space the alternative distribution is placed on the bottom to highlight the differences in its shape among methods.
-The three existing methods (\qvalue, \locfdr, \mixfdr) all effectively make the Zero Assumption, which results in a ``hole" in the alternative $z$ score distribution around 0.
+The figure shows, for a single simulated dataset, the way different methods decompose $p$ values (left) and $z$ scores (right) into a null component (dark blue) and an alternative component (cyan). In the $z$ score space the alternative distribution is placed on the bottom to highlight the differences in its shape among methods.
+The three existing methods (\qvalue, \locfdr, \mixfdr) all produce a ``hole" in the alternative $z$ score distribution around 0.
 In contrast the method introduced here (\ashr) makes the Unimodal Assumption -- that the effect sizes, and thus the $z$ scores, have a unimodal distribution about 0 -- which yields a very different decomposition. (In this case the \ashr decomposition is closer to the truth: the data were simulated under a model where all of the effects are non-zero, so the ``true" decomposition would make everything cyan.)} \label{fig:ZA}
 \end{figure}
 
-To illustrate the different inferences from the UA and ZA we show results for a single
-dataset simulated with the true effects $\beta_j \sim N(0,1)$ (so with $s_j=1$, $\bhat_j  \sim N(0,2)$). Note that none of the effects are truly null,
+
+We illustrate the effects of the UA, and the difference with existing methods, using a simple simulated dataset
+ with the true effects $\beta_j \sim N(0,1)$ (so with $s_j=1$, $\bhat_j  \sim N(0,2)$). Note that none of the effects are truly null,
 but nonetheless there are many $p$ values near 1 and $z$ scores near 0 (Figure \ref{fig:ZA}).  We used each of the methods
 \qvalue, \locfdr, \mixfdr and \ashr to decompose the $z$ scores ($z_j = \bhat_j$), or their corresponding $p$ values, into null and alternative components.
-The results (Figure \ref{fig:ZA}) illustrate the clear difference between the existing methods and our method. The effects of the ZA made by \qvalue and \locfdr
-are visually clear, producing a ``hole"  in the alternative $z$ score distribution around 0. Although \mixfdr does not formally make the ZA, its decomposition
-exhibits a similar hole. In contrast, due to the UA, the alternative $z$ score distribution for \ashr is required to have a mode at 0, 
-effectively ``filling in" the hole.  (Of course the null distribution also has a peak at 0, and the local fdr 
+Here we are using the fact that these methods all provide an estimate of the \lfdr{} for each observation, which
+implies such a decomposition;  specifically the average \lfdr{} within each histogram bin estimates the fraction of observations in that bin that come from the null vs the alternative component. The results (Figure \ref{fig:ZA}) illustrate a clear difference between the existing methods and our method:
+all the existing methods have a ``hole"  in the alternative $z$ score distribution near 0, whereas \ashr, due to the UA, has a mode near 0.
+%Although \mixfdr does not formally make the \sZA, its decomposition
+%exhibits a similar hole. 
+%In contrast, due to the UA, the alternative $z$ score distribution for \ashr is required to have a mode at 0, 
+%effectively ``filling in" the hole.  
+(Of course the null distribution also has a peak at 0, and the local fdr 
  under the UA is still smallest for $z$ scores that are far from zero -- i.e. large $z$ scores remain the ``most significant".)
  
+This qualitative difference among methods in the inferred alternative distribution of the $z$ scores is quite general, and 
+not limited to this simple simulation. To understand why the alternative distribution of $z$ scores from $\locfdr$ and $\qvalue$ has a hole at zero, note that neither
+of these methods explicitly models the alternative distribution: instead they simply subtract a null distribution (of $z$ scores or $p$ values) from the observed empirical distribution, letting the alternative
+distribution be defined implicitly, by what remains.
+ In deciding how much null distribution to subtract -- that is, in estimating the null proportion, $\pi_0$ -- 
+ both methods assume that all $z$ scores near zero (or, equivalently,
+all $p$ values near 1) are null. The consequence of this is that their (implicitly-defined) distribution for the alternative $z$ scores has 
+a ``hole" at 0 -- quite different from our assumption of a mode at zero. (Why \mixfdr exhibits similar behaviour is less clear, since it does explicitly
+model the alternative distribution; however we believe it may be due to the default choice of penalty term $\beta$ described in \cite{muralidharan2010empirical}.)
+
 Figure \ref{fig:ZA} may also be helpful in understanding the interacting role of the UA and the penalty term (\ref{eqn:penalty}) that attempts to make $\pi_0$ as ``large as possible" while remaining consistent with the UA. Specifically, consider the panel of Figure \ref{fig:ZA} that shows \ashr's decomposition of $z$ scores, and imagine increasing $\pi_0$ further. This would increase the null component (dark blue) at the expense of
-the alternative component (cyan). Because the null component is $N(0,1)$, and so is biggest at 0, this would eventually create a ``dip" in the cyan histogram at 0. The role of the penalty term is to push the dark blue component as far as possible, right up to (or, to be conservative, just past) the point where this dip appears. In contrast the ZA pushes the dark blue component until the cyan component {\it disappears} at 0. See \href{https://stephens999.shinyapps.io/unimodal/unimodal.Rmd}{https://stephens999.shinyapps.io/unimodal/unimodal.Rmd} for an interactive
-demonstration.
+the alternative component (light blue). Because the null component is $N(0,1)$, and so is biggest at 0, this would eventually create a ``dip" in the light-blue histogram at 0. The role of the penalty term is to push the dark blue component as far as possible, right up to (or, to be conservative, just past) the point where this dip appears. In contrast the 
+existing methods effectively push the dark blue component until the light-blue component {\it disappears} at 0. See \href{https://stephens999.shinyapps.io/unimodal/unimodal.Rmd}{https://stephens999.shinyapps.io/unimodal/unimodal.Rmd} for an interactive demonstration.
 
  \subsubsection*{The UA can produce conservative estimates of $\pi_0$}
 
-The illustration in Figure \ref{fig:ZA} suggests that the UA will produce smaller estimates of $\pi_0$ than the ZA.
-Consequently \ashr will estimate smaller $\lfdr$s and FDRs than existing methods that make the ZA. 
+The illustration in Figure \ref{fig:ZA} suggests that the UA will produce smaller estimates of $\pi_0$ than existing methods.
+Consequently \ashr will estimate smaller $\lfdr$s and FDRs. 
 This is desirable, provided that these estimates remain conservative: that is,
 provided that $\pi_0$ does not underestimate the true $\pi_0$ and $\lfdr$ does not underestimate the true $\lfdr$.
 The penalty term (\ref{eqn:penalty}) aims to ensure this conservative behavior. To check its effectiveness
@@ -1536,7 +1565,7 @@ bimodal & $0.5 N(-2,1^2) + 0.5 N(2,1^2)$ \\ \bottomrule
 % Do NOT remove this, even if you are not including acknowledgments
 \section*{Acknowledgements}
 
-I thank J.~Lafferty for pointing out the convexity of the likelihood function, which lead to our improved implementation with interior point methods. 
+I thank J.~Lafferty for pointing out the convexity of the likelihood function, which lead to an improved implementation with interior point methods. 
 Statistical analyses were conducted in the {\sf R} programming language \cite{Rcore:2012}, Figures produced using the {\tt ggplot2} package \cite{ggplot2}, and text
 prepared using \LaTeX. Development of the methods in this paper was greatly enhanced by the use of the {\tt knitr} package \cite{xie2013dynamic}  within the RStudio GUI, and 
 git and github. The {\tt ashr} R package is available from \href{http://github.com/stephens999/ashr}{http://github.com/stephens999/ashr} and includes contributions 
