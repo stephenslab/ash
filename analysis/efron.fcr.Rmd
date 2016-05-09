@@ -1,0 +1,78 @@
+---
+title: "Post-selection CI example, assymetric, not unimodal at 0"
+author: "Matthew Stephens"
+date: 2016-05-09
+---
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+
+```{r chunk-options, include=FALSE}
+source("chunk-options.R")
+```
+
+
+## Introduction
+
+This example comes from Efron (2008) p16 when examining the false coverage rate (FCR). 
+I selected this example because the distribution of the non-zero effect is
+highly assymetric and not at all unimodal at zero, both issues a referee asked me
+to elaborate on. Specifically, the distribution of the non-zero effects is N(-3,1).
+Here I simulate data, and apply ash (with the "halfuniform" option to allow for asymmetric g).
+
+```{r}
+  set.seed(10)
+  nsamp=10000
+  altmean=-3
+  mu0 = rep(0,nsamp)
+  mu1 = rnorm(nsamp,altmean,1)
+  comp = rbinom(nsamp,1,0.1)
+  mu = ifelse(comp==0,mu0,mu1)
+  z = rnorm(nsamp,mu,1)
+  
+  res.ash = ashr::ash(z,1,mixcompdist="halfuniform")
+  CImatrix= ashr::ashci(res.ash,level=0.95)
+```
+
+The following plot compares the (symmetric-tail) 95% CIs from ash (red) for the "significant" observations with Bayes rule (green), similar to Figure 8 from Efron. Note that the lower 97.5% point is pretty accurate, but the upper 97.5% point is curtailed - presumably due, at least in part, to the short tails of the uniform mixture.
+```{r}
+  BayesComparePlot=function(CImatrix,altmean=-3,...){
+    plot(z,mu,xlim=c(-8,0),...)
+    points(z[CImatrix[,1]],CImatrix[,5],col="red")
+    points(z[CImatrix[,1]],CImatrix[,4],col="red")
+
+    fdr = 0.9*dnorm(z)/(0.9*dnorm(z)+0.1*dnorm(z,altmean,sqrt(2)))
+    o=order(z)
+    upper = ifelse(fdr[o]<0.025,(z[o]+altmean)/2+qnorm(0.975+fdr[o])/sqrt(2),0)
+    lines(z[o],upper,col="green",lwd=2)
+    lines(z[o],(z[o]+altmean)/2-qnorm(0.975)/sqrt(2),col="green",lwd=2)
+    abline(v=max(z[fdr<0.05]))
+  }
+  BayesComparePlot(CImatrix,main="CIs for highly asymmetric and non-unimodal-at-zero data")
+```
+
+## Variational version
+
+Although not a focus of the paper, ash does have an option to do variational inference for the mixture components (with a Dirichlet prior). In practice this approach usually
+ends up spreading the posterior mass up more among the mixture components. It
+seemed plausible that this might lead to slightly less extreme tail behaviour than
+above (because the model will put a little more weight on the uniforms with larger variance, which are essentially set to zero in the above).
+
+```{r}
+  res.ash.VB = ashr::ash(z,1,mixcompdist="halfuniform",optmethod="mixVBEM")
+  CImatrix.VB= ashr::ashci(res.ash.VB,level=0.95)
+```
+
+Again, we can compare results with Bayes rule
+```{r}
+  BayesComparePlot(CImatrix.VB, main="CIs for highly asymmetric and non-unimodal-at-zero data \n Variational Version")
+```
+
+
+## Session information
+
+```{r info}
+sessionInfo()
+```
+
