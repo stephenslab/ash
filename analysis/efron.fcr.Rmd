@@ -64,6 +64,8 @@ Comparing the inferred Posterior Means, lfdr, and lfsr with the true values of t
   
 ```
 
+# Comparison with qvalue and locfdr
+
 We can also run qvalue and locfdr. We see that locfdr perhaps performs a bit better than ash for the decomposition here, but the estimated local fdrs are pretty similar. Here qvalue does less well because of the asymmetry which we didn't take account of.
 ```{r}
 library(qvalue)
