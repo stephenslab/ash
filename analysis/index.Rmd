@@ -14,7 +14,7 @@ title: "Home"
 *  [Adaptive Shrinkage](adaptive_shrinkage.html)
 *  [Comparing models: EE vs ET models](CompareEEvsETmodel.html)
 *  [Checking how qvalue behaves in simulation suggested by referee](referee_uaza.html)
-*  [Example of Credible Interval behaviour when UA does not hold](efron.fcr.html)
+*  [Comparison of methods, and example of Credible Interval behaviour when UA does not hold](efron.fcr.html)
 
 ## DSC Shrink (the main simulation study in the paper)
 

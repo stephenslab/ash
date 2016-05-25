@@ -163,18 +163,20 @@ We introduce a novel Empirical Bayes approach for large-scale hypothesis testing
 estimating False Discovery Rates (FDRs), and estimating effect sizes. Compared with
 existing approaches to FDR analysis, the method has two key differences. First, it
 assumes that the distribution of the actual (unobserved) effects being tested is unimodal, with a mode at 0.
-This ``unimodal assumption" (UA), although natural in many contexts, is very different from assumptions usually made
-in FDR analyses, and yields more accurate inferences than existing methods provided that it holds.
-The UA also facilitates efficient and robust computation because estimating the unimodal distribution involves solving a simple convex optimization problem.
+This ``unimodal assumption" (UA), although natural in many contexts, is not usually incorporated into standard FDR analysis,
+and we demonstrate how incorporating it brings many benefits.  Specifically, the UA
+facilitates efficient and robust computation -- estimating the unimodal distribution involves solving a simple convex optimization problem --
+and enables more accurate inferences provided that it holds.
 Second, the method takes as its input two numbers for each test (an effect size estimate, and corresponding standard error),
 rather than the one number usually used ($p$ value, or $z$ score). When available, using two numbers instead of one 
 helps account for variation in measurement precision across tests. It also facilitates the estimation of actual 
-effect sizes, and our approach provides interval estimates (credible regions) for each effect in addition to measures of significance.
+effect sizes, and unlike standard FDR analysis methods
+our approach provides interval estimates (credible regions) for each effect in addition to measures of significance.
 To provide a bridge between interval estimates and significance measures we introduce the term ``local false sign rate"
 to refer to the probability of getting the sign of an effect wrong, and argue that it is a superior
 measure of significance than the local FDR because it is both more generally applicable, and
 can be more robustly estimated. Our methods are implemented in an R package {\tt ashr}
-available from \href{http://github.com/stephens999/ashr}{http://github.com/stephens999/ashr}. 
+available from \url{http://github.com/stephens999/ashr}. 
 
 % Please keep the Author Summary between 150 and 200 words
 % Use first person. PLoS ONE authors please skip this step. 
@@ -223,16 +225,19 @@ the $\lfsr$ and $\lfdr$ can be quite different, and emphasize benefits of the $\
 
 %The methods we provide here can address both problems, and we provide results that highlight important benefits of focussing on estimation, and particularly on assessing the correctness of the {\it sign} of the estimated effects, rather than on testing for non-zero effects.
 
-Although we have focussed here on applications to FDR, the idea of performing EB inference by flexibly esimating an underlying unimodal prior distribution
-could be useful more generally - for example in shrinkage estimation contexts such as wavelet denoising \cite{donoho:1995}. 
-Importantly, our work demonstrates that EB inference under a general unimodal assumption is, if anything, computationally simpler  
+Although we focus here on FDR applications, the idea of performing EB inference using a flexible unimodal prior distribution
+is useful more generally. For example, the methods described here can be applied directly to perform shrinkage estimation for
+wavelet denoising \cite{donoho:1995}, an idea explored in a companion paper \cite{xing:2016}. And analogous ideas can be used to perform
+EB inference for variances \cite{lu2016variance}.
+Importantly, our work demonstrates how EB inference under a general unimodal assumption is, if anything, computationally simpler  
 than commonly-used more restrictive assumptions -- such as a spike and slab or Laplace prior distribution \cite{johnstone2004needles} --  as well as being more flexible.
+
 Our methods are implemented in an R package, \ashr (for {\bf a}daptive {\bf sh}rinkage in {\bf R}), available at 
-\href{http://github.com/stephens999/ashr}{http://github.com/stephens999/ashr}.
+\url{http://github.com/stephens999/ashr}.
 (The name comes from the fact that our EB approach using a unimodal prior naturally results in shrinkage estimation,
 and the shrinkage is adaptive to both the amount of signal in the data and the measurement precision of each observation.) 
 Code and instructions for reproducing analyses and figures in this paper are at
-\href{https://github.com/stephenslab/ash}{https://github.com/stephenslab/ash}.
+\url{https://github.com/stephenslab/ash}.
 
 
 %Measurement precision will often vary among genes --  for example, log-fold change estimate for highly expressed genes may have greater precision than those for lower-expressed genes -- and one goal  of our methods is to allow for thiis variation. 
@@ -336,7 +341,7 @@ can allow $g$ to approximate {\it any} unimodal distribution.
 This can be relaxed [see (\ref{eqn:beta-alpha})].
 \item The normal likelihood (\ref{eqn:normlik}) can be generalized to a $t$ likelihood [see (\ref{eqn:tlik})].
 \end{enumerate}
-These embellishments are detailed in Detailed Methods.
+These embellishments, detailed in Detailed Methods, are all implemented in our software.
 Of course there remain limitations that are harder to relax, most notably the independence and conditional independence assumptions
 (which are also made by most existing approaches). Correlations among tests certainly arise in practice, either due to genuine correlations 
 or due to unmeasured confounders, and their potential impact on estimated FDRs is important to consider
@@ -404,7 +409,8 @@ The usual EB approach to fitting this model would involve two simple steps:
 \item Compute quantities of interest from the conditional distributions $p(\beta_j | \bhat, \shat, \hat{\pi})$. For example, the evidence
 against the null hypothesis $\beta_j=0$ can be summarized by $p(\beta_j \neq 0 | \bhat, \shat,\hat{\pi})$.
 \end{enumerate}
-Both steps 1 and 2 are very straightforward. Step 1 is a convex optimization problem, and can be solved quickly and reliably using interior point methods \cite{boyd2004convex,koenker2013convex}. (Alternatively a simple EM algorithm can also work well, particularly for modest $J$, say $J<2000$). 
+Both steps 1 and 2 are very straightforward. Step 1 is a convex optimization problem, and can be solved quickly and reliably using interior point methods \cite{boyd2004convex,koenker2013convex}. (Alternatively a simple EM algorithm can also work well, particularly for modest $J$, say $J<2000$;
+see \url{http:://stephenslab.github.io/ash/analysis/IPvsEM.html}.) 
 And the conditional distributions $p(\beta_j | \bhat_j, \shat_j,\hat{\pi})$ in Step 2 are analytically available, each a mixture of a point mass on zero and $K$ normal distributions.
 (The simplicity of step 1 is due to our use of a fixed grid for $\sigma_k$ in (\ref{eqn:mixnorm}), instead of estimating $\sigma_k$,
 which may seem more natural but is not straightforward when $\shat_j$ varies among $j$. This simple device may be useful in other applications.)
@@ -615,7 +621,7 @@ Indeed, one way of thinking about the UA is as a way to regularize $g$.
 \section*{Results}
 
 We compare results of \ashr with existing FDR-based methods implemented
-in the R packages \qvalue (v2.1.1), \locfdr (v1.1-8), and \mixfdr (v1.0, from \href{https://cran.r-project.org/src/contrib/Archive/mixfdr/}{https://cran.r-project.org/src/contrib/Archive/mixfdr/}).  
+in the R packages \qvalue (v2.1.1), \locfdr (v1.1-8), and \mixfdr (v1.0, from \url{https://cran.r-project.org/src/contrib/Archive/mixfdr/}).
 In all our simulations we assume that the test statistics follow the expected theoretical distribution under the null, and we indicate this
 to \locfdr using {\tt nulltype=0} and to \mixfdr using {\tt theonull=TRUE}. Otherwise all packages were used with default options.
 
@@ -660,7 +666,7 @@ all the existing methods have a ``hole"  in the alternative $z$ score distributi
  under the UA is still smallest for $z$ scores that are far from zero -- i.e. large $z$ scores remain the ``most significant".)
  
 This qualitative difference among methods in the inferred alternative distribution of the $z$ scores is quite general, and 
-not limited to this simple simulation. To understand why the alternative distribution of $z$ scores from $\locfdr$ and $\qvalue$ has a hole at zero, note that neither
+also occurs in simulations where most effects are null (e.g.~\url{http://stephenslab.github.io/ash/analysis/referee_uaza.html}). To understand why the alternative distribution of $z$ scores from $\locfdr$ and $\qvalue$ has a hole at zero, note that neither
 of these methods explicitly models the alternative distribution: instead they simply subtract a null distribution (of $z$ scores or $p$ values) from the observed empirical distribution, letting the alternative
 distribution be defined implicitly, by what remains.
  In deciding how much null distribution to subtract -- that is, in estimating the null proportion, $\pi_0$ -- 
@@ -671,12 +677,12 @@ model the alternative distribution; however we believe it may be due to the defa
 
 Figure \ref{fig:ZA} may also be helpful in understanding the interacting role of the UA and the penalty term (\ref{eqn:penalty}) that attempts to make $\pi_0$ as ``large as possible" while remaining consistent with the UA. Specifically, consider the panel of Figure \ref{fig:ZA} that shows \ashr's decomposition of $z$ scores, and imagine increasing $\pi_0$ further. This would increase the null component (dark blue) at the expense of
 the alternative component (light blue). Because the null component is $N(0,1)$, and so is biggest at 0, this would eventually create a ``dip" in the light-blue histogram at 0. The role of the penalty term is to push the dark blue component as far as possible, right up to (or, to be conservative, just past) the point where this dip appears. In contrast the 
-existing methods effectively push the dark blue component until the light-blue component {\it disappears} at 0. See \href{https://stephens999.shinyapps.io/unimodal/unimodal.Rmd}{https://stephens999.shinyapps.io/unimodal/unimodal.Rmd} for an interactive demonstration.
+existing methods effectively push the dark blue component until the light-blue component {\it disappears} at 0. See \url{https://stephens999.shinyapps.io/unimodal/unimodal.Rmd} for an interactive demonstration.
 
  \subsubsection*{The UA can produce conservative estimates of $\pi_0$}
 
 The illustration in Figure \ref{fig:ZA} suggests that the UA will produce smaller estimates of $\pi_0$ than existing methods.
-Consequently \ashr will estimate smaller $\lfdr$s and FDRs. 
+Consequently \ashr will estimate smaller $\lfdr$s and FDRs, and so identify more significant discoveries at a given threshold. 
 This is desirable, provided that these estimates remain conservative: that is,
 provided that $\pi_0$ does not underestimate the true $\pi_0$ and $\lfdr$ does not underestimate the true $\lfdr$.
 The penalty term (\ref{eqn:penalty}) aims to ensure this conservative behavior. To check its effectiveness
@@ -791,7 +797,7 @@ $\pi_0$ can be grossly overestimated.
 
 The key point we want to make here is that estimation of $\pi_0$, and the accompanying identifiability issues,
  become substantially less troublesome if we use the local false sign rate $\lfsr$ (\ref{eqn:lfsr}), rather than $\lfdr$, to measure significance. 
- This is essentially because $\lfsr$ is less sensitive to the estimate of $\pi_0$.
+ This is because $\lfsr$ is less sensitive to the estimate of $\pi_0$.
 To illustrate, Figure \ref{fig:lfsr} compares the estimated $\lfsr$ from ash.n with the true value: although the estimated $\lfsr$ continue to
 be conservative, overestimating the truth, the overestimation is substantially less pronounced than for the $\lfdr$, especially for
 the ``spiky" scenario. Further, in the bi-modal scenario, the anti-conservative behavior is less pronounced in $\lfsr$ than $\lfdr$.
@@ -814,7 +820,7 @@ if we are prepared to assume that no effects are exactly zero, then removing the
 yields smaller and more accurate estimates of $\lfsr$ when that assumption is true (Figure \ref{fig:lfsr-nn}). 
 However, there is ``no free lunch":  if in fact some effects are exactly zero
 then the analysis with no point mass will tend to be anti-conservative, underestimating $\lfsr$ (Figure \ref{fig:lfsr-s}). 
-We conclude that {\it if} ensuring a ``conservative" analysis is important then one must allow for a point mass at 0. 
+We conclude that {\it if} ensuring a ``conservative" analysis is important then one should allow for a point mass at 0. 
 
 \subsubsection*{The UA helps provide reliable estimates of $g$}
 
@@ -863,7 +869,7 @@ is visually more accurate than \mixfdr: although \mixfdr is capable, in principl
 Possibly the noise level here is sufficiently large to make reliable estimation of the multiple modes difficult. 
 Indeed, in multi-modal simulations where the multiple modes are sufficiently well-spaced
 to be clearly visible in the observed $\bhat$, \mixfdr fits these modes 
-(\href{http://stephenslab.github.io/ash/analysis/check_mixfdr_lownoise.html}{http://stephenslab.github.io/ash/analysis/check\_mixfdr\_lownoise.html}). 
+(\url{http://stephenslab.github.io/ash/analysis/check_mixfdr_lownoise.html}). 
 Of course, we would not advocate the UA in settings where multi-modality is 
 clearly visible in the observed $\bhat$.
 
@@ -944,6 +950,7 @@ whereas for positive discoveries it is more dependent on the accuracy of $g$ in 
 
 The results are shown in Table \ref{tab:coverage}.  Most of the empirical coverage rates are in the range 0.92-0.96 for nominal coverage of 0.95, which we view
 as adequate for practical applications. The strongest deviations from nominal rates are noted and discussed in the table captions.
+One general issue is that the methods based on mixtures of uniform distributions often slightly curtail the tail of $g$, causing the probability of very large outlying effects to be understated;  see also \url{http://stephenslab.github.io/ash/analysis/efron.fcr.html}. 
 
 % As noted above, the penalty term (\ref{eqn:penalty}) causes systematic over-estimation of the mass of $g$ near 0,  which one would expect to overshrink interval estimates towards zero. 
 %The effect of overshrinking on the left tail area is different for ``negative discoveries" and ``positive discoveries": for negative discoveries the lower credible bound is negative and overshrinking (moving it too far towards zero) makes the left tail too big; conversely, for positive discoveries, the lower confidence bound is positive, and  
@@ -1467,7 +1474,7 @@ n_k & = \sum_j w_{kj} + \lambda_k - 1 \quad \text{[E Step]} \\
 \end{align}
 One benefit to the EM algorithm is fewer software dependencies.
 Both EM and IP methods are implemented in the {\tt ashr} package; results shown here are from the IP method, but graphs from EM are essentially the same.
-See \href{http://stephenslab.github.io/ash/analysis/checkIP.html}{http://stephenslab.github.io/ash/analysis/checkIP.html}  and \href{http://stephenslab.github.io/ash/analysis/IPvsEM.html}{http://stephenslab.github.io/ash/analysis/IPvsEM.html}  for comparisons.
+See \url{http://stephenslab.github.io/ash/analysis/checkIP.html}  and \url{http://stephenslab.github.io/ash/analysis/IPvsEM.html}  for comparisons.
 
 \subsubsection*{Conditional distributions}
 
@@ -1568,7 +1575,7 @@ bimodal & $0.5 N(-2,1^2) + 0.5 N(2,1^2)$ \\ \bottomrule
 I thank J.~Lafferty for pointing out the convexity of the likelihood function, which lead to an improved implementation with interior point methods. 
 Statistical analyses were conducted in the {\sf R} programming language \cite{Rcore:2012}, Figures produced using the {\tt ggplot2} package \cite{ggplot2}, and text
 prepared using \LaTeX. Development of the methods in this paper was greatly enhanced by the use of the {\tt knitr} package \cite{xie2013dynamic}  within the RStudio GUI, and 
-git and github. The {\tt ashr} R package is available from \href{http://github.com/stephens999/ashr}{http://github.com/stephens999/ashr} and includes contributions 
+git and github. The {\tt ashr} R package is available from \url{http://github.com/stephens999/ashr} and includes contributions 
 from Chaoxing (Rick) Dai, Mengyin Lu, and Tian Sen. 
 
 This work was supported by NIH grant HG02585 and a grant from the Gordon and Betty Moore Foundation.
