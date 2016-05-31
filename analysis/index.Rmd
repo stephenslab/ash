@@ -15,6 +15,7 @@ title: "Home"
 *  [Comparing models: EE vs ET models](CompareEEvsETmodel.html)
 *  [Checking how qvalue behaves in simulation suggested by referee](referee_uaza.html)
 *  [Comparison of methods, and example of Credible Interval behaviour when UA does not hold](efron.fcr.html)
+*  [Using ash to fit the NPMLE; comparison with REBayes](ash_npmle.html)
 
 ## DSC Shrink (the main simulation study in the paper)
 

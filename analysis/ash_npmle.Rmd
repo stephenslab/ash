@@ -1,0 +1,50 @@
+---
+title: "Using ash for NPMLE"
+author: "Matthew Stephens"
+date: 2016-05-31
+---
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+
+```{r chunk-options, include=FALSE}
+source("chunk-options.R")
+```
+
+## The NPMLE
+
+Here we show how we can use ash to (approximately) compute the unconstrained
+NPMLE - that is, estimate the underlying distribution $g$ by maximizing the likelihood without the unimodal constraint.
+See Koenker and Mizera, JASA 2014, for background.
+
+Within ash one can approximate the npmle as a mixture of uniforms
+on a dense grid of non-overlapping values - this results in a piecewise constant density with changes in the density only at the grid points.
+
+The following example comes from the REBayes vignette by Koenker and Gu.
+The underlying $g$ is a mixture of a point mass (weight 0.8) at 0 and a point mass (weight 0.2) at 2.
+```{r}
+  set.seed(102)
+  y <- c(rep(0,800), rnorm(200, 2)) + rnorm(1000)
+  z <- REBayes::GLmix(y)
+```
+
+
+Now we fit the NPMLE using 'ashr' and compare with the REBayes solution.
+```{r}
+  grid = seq(from=min(z$x),to=max(z$x),length=1000)
+  k=length(grid)
+  y.ash.npmle = ashr::ash(y,1,g=ashr::unimix(pi=rep(1/(k-1),(k-1)),a=grid[-k],b=grid[-1]),method="shrink")
+ 
+  plot(z$x,cumsum(z$y)/sum(z$y),col=2,main="Estimated cdf",type="l")
+  lines(ashr::cdf.ash(y.ash.npmle,x=z$x),type="l")
+  z$logLik
+  y.ash.npmle$loglik
+```
+
+## Session information
+
+```{r info}
+sessionInfo()
+```
+
