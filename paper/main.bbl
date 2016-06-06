@@ -79,6 +79,12 @@ Muralidharan O (2010) An empirical bayes mixture method for effect size and
 \newblock The Annals of Applied Statistics : 422--438.
 \bibAnnoteFile{muralidharan2010empirical}
 
+\bibitem{ploner2006multidimensional}
+Ploner A, Calza S, Gusnanto A, Pawitan Y (2006) Multidimensional local false
+  discovery rate for microarray studies.
+\newblock Bioinformatics 22: 556--565.
+\bibAnnoteFile{ploner2006multidimensional}
+
 \bibitem{benjamini2005false}
 Benjamini Y, Yekutieli D (2005) False discovery rate--adjusted multiple
   confidence intervals for selected parameters.
@@ -103,6 +109,18 @@ Donoho D, Johnstone I (1995) Adapting to unknown smoothness via wavelet
   shrinkage.
 \newblock Journal of the American Statistical Association 90: 1200--1224.
 \bibAnnoteFile{donoho:1995}
+
+\bibitem{xing2016smoothing}
+Xing Z, Stephens M (2016) Smoothing via adaptive shrinkage (smash): denoising
+  poisson and heteroskedastic gaussian signals.
+\newblock arXiv preprint arXiv:160507787 .
+\bibAnnoteFile{xing2016smoothing}
+
+\bibitem{lu2016variance}
+Lu M, Stephens M (2016) Variance adaptive shrinkage (vash): Flexible empirical
+  bayes estimation of variances.
+\newblock bioRxiv : 048660.
+\bibAnnoteFile{lu2016variance}
 
 \bibitem{johnstone2004needles}
 Johnstone IM, Silverman BW (2004) Needles and straw in haystacks: Empirical

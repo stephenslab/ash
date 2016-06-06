@@ -15,11 +15,15 @@ source("chunk-options.R")
 
 # Simulation
 
-The referee reports a simulation of 10,000 hypotheses, a fraction 0.8 are null ($\mu_i=0$), and a fraction 0.2 are alternative with effect $\mu_i \sim N(0,1)$. For each effect $i$ there
+A referee reported a simulation of 10,000 hypotheses, a fraction 0.8 are null ($\mu_i=0$), and a fraction 0.2 are alternative with effect $\mu_i \sim N(0,1)$. For each effect $i$ there
 are n=30 observations from $x_{i,j} \sim N(\mu_i,1)$ and a one-sample t test is used to compute a $p$ value. The referee correctly notes that these simulations i) obey the
-unimodal assumption, and ii) have the property that "most" $z$ scores near 0 are null.
+unimodal assumption (UA), and ii) have the property that "most" $z$ scores near 0 are null (Efron's "Zero Assumption"; ZA).
+The motivation is to demonstrate that the UA and the ZA are not contradictory.
 
-Here we repeat these simulations and apply qvalue to check how it behaves.
+I agree with this, if we define the ZA as "most" $z$ scores near 0 are null.
+However, in practice the existing methods effectively make a stronger assumption
+(or at least, behave as if they do): that *all* $z$ scores near 0 are null.
+Consequently they end up creating a hole in the distribution of alternative $z$ scores at 0. Here we illustrate this by applying qvalue to this scenario.
 
 ```{r}
 set.seed(100)
@@ -65,8 +69,8 @@ nullalthist(zscore,lfdr.true,main="true partition of z \n into null and alternat
 In estimating $\pi_0$ qvalue assumes that *all* p values near 1 are null.
 This is equivalent to assuming that *all* z scores near 0 are null. Thus,
 despite the fact that qvalue does not explicitly model the distribution of
-p values or z scores under the alternative, its way of estimating $\pi_0$
-necessarily creates a hole in the z score distribution at 0 under the alternative.
+$p$ values or $z$ scores under the alternative, its way of estimating $\pi_0$
+necessarily creates a hole in the $z$ score distribution at 0 under the alternative.
 
 
 ## Session information

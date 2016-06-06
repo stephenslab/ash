@@ -116,12 +116,12 @@ $(document).ready(function () {
 </div>
 
 
-<p><strong>Last updated:</strong> 2016-05-09</p>
-<p><strong>Code version:</strong> 403b775d722876b76432b3c90d30bdc25f809d47</p>
+<p><strong>Last updated:</strong> 2016-06-06</p>
+<p><strong>Code version:</strong> 61aad1ec3423ae7584acb42632ffddc27dd7460a</p>
 <div id="simulation" class="section level1">
 <h1>Simulation</h1>
-<p>The referee reports a simulation of 10,000 hypotheses, a fraction 0.8 are null (<span class="math inline">\(\mu_i=0\)</span>), and a fraction 0.2 are alternative with effect <span class="math inline">\(\mu_i \sim N(0,1)\)</span>. For each effect <span class="math inline">\(i\)</span> there are n=30 observations from <span class="math inline">\(x_{i,j} \sim N(\mu_i,1)\)</span> and a one-sample t test is used to compute a <span class="math inline">\(p\)</span> value. The referee correctly notes that these simulations i) obey the unimodal assumption, and ii) have the property that “most” <span class="math inline">\(z\)</span> scores near 0 are null.</p>
-<p>Here we repeat these simulations and apply qvalue to check how it behaves.</p>
+<p>A referee reported a simulation of 10,000 hypotheses, a fraction 0.8 are null (<span class="math inline">\(\mu_i=0\)</span>), and a fraction 0.2 are alternative with effect <span class="math inline">\(\mu_i \sim N(0,1)\)</span>. For each effect <span class="math inline">\(i\)</span> there are n=30 observations from <span class="math inline">\(x_{i,j} \sim N(\mu_i,1)\)</span> and a one-sample t test is used to compute a <span class="math inline">\(p\)</span> value. The referee correctly notes that these simulations i) obey the unimodal assumption (UA), and ii) have the property that “most” <span class="math inline">\(z\)</span> scores near 0 are null (Efron’s “Zero Assumption”; ZA). The motivation is to demonstrate that the UA and the ZA are not contradictory.</p>
+<p>I agree with this, if we define the ZA as “most” <span class="math inline">\(z\)</span> scores near 0 are null. However, in practice the existing methods effectively make a stronger assumption (or at least, behave as if they do): that <em>all</em> <span class="math inline">\(z\)</span> scores near 0 are null. Consequently they end up creating a hole in the distribution of alternative <span class="math inline">\(z\)</span> scores at 0. Here we illustrate this by applying qvalue to this scenario.</p>
 <pre class="r"><code>set.seed(100)
 mu = c(rep(0,8000),rnorm(2000))
 x = matrix(rnorm(30*10000),nrow=10000,ncol=30)+mu
@@ -150,7 +150,7 @@ nullalthist(zscore,lfdr.true,main=&quot;true partition of z \n into null and alt
 </div>
 <div id="explanation" class="section level1">
 <h1>Explanation</h1>
-<p>In estimating <span class="math inline">\(\pi_0\)</span> qvalue assumes that <em>all</em> p values near 1 are null. This is equivalent to assuming that <em>all</em> z scores near 0 are null. Thus, despite the fact that qvalue does not explicitly model the distribution of p values or z scores under the alternative, its way of estimating <span class="math inline">\(\pi_0\)</span> necessarily creates a hole in the z score distribution at 0 under the alternative.</p>
+<p>In estimating <span class="math inline">\(\pi_0\)</span> qvalue assumes that <em>all</em> p values near 1 are null. This is equivalent to assuming that <em>all</em> z scores near 0 are null. Thus, despite the fact that qvalue does not explicitly model the distribution of <span class="math inline">\(p\)</span> values or <span class="math inline">\(z\)</span> scores under the alternative, its way of estimating <span class="math inline">\(\pi_0\)</span> necessarily creates a hole in the <span class="math inline">\(z\)</span> score distribution at 0 under the alternative.</p>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
 <pre class="r"><code>sessionInfo()</code></pre>
@@ -171,7 +171,7 @@ loaded via a namespace (and not attached):
  [1] Rcpp_0.12.4       magrittr_1.5      MASS_7.3-45      
  [4] splines_3.2.4     pscl_1.4.9        munsell_0.4.3    
  [7] doParallel_1.0.10 lattice_0.20-33   SQUAREM_2014.8-1 
-[10] colorspace_1.2-6  foreach_1.4.3     ashr_1.1.14      
+[10] colorspace_1.2-6  foreach_1.4.3     ashr_1.2.1       
 [13] stringr_1.0.0     plyr_1.8.3        tools_3.2.4      
 [16] parallel_3.2.4    grid_3.2.4        gtable_0.2.0     
 [19] htmltools_0.3.5   iterators_1.0.8   assertthat_0.1   

@@ -75,7 +75,7 @@ plotlabel=function(label,cex=1.5){
 plotlabel("qvalue")
 plotlabel("locfdr")
 plotlabel("mixfdr")
-plotlabel("ashr")
+plotlabel("ash")
 
 par(mar = c(1.3,2,1.5,0.2),mgp = c(3, 0.5, 0))
 
@@ -125,7 +125,7 @@ altnullhist(pval,res.locfdr$fdr,main="locfdr",ncz=ncz,xaxt='n',cex.axis=0.8)
 axis(side=1, labels=FALSE,tck=-0.01)
 altnullhist(pval,res.mixfdr$fdr,main="mixfdr",ncz=ncz,xaxt='n',cex.axis=0.8)
 axis(side=1, labels=FALSE,tck=-0.01)
-altnullhist(pval,res.ash$lfdr,main="ashr",ncz=ncz,xaxt='n',cex.axis=0.8)
+altnullhist(pval,res.ash$lfdr,main="ash",ncz=ncz,xaxt='n',cex.axis=0.8)
 axis(side=1, labels=TRUE,tck=-0.01,cex.axis=0.8)
 #mtext(side=1,"p values",line=2)
 
@@ -137,7 +137,7 @@ nullalthist(zscore,res.locfdr$fdr,main="locfdr",ncz=ncz,xaxt='n',cex.axis=0.8,yl
 axis(side=1, labels=FALSE,tck=-0.01)
 nullalthist(zscore,res.mixfdr$fdr,main="mixfdr",ncz=ncz,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
 axis(side=1, labels=FALSE,tck=-0.01)
-nullalthist(zscore,res.ash$lfdr,main="ashr",ncz=ncz,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
+nullalthist(zscore,res.ash$lfdr,main="ash",ncz=ncz,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
 axis(side=1, labels=TRUE,tck=-0.01,cex.axis=0.8)
 #mtext(side=1,"z scores",line=2)
 
