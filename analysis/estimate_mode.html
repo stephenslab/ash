@@ -116,8 +116,8 @@ $(document).ready(function () {
 </div>
 
 
-<p><strong>Last updated:</strong> 2016-05-04</p>
-<p><strong>Code version:</strong> 96e41546e2473fe963db044d54903d7a11269e14</p>
+<p><strong>Last updated:</strong> 2016-06-08</p>
+<p><strong>Code version:</strong> 1dbe79781f8dcca8de460d5e433a85ec61b11be7</p>
 <p>The purpose of this analysis is to check the performance of the non-zero mode option.</p>
 <div id="simple-simulation" class="section level2">
 <h2>Simple simulation</h2>
@@ -171,15 +171,15 @@ $loglik
   beta = rexp(1000)
   betahat = beta + rnorm(1000,0,0.1)
   z.ash.hu = ashr::ash(betahat,0.1,mixcompdist=&quot;halfuniform&quot;,outputlevel=4,method=&quot;shrink&quot;)</code></pre>
-<pre><code>Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended</code></pre>
+<pre><code>Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended</code></pre>
 <pre class="r"><code>  z.ash.pu = ashr::ash(betahat,0.1,mixcompdist=&quot;+uniform&quot;,outputlevel=4,method=&quot;shrink&quot;)
   
   z.ash.hu2 = ashr::ash(betahat-0.2,0.1,mixcompdist=&quot;halfuniform&quot;,outputlevel=4,method=&quot;shrink&quot;)</code></pre>
-<pre><code>Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended</code></pre>
+<pre><code>Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended</code></pre>
 <pre><code>Warning in log(m$pi): NaNs produced
 
 Warning in log(m$pi): NaNs produced
@@ -194,21 +194,21 @@ Warning in log(m$pi): NaNs produced</code></pre>
 <pre class="r"><code>  z.ash.pu2 = ashr::ash(betahat-0.1,0.1,mixcompdist=&quot;+uniform&quot;,outputlevel=4,method=&quot;shrink&quot;)
   
   z.ash.hu.nzm = ashr::ash(betahat,0.1,mixcompdist=&quot;halfuniform&quot;,nonzeromode=TRUE,method=&quot;shrink&quot;)</code></pre>
-<pre><code>Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended</code></pre>
+<pre><code>Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended</code></pre>
 <pre class="r"><code>  z.ash.hu$loglik</code></pre>
 <pre><code>[1] -1051.146</code></pre>
 <pre class="r"><code>  z.ash.hu.nzm$loglik</code></pre>
 <pre><code>[1] -1059.318</code></pre>
 <pre class="r"><code>  test.op = function(c){return(-ashr::ash(betahat-c,0.1,mixcompdist=&quot;halfuniform&quot;,outputlevel=4,method=&quot;shrink&quot;)$loglik)}
   optimize(test.op,interval=c(min(betahat),max(betahat)))</code></pre>
-<pre><code>Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended</code></pre>
-<pre><code>Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended</code></pre>
+<pre><code>Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended</code></pre>
+<pre><code>Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended</code></pre>
 <pre><code>Warning in min(gradient(matrix_lik) + prior[1] - 1, na.rm = TRUE): no non-
 missing arguments to min; returning Inf</code></pre>
 <pre><code>Warning in sqrt(postmean2(m, betahat, sebetahat, v) - postmean(m,
@@ -217,69 +217,69 @@ betahat, : NaNs produced</code></pre>
 of items to replace is not a multiple of replacement length</code></pre>
 <pre><code>Warning in optimize(test.op, interval = c(min(betahat), max(betahat))): NA/
 Inf replaced by maximum positive value</code></pre>
-<pre><code>Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+<pre><code>Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended
 
-Warning in ash.workhorse(betahat, sebetahat, mixcompdist = mixcompdist, :
-Use of halfuniform without nullbiased prior can lead to misleading local
-false sign rates, and so is not recommended</code></pre>
+Warning in process_args(oldargs): Use of halfuniform without nullbiased
+prior can lead to misleading local false sign rates, and so is not
+recommended</code></pre>
 <pre><code>$minimum
 [1] 0.1737673
 
@@ -307,7 +307,7 @@ other attached packages:
 loaded via a namespace (and not attached):
  [1] Rcpp_0.12.4       magrittr_1.5      MASS_7.3-45      
  [4] doParallel_1.0.10 pscl_1.4.9        SQUAREM_2014.8-1 
- [7] lattice_0.20-33   foreach_1.4.3     ashr_1.1.9       
+ [7] lattice_0.20-33   foreach_1.4.3     ashr_1.2.1       
 [10] stringr_1.0.0     tools_3.2.4       parallel_3.2.4   
 [13] grid_3.2.4        htmltools_0.3.5   iterators_1.0.8  
 [16] yaml_2.1.13       digest_0.6.9      assertthat_0.1   
