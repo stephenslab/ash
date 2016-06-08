@@ -219,6 +219,11 @@ Koenker R, Mizera I (2014) Convex optimization, shape constraints, compound
 \newblock Journal of the American Statistical Association 109: 674--685.
 \bibAnnoteFile{koenker2014convex}
 
+\bibitem{efron2016empirical}
+Efron B (2016) Empirical bayes deconvolution estimates.
+\newblock Biometrika 103: 1--20.
+\bibAnnoteFile{efron2016empirical}
+
 \bibitem{jiang2009general}
 Jiang W, Zhang CH (2009) General maximum likelihood empirical bayes estimation
   of normal means.
