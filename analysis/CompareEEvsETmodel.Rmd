@@ -36,8 +36,7 @@ in the same way as the usual $p$ values computed from $\hat\beta_j/s_j$.
 
 It is straightforward to use the ashr package to perform analysis under the ET model:
 simply specify model="ET". (Internally, this causes ash to 
-replaces betahat with the standardized betahat, $\hat\beta_j/s_j$, and the standard errors
-for these standarized betahat values with 1.) It is also straightforward to compare
+replace betahat with the standardized betahat, $\hat\beta_j/s_j$, and the standard errors for these standarized betahat values with 1; there there is some bookkeeping to be done to make sure we return the right likelihoods and posteriors for the original beta, and not for these standardized values... ash takes care of this.) It is also straightforward to compare
 the two competing modelling assumptions (EE vs ET) by computing the log likelihood ratio, $log[p_{EE}(\hat\beta | s, \hat g_{EE})/p_{ET}(\hat\beta | s, \hat g_{ET})]$.
 
 We now illustrate by a simulated example. We assume that the standard errors come
@@ -60,13 +59,10 @@ Here is the EE analysis.
 ```
 
 And here is how we can perform the ET analysis,
-by replacing betahat with the standardized betahat, and replacing the standard error with 1:
 ```{r}
   ashET.res = ash(betahat, betahat.se,method="fdr", model="ET")
 ```
-Note that the posterior distributions computed by ash will now be for the standardized
-effects, and not for the effects $\beta_j$. However, the local false sign rate (lfsr) and
-related quantities are unaffected by this because the standardized effect is positive if and only if the effect is positive.
+
 
 Now we compare the EE vs ET models:
 ```{r}
