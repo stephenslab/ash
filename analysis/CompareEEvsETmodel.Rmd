@@ -7,15 +7,15 @@ The ashr package implements a shrinkage-based Empirical Bayes
 method for estimating the values of effects $\beta_j$ based
 on estimates of the effects ($\hat\beta_j$) and their standard errors ($s_j$).
 
-A key modelling assumption is that the effects $\beta_j$ are identically distributed
+The default model is that the effects $\beta_j$ are identically distributed
 from a unimodal distribution $g$. 
 In particular, ashr assumes that $\beta_j$ is independent of the standard error $s_j$.
 That is,
 $$\beta_j | s_j \sim g(\cdot)     \quad (*).$$
 
-Here we consider an alternative modelling assumption:
-$$\beta_j/s_j | s_j \sim g(\cdot)   \quad (**).$$
-Under this alternative assumption
+Here we consider the more general model:
+$$\beta_j/(s_j)^\alpha | s_j \sim g(\cdot)   \quad (**).$$
+The case $\alpha=0$ is the model (*) above. The case $\alpha=1$ assumes that 
 the *t statistics* $\betahat_j/s_j$ are identically distributed from a unimodal
 distribution. Under this assumption the expected size of the *unstandardized* effect $\beta_j$ depends on the standard error $s_j$: the larger $s_j$ is, the larger (in absolute value) $\beta_j$ is expected to be. 
 
@@ -35,7 +35,7 @@ attempting to identify ``significant" effects, the empirical Bayes approach will
 in the same way as the usual $p$ values computed from $\hat\beta_j/s_j$.
 
 It is straightforward to use the ashr package to perform analysis under the ET model:
-simply specify model="ET". (Internally, this causes ash to 
+simply specify alpha=1. (Internally, this causes ash to 
 replace betahat with the standardized betahat, $\hat\beta_j/s_j$, and the standard errors for these standarized betahat values with 1; there there is some bookkeeping to be done to make sure we return the right likelihoods and posteriors for the original beta, and not for these standardized values... ash takes care of this.) It is also straightforward to compare
 the two competing modelling assumptions (EE vs ET) by computing the log likelihood ratio, $log[p_{EE}(\hat\beta | s, \hat g_{EE})/p_{ET}(\hat\beta | s, \hat g_{ET})]$.
 
@@ -55,12 +55,12 @@ from a gamma distribution, and then generate the effects $\beta_j$ under the ET 
 Here is the EE analysis.
 ```{r}
   library(ashr)
-  ashEE.res = ash(betahat, betahat.se,method="fdr",model="EE")
+  ashEE.res = ash(betahat, betahat.se,method="fdr",alpha=0)
 ```
 
 And here is how we can perform the ET analysis,
 ```{r}
-  ashET.res = ash(betahat, betahat.se,method="fdr", model="ET")
+  ashET.res = ash(betahat, betahat.se,method="fdr", alpha=1)
 ```
 
 
@@ -85,8 +85,8 @@ we now provide results for simulations under the EE model.
   betahat = rnorm(nsamp,beta,betahat.se)
   zscore = betahat/betahat.se
   pval = pchisq(zscore^2,df=1,lower.tail=FALSE)
-  ashEE.res = ash(betahat, betahat.se,method="fdr",model="EE")
-  ashET.res = ash(betahat, betahat.se, method="fdr",model="ET")
+  ashEE.res = ash(betahat, betahat.se,method="fdr",alpha=0)
+  ashET.res = ash(betahat, betahat.se, method="fdr",alpha=1)
   ashEE.res$loglik-ashET.res$loglik
 ```
 So here the log likelihood ratio is positive, indicating that the EE model is preferred
