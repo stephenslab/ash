@@ -7,7 +7,7 @@ The hardest part may be making sure R is set up with all the right
 packages installed. I have used the R package `packrat` to try to
 make this easier, but on some systems it may be easier to install all
 the packages you need by hand. If things go wrong, look also at
-"if things go wrong" below.
+"If things go wrong" below.
 
 ### Step-by-step instructions
 
