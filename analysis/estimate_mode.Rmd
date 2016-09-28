@@ -22,19 +22,19 @@ explicitly using that directly in the current implementation; the uniform mixtur
 do it numerically; the normal mixture uses a true EM I think...)
 
 ```{r}
-
+library(ashr)
 check_mode = function(betahat, sebetahat,mixcompdist){
-    z.ash=ashr::ash(betahat,sebetahat,mixcompdist=mixcompdist,nonzeromode=TRUE)
-    average.posteriormean = mean(z.ash$PosteriorMean)
-    fitted.mode = ashr::comp_mean(z.ash$fitted.g)[1]
+    z.ash=ash(betahat,sebetahat,mixcompdist=mixcompdist,mode="estimate")
+    average.posteriormean = mean(get_pm(z.ash))
+    fitted.mode = comp_mean(get_fitted_g(z.ash))[1]
     
-    z.ash1 = ashr::ash(betahat-fitted.mode,sebetahat, mixcompdist=mixcompdist) #refit to get g
-    g = z.ash1$fitted.g
-    loglik = z.ash1$loglik
+    z.ash1 = ash(betahat-fitted.mode,sebetahat, mixcompdist=mixcompdist) #refit to get g
+    g = get_fitted_g(z.ash1)
+    loglik = get_loglik(z.ash1)
     
-    loglik.down = ashr::ash(z-fitted.mode-0.01,1,g=g)$loglik
-    loglik.up  = ashr::ash(z-fitted.mode+0.01,1,g=g)$loglik
-    loglik.posteriormean = ashr::ash(z-average.posteriormean,1,g=g)$loglik
+    loglik.down = ash(z-fitted.mode-0.01,1,g=g)$loglik
+    loglik.up  = ash(z-fitted.mode+0.01,1,g=g)$loglik
+    loglik.posteriormean = ash(z-average.posteriormean,1,g=g)$loglik
 
     return(list(fitted.mode=fitted.mode, average.posteriormean =average.posteriormean,
          loglik = c(loglik,loglik.down,loglik.up,loglik.posteriormean)))
@@ -50,18 +50,17 @@ check_mode = function(betahat, sebetahat,mixcompdist){
   set.seed(100)
   beta = rexp(1000)
   betahat = beta + rnorm(1000,0,0.1)
-  z.ash.hu = ashr::ash(betahat,0.1,mixcompdist="halfuniform",outputlevel=4,method="shrink")
-  z.ash.pu = ashr::ash(betahat,0.1,mixcompdist="+uniform",outputlevel=4,method="shrink")
+  z.ash.hu = ash(betahat,0.1,mixcompdist="halfuniform",outputlevel=4,method="shrink")
+  z.ash.pu = ash(betahat,0.1,mixcompdist="+uniform",outputlevel=4,method="shrink")
   
-  z.ash.hu2 = ashr::ash(betahat-0.2,0.1,mixcompdist="halfuniform",outputlevel=4,method="shrink")
-  z.ash.pu2 = ashr::ash(betahat-0.1,0.1,mixcompdist="+uniform",outputlevel=4,method="shrink")
+  z.ash.hu2 = ash(betahat-0.2,0.1,mixcompdist="halfuniform",outputlevel=4,method="shrink")
+  z.ash.pu2 = ash(betahat-0.1,0.1,mixcompdist="+uniform",outputlevel=4,method="shrink")
   
-  z.ash.hu.nzm = ashr::ash(betahat,0.1,mixcompdist="halfuniform",nonzeromode=TRUE,method="shrink")
+  z.ash.hu.nzm = ash(betahat,0.1,mixcompdist="halfuniform",mode="estimate",method="shrink")
   z.ash.hu$loglik
   z.ash.hu.nzm$loglik
   
-  test.op = function(c){return(-ashr::ash(betahat-c,0.1,mixcompdist="halfuniform",outputlevel=4,method="shrink")$loglik)}
-  optimize(test.op,interval=c(min(betahat),max(betahat)))
+
 #  check_mode(betahat,.1,mixcompdist="halfuniform")
 ```
 

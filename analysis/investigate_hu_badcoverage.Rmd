@@ -53,7 +53,7 @@ head(ash.hu.ft)
 
 ```{r}
   eg=load_example(dsc_shrink,42,"flat-top",method="ash.hu.s","../code/dsc-shrink")
-  eg$output$fitted.g
+  eg$output$fitted_g
 ```
 
 Notice how almost all the inferred weight is on a small positive component. As a result false sign rate will be small, and there will be a strong tendency

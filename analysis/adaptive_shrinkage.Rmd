@@ -63,8 +63,8 @@ illustrate the ideas of adaptive shrinkage: i) the estimates under the spiky sce
 ```{r plotting}
 make_df_for_ashplot = function(sim1,sim2,ash1,ash2,name1="spiky",name2="big-normal"){
   df = data.frame(betahat = c(sim1$input$betahat,sim2$input$betahat),
-                beta_est = c(ash1$PosteriorMean, ash2$PosteriorMean),
-                lfsr = c(ash1$lfsr, ash2$lfsr),
+                beta_est = c(get_pm(ash1), get_pm(ash2)),
+                lfsr = c(get_lfsr(ash1), get_lfsr(ash2)),
                 s=c(sim1$input$sebetahat,sim2$input$sebetahat),
                 scenario=c(rep(name1,NSAMP),rep(name2,NSAMP)))
   df$signif = df$lfsr<0.05
@@ -110,8 +110,8 @@ pval_plot(df)
 Let's see how these are affected by changing the modelling assumptions so that
 the standardized beta are exchangeable (rather than the beta being exchangeable).
 ```{r run-ash-ET}
-beta.bignormal.ash.ET = ash(sim.bignormal$input$betahat, s,model="ET",mixcompdist="normal")
-beta.spiky.ash.ET = ash(sim.spiky$input$betahat, s,model="ET",mixcompdist="normal")
+beta.bignormal.ash.ET = ash(sim.bignormal$input$betahat, s,alpha=1,mixcompdist="normal")
+beta.spiky.ash.ET = ash(sim.spiky$input$betahat, s,alpha=1,mixcompdist="normal")
 df.ET = make_df_for_ashplot(sim.spiky,sim.bignormal,beta.spiky.ash.ET,beta.bignormal.ash.ET)
 ashplot(df.ET,ylab="Shrunken beta estimate (ET model)")
 pval_plot(df.ET)

@@ -46,20 +46,20 @@ Here we can see how the partition of $z$ scores compares with the truth. Note th
 ```{r}
   source("../R/nullalthist.R")
   par(mfcol=c(2,1))
-  nullalthist(z,lfdr=res.ash.true$lfdr,main="true partition")
-  nullalthist(z,lfdr=res.ash$lfdr,main="inferred partition")
+  nullalthist(z,lfdr=ashr::get_lfdr(res.ash.true),main="true partition")
+  nullalthist(z,lfdr=ashr::get_lfdr(res.ash),main="inferred partition")
 ```
 
 Comparing the inferred Posterior Means, lfdr, and lfsr with the true values of these quantities, we find reassuringly good correspondence.
 ```{r}
   par(mfcol=c(1,1))
-  plot(res.ash.true$PosteriorMean,res.ash$PosteriorMean,xlab="Truth", ylab="ash.hu",main="Posterior Mean (inferred vs truth)",xlim=c(-6,1),ylim=c(-6,1))
+  plot(ashr::get_pm(res.ash.true),ashr::get_pm(res.ash),xlab="Truth", ylab="ash.hu",main="Posterior Mean (inferred vs truth)",xlim=c(-6,1),ylim=c(-6,1))
   abline(a=0,b=1,col=2,lwd=3)
   
-    plot(res.ash.true$lfdr,res.ash$lfdr,xlab="Truth", ylab="ash.hu",main="lfdr (inferred vs truth)",xlim=c(0,1),ylim=c(0,1))
+    plot(ashr::get_lfdr(res.ash.true),ashr::get_lfdr(res.ash),xlab="Truth", ylab="ash.hu",main="lfdr (inferred vs truth)",xlim=c(0,1),ylim=c(0,1))
   abline(a=0,b=1,col=2,lwd=3)
   
-  plot(res.ash.true$lfsr,res.ash$lfsr,xlab="Truth", ylab="ash.hu",main="lfsr (inferred vs truth)",xlim=c(0,1),ylim=c(0,1))
+  plot(ashr::get_lfsr(res.ash.true),ashr::get_lfsr(res.ash),xlab="Truth", ylab="ash.hu",main="lfsr (inferred vs truth)",xlim=c(0,1),ylim=c(0,1))
   abline(a=0,b=1,col=2,lwd=3)
   
 ```
@@ -84,11 +84,11 @@ res.qvalue = qvalue(p=pchisq(z^2,df=1,lower.tail = FALSE))
 #ggplot2::qplot(data=df,x=Truth,y=Estimate,facets= .~Method)
 
 par(mfrow=c(1,3))
-plot(res.ash.true$lfdr,res.ash$lfdr,xlab="Truth (lfdr)", ylab="ash.hu",main="ash.hu",xlim=c(0,1),ylim=c(0,1))
+plot(ashr::get_lfdr(res.ash.true),ashr::get_lfdr(res.ash),xlab="Truth (lfdr)", ylab="ash.hu",main="ash.hu",xlim=c(0,1),ylim=c(0,1))
 abline(a=0,b=1,col=2,lwd=3)
-plot(res.ash.true$lfdr,res.locfdr$fdr,xlab="Truth (lfdr)", ylab="Estimate",main="locfdr",xlim=c(0,1),ylim=c(0,1))
+plot(ashr::get_lfdr(res.ash.true),res.locfdr$fdr,xlab="Truth (lfdr)", ylab="Estimate",main="locfdr",xlim=c(0,1),ylim=c(0,1))
 abline(a=0,b=1,col=2,lwd=3)
-plot(res.ash.true$lfdr,res.qvalue$lfdr,xlab="Truth (lfdr)", ylab="Estimate",main="qvalue",xlim=c(0,1),ylim=c(0,1))
+plot(ashr::get_lfdr(res.ash.true),res.qvalue$lfdr,xlab="Truth (lfdr)", ylab="Estimate",main="qvalue",xlim=c(0,1),ylim=c(0,1))
 abline(a=0,b=1,col=2,lwd=3)
 
 ```
@@ -101,8 +101,8 @@ The following plot compares the (symmetric-tail) 95% CIs from ash (red) for the 
   CImatrix= ashr::ashci(res.ash,level=0.95)
   BayesComparePlot=function(CImatrix,altmean=-3,...){
     plot(z,mu,xlim=c(-8,0),...)
-    points(z[CImatrix[,1]],CImatrix[,5],col="red")
-    points(z[CImatrix[,1]],CImatrix[,4],col="red")
+    points(z,CImatrix[,1],col="red")
+    points(z,CImatrix[,2],col="red")
 
     fdr = 0.9*dnorm(z)/(0.9*dnorm(z)+0.1*dnorm(z,altmean,sqrt(2)))
     o=order(z)

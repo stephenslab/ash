@@ -53,14 +53,15 @@ nullalthist(zscore,lfdr.qv,main="qvalue's implicit partition of z \n into null a
 
 For comparison here is the decomposition, using ash, of $z$ scores into null and alternative components.
 ```{r}
-lfdr.ash=ashr::ash(x.est,1/sqrt(30))$lfdr
+library(ashr)
+lfdr.ash=get_lfdr(ash(x.est,1/sqrt(30)))
 nullalthist(zscore,lfdr.ash,main="ash partition of z \n into null and alternative",ncz=60,cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6),xlab="z score")
 ```
 
 For completeness here is (roughly) the ``true" decomposition of $z$ scores into null and alternative components.
 ```{r}
 trueg = ashr::normalmix(c(0.8,0.2),c(0,0),c(0,1))
-lfdr.true=ashr::ash(x.est,1/sqrt(30),g=trueg,fixg=TRUE)$lfdr
+lfdr.true=get_lfdr(ash(x.est,1/sqrt(30),g=trueg,fixg=TRUE))
 nullalthist(zscore,lfdr.true,main="true partition of z \n into null and alternative",ncz=60,cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6),xlab="z score")
 ```
 

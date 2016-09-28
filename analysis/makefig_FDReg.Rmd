@@ -54,12 +54,17 @@ qval_fdr = pmin(1,qval_fdr) #threshold at 1, so fdr never bigger than 1
 qval_fdr = qvalue::lfdr(pval)
 ```
 
-Here's an example of how qvalue decomposes $p$ values into null and alternative components
+Here's an example of how qvalue decomposes $p$ values into null and alternative components. First the $p$ values:
 ```{r}
 #pdf("../figures/FDReg_hist.pdf",width=6,height=3)
-par(mai=c(0.5,0.5,0.2,0.2),mgp = c(3, 0.5, 0))
-layout(matrix(1:2,ncol=2,byrow=TRUE))
+#par(mai=c(0.5,0.5,0.2,0.2),mgp = c(3, 0.5, 0))
+#layout(matrix(1:2,ncol=2,byrow=TRUE))
 plot_FDReg_hist(pval,res.qvalue$pi0,type=1,title="p values",cex.axis=0.8,cex.main=0.8)
+
+```
+
+Now the decomposition:
+```{r}
 plot_FDReg_hist(pval,res.qvalue$pi0,type=4,cex.axis=0.8,yaxt='n',textsize=0.9,cex.main=0.8,title="Decomposition into null/alternative")
 axis(side=2, labels=FALSE,tck=-0.01)
 ```
@@ -88,7 +93,7 @@ altnullhist(pval,res.locfdr$fdr,main="",ncz=50,xaxt='n',cex.axis=0.8)
 axis(side=1, labels=FALSE,tck=-0.01)
 altnullhist(pval,res.mixfdr$fdr,main="",ncz=50,xaxt='n',cex.axis=0.8)
 axis(side=1, labels=FALSE,tck=-0.01)
-altnullhist(pval,res.ash$lfdr,main="",ncz=50,xaxt='n',cex.axis=0.8)
+altnullhist(pval,get_lfdr(res.ash),main="",ncz=50,xaxt='n',cex.axis=0.8)
 axis(side=1, labels=TRUE,tck=-0.01,cex.axis=0.8)
 #mtext(side=1,"p values",line=2)
 
@@ -100,7 +105,7 @@ nullalthist(zscore,res.locfdr$fdr,main="",ncz=50,xaxt='n',cex.axis=0.8,ylim=c(0,
 axis(side=1, labels=FALSE,tck=-0.01)
 nullalthist(zscore,res.mixfdr$fdr,main="",ncz=50,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
 axis(side=1, labels=FALSE,tck=-0.01)
-nullalthist(zscore,res.ash$lfdr,main="",ncz=50,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
+nullalthist(zscore,get_lfdr(res.ash),main="",ncz=50,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
 axis(side=1, labels=TRUE,tck=-0.01,cex.axis=0.8)
 #mtext(side=1,"z scores",line=2)
 
@@ -125,7 +130,7 @@ altnullhist(pval,res.locfdr$fdr,main="locfdr",ncz=ncz,xaxt='n',cex.axis=0.8)
 axis(side=1, labels=FALSE,tck=-0.01)
 altnullhist(pval,res.mixfdr$fdr,main="mixfdr",ncz=ncz,xaxt='n',cex.axis=0.8)
 axis(side=1, labels=FALSE,tck=-0.01)
-altnullhist(pval,res.ash$lfdr,main="ash",ncz=ncz,xaxt='n',cex.axis=0.8)
+altnullhist(pval,get_lfdr(res.ash),main="ash",ncz=ncz,xaxt='n',cex.axis=0.8)
 axis(side=1, labels=TRUE,tck=-0.01,cex.axis=0.8)
 #mtext(side=1,"p values",line=2)
 
@@ -137,7 +142,7 @@ nullalthist(zscore,res.locfdr$fdr,main="locfdr",ncz=ncz,xaxt='n',cex.axis=0.8,yl
 axis(side=1, labels=FALSE,tck=-0.01)
 nullalthist(zscore,res.mixfdr$fdr,main="mixfdr",ncz=ncz,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
 axis(side=1, labels=FALSE,tck=-0.01)
-nullalthist(zscore,res.ash$lfdr,main="ash",ncz=ncz,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
+nullalthist(zscore,get_lfdr(res.ash),main="ash",ncz=ncz,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
 axis(side=1, labels=TRUE,tck=-0.01,cex.axis=0.8)
 #mtext(side=1,"z scores",line=2)
 

@@ -34,7 +34,7 @@ bayes.wrapper = function(input, meta, args=NULL){
 }
 
 ash2beta_est =function(output){
-  return (list(beta_est=output$PosteriorMean))
+  return (list(beta_est=get_pm(output)))
 } 
 
 ash2pi0_est =function(output){
@@ -42,5 +42,5 @@ ash2pi0_est =function(output){
 } 
 
 ash2fitted.g = function(output){
-  return (list(fitted.g=output$fitted.g))
+  return (list(fitted.g=get_fitted_g(output)))
 }

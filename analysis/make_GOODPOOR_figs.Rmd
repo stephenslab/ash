@@ -62,7 +62,7 @@ res.ash.good = ash(betahat[GOOD],sebetahat[GOOD],method="fdr")
 ```{r GOODPOOReg_scatter, dev='pdf', fig.width=6.5, fig.height=3}
 res = rbind(data.frame(x= res.qvalue.good$qvalues, y = res.qvalue$qvalues[GOOD],type="qvalue"),
             data.frame(x=res.locfdr.good$fdr,y=res.locfdr$fdr[GOOD],type='locfdr'), 
-            data.frame(x=res.ash.good$lfsr,y=res.ash$lfsr[GOOD],type="ashr"))
+            data.frame(x=get_lfsr(res.ash.good),y=get_lfsr(res.ash)[GOOD],type="ashr"))
 
 library("ggplot2")
 pp= ggplot(data=res,aes(x,y)) +geom_point(shape=1) +
@@ -80,7 +80,7 @@ print(pp +scale_y_continuous(limits=c(0,1)) +
 
 ```{r lfsr_vs_pval_GOODPOOR, dev='pdf', fig.width=6.5, fig.height=3}
 make_df_for_pval=function(ash,method="default"){
-  df = data.frame(p=pnorm(-abs(ash$data$betahat/ash$data$sebetahat)),lfsr=ash$lfsr,s=ash$data$sebetahat,method=method)
+  df = data.frame(p=pnorm(-abs(ash$data$x/ash$data$s)),lfsr=get_lfsr(ash),s=ash$data$s,method=method)
 }
 
 plot_pval_vs_lfsr=function(df,plot.it=TRUE){
@@ -95,7 +95,7 @@ plot_pval_vs_lfsr=function(df,plot.it=TRUE){
   return(p)
 }
 
-res.ash.ET = ash(betahat,sebetahat,method="fdr",model="ET",mixcompdist="normal",outputlevel=4)
+res.ash.ET = ash(betahat,sebetahat,method="fdr",alpha=1,mixcompdist="normal",outputlevel=4)
 p=plot_pval_vs_lfsr(rbind(
   make_df_for_pval(res.ash,method="Default prior (alpha=0)"),
   make_df_for_pval(res.ash.ET,method="p-value prior (alpha=1)")))
