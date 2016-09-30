@@ -22,53 +22,57 @@ depends on both the prior and the likelihood; the prior, $g$, is
 learned from the data, and the likelihood incorporates the standard
 error of each observation.
 
-TO DO: explain what this chunk does.
+First, we load the necessary libraries, and specify settings for
+displaying the plots in the rendered document.
 
-```{r chunk-options,include = FALSE}
-source("chunk-options.R")
-```
-
-We simulate from two scenarios, the first with effects more peaked
-about zero, the second with effects less peaked.
-
-```{r initialize}
-set.seed(100)
+```r
 library(ashr)
 library(ggplot2)
 library(scales)
+source("chunk-options.R")
+```
+
+We simulate from two scenarios: in the first scenario, the effects are more
+peaked about zero (**sim.spiky**); in the second scenario, the effects are
+less peaked (**sim.bignormal**).
+
+```r
+set.seed(100)
 source("../code/dsc-shrink/datamakers/datamaker.R")
 
-NSAMP=1000
-s = 1/rgamma(NSAMP,5,5)
-sim.bignormal = rnormmix_datamaker(args=list(g=normalmix(c(1),c(0),c(4)),
-                        min_pi0=0,
-                        max_pi0=0,
-                        nsamp=NSAMP,
-                        betahatsd=s
-                      ))
+NSAMP = 1000
+s     = 1/rgamma(NSAMP,5,5)
 
-sim.spiky = rnormmix_datamaker(args=list(g=normalmix(c(.4,.2,.2,.2),c(0,0,0,0),c(.25,.5,1,2)),
-                        min_pi0=0,
-                        max_pi0=0,
-                        nsamp=NSAMP,
-                        betahatsd=s
-                      ))
+sim.spiky =
+  rnormmix_datamaker(args = list(g = normalmix(c(0.4,0.2,0.2,0.2),
+                                               c(0,0,0,0),
+                                               c(0.25,0.5,1,2)),
+                                  min_pi0   = 0,
+                                  max_pi0   = 0,
+                                  nsamp     = NSAMP,
+                                  betahatsd = s))
 
+sim.bignormal =
+  rnormmix_datamaker(args = list(g         = normalmix(1,0,4),
+                                 min_pi0   = 0,
+                                 max_pi0   = 0,
+                                 nsamp     = NSAMP,
+                                 betahatsd = s))
 ```
 
-Now run ash on both:
-```{r run-ash}
-beta.bignormal.ash = ash(sim.bignormal$input$betahat, s)
-beta.spiky.ash = ash(sim.spiky$input$betahat, s)
-```
+Now we run ash on both data sets.
 
+```r
+beta.spiky.ash     = ash(sim.spiky$input$betahat,s)
+beta.bignormal.ash = ash(sim.bignormal$input$betahat,s)
+```
 
 Here we plot the shrunken estimates against the observed values, colored
 according to the (square root of) precision: precise esitmates being colored red, and less precise estimates being blue. Two key features of the plots
 illustrate the ideas of adaptive shrinkage: i) the estimates under the spiky scenario are shrunk more strongly, illustrating that shrinkage adapts to the underlying distribution of beta; ii) in both cases, estimates with large standard error (blue) are shrunk more than estimates with small standard error (red) illustrating that shrinkage adapts to measurement precision.
 
 
-```{r plotting}
+```r
 make_df_for_ashplot = function(sim1,sim2,ash1,ash2,name1="spiky",name2="big-normal"){
   df = data.frame(betahat = c(sim1$input$betahat,sim2$input$betahat),
                 beta_est = c(get_pm(ash1), get_pm(ash2)),
@@ -78,9 +82,9 @@ make_df_for_ashplot = function(sim1,sim2,ash1,ash2,name1="spiky",name2="big-norm
   df$signif = df$lfsr<0.05
   return(df)
 }
-  
+
 ashplot=function(df,xlab="Observed beta-hat",ylab="Shrunken beta estimate"){
-  ggplot(df,aes(x=betahat,y=beta_est,color=1/s)) + 
+  ggplot(df,aes(x=betahat,y=beta_est,color=1/s)) +
     xlab(xlab) +
     ylab(ylab) + geom_point() +  facet_grid(.~scenario) +   geom_abline(intercept=0,slope=1) +
   scale_colour_gradient2(midpoint = median(1/s),low="blue", mid="white",high="red",space="Lab")  +coord_fixed(ratio=1)
@@ -95,11 +99,11 @@ according to the (square root of) precision
 
 
 ```{r plotting lfsr}
-  
+
 z_lfsr_plot=function(df,ylab="Observed Z score",xlab="lfsr"){
-  ggplot(df,aes(x=lfsr,y=betahat/s,color=1/s)) + 
+  ggplot(df,aes(x=lfsr,y=betahat/s,color=1/s)) +
     xlab(xlab) +
-    ylab(ylab) + geom_point() +  facet_grid(.~scenario) + scale_colour_gradient2(midpoint = median(1/s),low="blue", mid="white",high="red",space="Lab") 
+    ylab(ylab) + geom_point() +  facet_grid(.~scenario) + scale_colour_gradient2(midpoint = median(1/s),low="blue", mid="white",high="red",space="Lab")
 }
 
 z_lfsr_plot(df)
@@ -107,10 +111,10 @@ z_lfsr_plot(df)
 
 A related consequence is that significance of each observation is no longer monotonic with $p$ value.
 
-```{r}
+```r
 pval_plot=function(df){
   ggplot(df,aes(x=pnorm(-abs(betahat/s)),y=lfsr,color=log(s))) + geom_point() +  facet_grid(.~scenario) +xlim(c(0, 0.025)) + xlab("p value") + ylab("lfsr") +
-  scale_colour_gradient2(midpoint = 0,low="blue", mid="white",high="red")  
+  scale_colour_gradient2(midpoint = 0,low="blue", mid="white",high="red")
 }
 pval_plot(df)
 ```
@@ -124,8 +128,6 @@ df.ET = make_df_for_ashplot(sim.spiky,sim.bignormal,beta.spiky.ash.ET,beta.bigno
 ashplot(df.ET,ylab="Shrunken beta estimate (ET model)")
 pval_plot(df.ET)
 ```
-
-
 
 This is a "volcano plot" showing effect size against p value. The blue points are "significant" in that they have lfsr<0.05. In this case the significance by lfsr is not quite the same as cutting off at a given $p$ value (you can see that the decision boundary is not quite the same as drawing a horizontal line), but also not that different, presumably because the standard errors, although varying across observations, do not vary greatly.
 ```{r volcano}
@@ -145,4 +147,3 @@ summary(s)
 ```{r info}
 sessionInfo()
 ```
-

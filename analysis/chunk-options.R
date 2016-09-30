@@ -7,4 +7,4 @@ opts_chunk$set(tidy = FALSE,
                fig.align = "center",
                fig.path = paste0("figure/", current_input(), "/"))
 
-knit_hooks$set(crop=hook_pdfcrop)
+knit_hooks$set(crop = hook_pdfcrop)
