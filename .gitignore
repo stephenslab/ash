@@ -8,3 +8,4 @@ figure/*/*.pdf
 .Rhistory
 .Rproj.user
 packrat/src/
+.DS_Store

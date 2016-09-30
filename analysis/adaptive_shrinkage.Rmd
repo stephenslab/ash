@@ -34,7 +34,8 @@ source("chunk-options.R")
 
 We simulate from two scenarios: in the first scenario, the effects are more
 peaked about zero (**sim.spiky**); in the second scenario, the effects are
-less peaked (**sim.bignormal**).
+less peaked at zero (**sim.bignormal**). A summary of the two data sets is
+printed at the end of this chunk.
 
 ```{r initialize}
 set.seed(100)
@@ -58,6 +59,12 @@ sim.bignormal =
                                  max_pi0   = 0,
                                  nsamp     = NSAMP,
                                  betahatsd = s))
+
+cat("Summary of observed beta-hats:\n")
+print(rbind(spiky     = quantile(sim.spiky$input$betahat,seq(0,1,0.1)),
+            bignormal = quantile(sim.bignormal$input$betahat,seq(0,1,0.1))),
+      digits = 3)
+
 ```
 
 Now we run ash on both data sets.
@@ -67,39 +74,44 @@ beta.spiky.ash     = ash(sim.spiky$input$betahat,s)
 beta.bignormal.ash = ash(sim.bignormal$input$betahat,s)
 ```
 
-Here we plot the shrunken estimates against the observed values, colored
-according to the (square root of) precision: precise esitmates being colored
+Next we plot the shrunken estimates against the observed values, colored
+according to the (square root of) precision: precise estimates being colored
 red, and less precise estimates being blue. Two key features of the plots
 illustrate the ideas of adaptive shrinkage: i) the estimates under the spiky
 scenario are shrunk more strongly, illustrating that shrinkage adapts to the underlying distribution of beta; ii) in both cases, estimates with large
 standard error (blue) are shrunk more than estimates with small standard
 error (red) illustrating that shrinkage adapts to measurement precision.
 
-```{r plotting}
-make_df_for_ashplot = function(sim1,sim2,ash1,ash2,name1="spiky",name2="big-normal"){
-  df = data.frame(betahat = c(sim1$input$betahat,sim2$input$betahat),
-                beta_est = c(get_pm(ash1), get_pm(ash2)),
-                lfsr = c(get_lfsr(ash1), get_lfsr(ash2)),
-                s=c(sim1$input$sebetahat,sim2$input$sebetahat),
-                scenario=c(rep(name1,NSAMP),rep(name2,NSAMP)))
-  df$signif = df$lfsr<0.05
-  return(df)
-}
+```{r plot_shrunk_vs_obs}
+make_df_for_ashplot =
+  function (sim1, sim2, ash1, ash2, name1 = "spiky", name2 = "big-normal") {
+    n    = length(sim1$input$betahat)
+    lfsr = c(get_lfsr(ash1),get_lfsr(ash2))
+    return(data.frame(betahat  = c(sim1$input$betahat,sim2$input$betahat),
+                      beta_est = c(get_pm(ash1), get_pm(ash2)),
+                      lfsr     = lfsr,
+                      s        = c(sim1$input$sebetahat,sim2$input$sebetahat),
+                      scenario = c(rep(name1,n),rep(name2,n)),
+                      signif   = lfsr < 0.05))
+  }
 
-ashplot=function(df,xlab="Observed beta-hat",ylab="Shrunken beta estimate"){
-  ggplot(df,aes(x=betahat,y=beta_est,color=1/s)) +
-    xlab(xlab) +
-    ylab(ylab) + geom_point() +  facet_grid(.~scenario) +   geom_abline(intercept=0,slope=1) +
-  scale_colour_gradient2(midpoint = median(1/s),low="blue", mid="white",high="red",space="Lab")  +coord_fixed(ratio=1)
-}
-df=make_df_for_ashplot(sim.spiky,sim.bignormal,beta.spiky.ash,beta.bignormal.ash)
-ashplot(df)
+ashplot = function(df,xlab="Observed beta-hat",ylab="Shrunken beta estimate") {
+  ggplot(df,aes(x = betahat,y = beta_est,color = 1/s)) +
+    xlab(xlab) + ylab(ylab) + geom_point() + facet_grid(.~scenario) +   geom_abline(intercept = 0,slope = 1,linetype = "dotted") +
+    scale_colour_gradient2(midpoint = median(1/s),low = "blue",mid = "white",
+                           high = "red",space = "Lab") +
+    coord_fixed(ratio = 1)
+ }
+
+df = make_df_for_ashplot(sim.spiky,sim.bignormal,beta.spiky.ash,
+                         beta.bignormal.ash)
+print(ashplot(df))
 ```
 
-Now plot lfsr against z scores, colored
-according to the (square root of) precision
+Now plot lfsr against z scores, colored according to the (square root of)
+precision.
 
-```{r plotting_lfsr}
+```{r plot_lfsr}
 
 z_lfsr_plot=function(df,ylab="Observed Z score",xlab="lfsr"){
   ggplot(df,aes(x=lfsr,y=betahat/s,color=1/s)) +
@@ -107,7 +119,7 @@ z_lfsr_plot=function(df,ylab="Observed Z score",xlab="lfsr"){
     ylab(ylab) + geom_point() +  facet_grid(.~scenario) + scale_colour_gradient2(midpoint = median(1/s),low="blue", mid="white",high="red",space="Lab")
 }
 
-z_lfsr_plot(df)
+print(z_lfsr_plot(df))
 ```
 
 A related consequence is that significance of each observation is no longer monotonic with $p$ value.
