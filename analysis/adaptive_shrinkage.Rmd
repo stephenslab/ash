@@ -78,30 +78,32 @@ Next we plot the shrunken estimates against the observed values, colored
 according to the (square root of) precision: precise estimates being colored
 red, and less precise estimates being blue. Two key features of the plots
 illustrate the ideas of adaptive shrinkage: i) the estimates under the spiky
-scenario are shrunk more strongly, illustrating that shrinkage adapts to the underlying distribution of beta; ii) in both cases, estimates with large
+scenario are shrunk more strongly, illustrating that shrinkage adapts to the
+underlying distribution of beta; ii) in both cases, estimates with large
 standard error (blue) are shrunk more than estimates with small standard
 error (red) illustrating that shrinkage adapts to measurement precision.
 
 ```{r plot_shrunk_vs_obs}
 make_df_for_ashplot =
   function (sim1, sim2, ash1, ash2, name1 = "spiky", name2 = "big-normal") {
-    n    = length(sim1$input$betahat)
-    lfsr = c(get_lfsr(ash1),get_lfsr(ash2))
+    n = length(sim1$input$betahat)
+    x = c(get_lfsr(ash1),get_lfsr(ash2))
     return(data.frame(betahat  = c(sim1$input$betahat,sim2$input$betahat),
-                      beta_est = c(get_pm(ash1), get_pm(ash2)),
-                      lfsr     = lfsr,
+                      beta_est = c(get_pm(ash1),get_pm(ash2)),
+                      lfsr     = x,
                       s        = c(sim1$input$sebetahat,sim2$input$sebetahat),
                       scenario = c(rep(name1,n),rep(name2,n)),
-                      signif   = lfsr < 0.05))
+                      signif   = x < 0.05))
   }
 
-ashplot = function(df,xlab="Observed beta-hat",ylab="Shrunken beta estimate") {
+ashplot = function(df,xlab="Observed beta-hat",ylab="Shrunken beta estimate")
   ggplot(df,aes(x = betahat,y = beta_est,color = 1/s)) +
-    xlab(xlab) + ylab(ylab) + geom_point() + facet_grid(.~scenario) +   geom_abline(intercept = 0,slope = 1,linetype = "dotted") +
-    scale_colour_gradient2(midpoint = median(1/s),low = "blue",mid = "white",
-                           high = "red",space = "Lab") +
+    xlab(xlab) + ylab(ylab) + geom_point() +
+    facet_grid(.~scenario) +
+    geom_abline(intercept = 0,slope = 1,linetype = "dotted") +
+    scale_colour_gradient2(midpoint = median(1/s),low = "blue",
+                           mid = "white",high = "red",space = "Lab") +
     coord_fixed(ratio = 1)
- }
 
 df = make_df_for_ashplot(sim.spiky,sim.bignormal,beta.spiky.ash,
                          beta.bignormal.ash)
@@ -113,49 +115,72 @@ precision.
 
 ```{r plot_lfsr}
 
-z_lfsr_plot=function(df,ylab="Observed Z score",xlab="lfsr"){
-  ggplot(df,aes(x=lfsr,y=betahat/s,color=1/s)) +
-    xlab(xlab) +
-    ylab(ylab) + geom_point() +  facet_grid(.~scenario) + scale_colour_gradient2(midpoint = median(1/s),low="blue", mid="white",high="red",space="Lab")
-}
+z_lfsr_plot = function(df,ylab = "Observed Z score",xlab = "lfsr")
+  ggplot(df,aes(x = lfsr,y = betahat/s,color = 1/s)) +
+    xlab(xlab) + ylab(ylab) + geom_point() + facet_grid(.~scenario) +
+    scale_colour_gradient2(midpoint = median(1/s),low = "blue",
+                           mid = "white",high = "red",space = "Lab")
 
 print(z_lfsr_plot(df))
 ```
 
-A related consequence is that significance of each observation is no longer monotonic with $p$ value.
+A related consequence is that significance of each observation is no longer
+monotonic with $p$ value.
+
+**Note:** I find it confusing that you are using the same colour scheme here as
+above, but you are showing `log(s)`, whereas above you are showing `1/s`. It
+seems that it would be better to reverse the colour scheme for the `pval_plot`
+to better correspond to the above plots. –Peter
 
 ```{r plot_pvalues}
-pval_plot=function(df){
-  ggplot(df,aes(x=pnorm(-abs(betahat/s)),y=lfsr,color=log(s))) + geom_point() +  facet_grid(.~scenario) +xlim(c(0, 0.025)) + xlab("p value") + ylab("lfsr") +
-  scale_colour_gradient2(midpoint = 0,low="blue", mid="white",high="red")
-}
-pval_plot(df)
+pval_plot = function (df)
+  ggplot(df,aes(x = pnorm(-abs(betahat/s)),y = lfsr,color = log(s))) +
+  geom_point() + facet_grid(.~scenario) + xlim(c(0,0.025)) +
+  xlab("p value") + ylab("lfsr") +
+  scale_colour_gradient2(midpoint = 0,low = "blue",
+                         mid = "white",high = "red")
+
+print(pval_plot(df))
 ```
 
 Let's see how these are affected by changing the modelling assumptions so that
-the standardized beta are exchangeable (rather than the beta being exchangeable).
+the *standardized* beta are exchangeable (rather than the beta being exchangeable).
+
 ```{r run_ash_ET}
-beta.bignormal.ash.ET = ash(sim.bignormal$input$betahat, s,alpha=1,mixcompdist="normal")
-beta.spiky.ash.ET = ash(sim.spiky$input$betahat, s,alpha=1,mixcompdist="normal")
-df.ET = make_df_for_ashplot(sim.spiky,sim.bignormal,beta.spiky.ash.ET,beta.bignormal.ash.ET)
-ashplot(df.ET,ylab="Shrunken beta estimate (ET model)")
+beta.bignormal.ash.ET =
+  ash(sim.bignormal$input$betahat,s,alpha = 1,mixcompdist = "normal")
+beta.spiky.ash.ET =
+  ash(sim.spiky$input$betahat,s,alpha = 1,mixcompdist = "normal")
+df.ET = make_df_for_ashplot(sim.spiky,sim.bignormal,beta.spiky.ash.ET,
+                            beta.bignormal.ash.ET)
+ashplot(df.ET,ylab = "Shrunken beta estimate (ET model)")
 pval_plot(df.ET)
 ```
 
-This is a "volcano plot" showing effect size against p value. The blue points are "significant" in that they have lfsr<0.05. In this case the significance by lfsr is not quite the same as cutting off at a given $p$ value (you can see that the decision boundary is not quite the same as drawing a horizontal line), but also not that different, presumably because the standard errors, although varying across observations, do not vary greatly.
+This is a "volcano plot" showing effect size against p value. The blue points
+are "significant" in that they have lfsr < 0.05.
+
 ```{r volcano}
-  ggplot(df,aes(x=betahat,y=-log10(2*pnorm(-abs(betahat/s))),col=signif)) + geom_point(alpha=1,size=1.75) +  facet_grid(.~scenario) + theme(legend.position = "none") +
-  xlim(c(-10, 10)) + ylim(c(0, 15)) +
-  xlab("Effect (beta)") + ylab("-log10 p-value")
+print(ggplot(df,aes(x = betahat,y = -log10(2*pnorm(-abs(betahat/s))),
+                    col = signif)) +
+  geom_point(alpha = 1,size = 1.75) + facet_grid(.~scenario) +
+  theme(legend.position = "none") + xlim(c(-10,10)) + ylim(c(0,15)) +
+  xlab("Effect (beta)") + ylab("-log10 p-value"))
 ```
+
+In this case the significance by lfsr is not quite the same as cutting off
+at a given p value (you can see that the decision boundary is not quite the
+same as drawing a horizontal line), but also not that different, presumably
+because the standard errors, although varying across observations, do not
+vary greatly.
 
 ```{r sehist}
-hist(s,main="histogram of standard errors")
-summary(s)
+hist(s,main = "histogram of standard errors")
+print(summary(s))
 ```
 
-## Session information
+Session information.
 
 ```{r info}
-sessionInfo()
+print(sessionInfo())
 ```
