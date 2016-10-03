@@ -127,18 +127,13 @@ print(z_lfsr_plot(df))
 A related consequence is that significance of each observation is no longer
 monotonic with $p$ value.
 
-**Note:** I find it confusing that you are using the same colour scheme here as
-above, but you are showing `log(s)`, whereas above you are showing `1/s`. It
-seems that it would be better to reverse the colour scheme for the `pval_plot`
-to better correspond to the above plots. –Peter
-
 ```{r plot_pvalues}
 pval_plot = function (df)
   ggplot(df,aes(x = pnorm(-abs(betahat/s)),y = lfsr,color = log(s))) +
   geom_point() + facet_grid(.~scenario) + xlim(c(0,0.025)) +
   xlab("p value") + ylab("lfsr") +
-  scale_colour_gradient2(midpoint = 0,low = "blue",
-                         mid = "white",high = "red")
+  scale_colour_gradient2(midpoint = 0,low = "red",
+                         mid = "white",high = "blue")
 
 print(pval_plot(df))
 ```
