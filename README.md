@@ -32,6 +32,9 @@ try to install all the packages you need to a local library in the
 directory with more files in a subdirectory whose name will depend on
 your architecture.)
 
+**To do:** Mention that the data generation scripts use the `dscr`
+package; see [here](http://github.com/stephens999/dscr).
+
 If this does not work first time - e.g. because you don't have some
 dependencies installed - then install the dependencies and try
 again. This time on entering `R` you will have to tell `packrat` to

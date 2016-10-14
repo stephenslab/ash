@@ -8,15 +8,21 @@ date: 2015-10-26
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
+First, we load the necessary libraries, and specify settings for
+displaying the plots in the rendered document.
+
 ```{r chunk-options, include=FALSE}
+library(dplyr)
+library(ggplot2)
 source("chunk-options.R")
 ```
+
+TO DO: Add note here about having to first run script to generate data sets
+required to run the analysis.
 
 ```{r}
 load("../output/dsc-shrink-files/res.RData")
 source("../R/set_plot_colors.R")
-library(dplyr)
-library(ggplot2)
 
 #' @param df dataframe of scores for many methods/scenrios etc
 #' @return tall dataframe with columns of scores for each method and the "goldmethod" against which plot is to be made
@@ -42,17 +48,17 @@ process_score_for_plotting_against_gold=function(df,PLOTMETHODS=c("ash.n","ash.u
 plot_lfsr=function(lfsr,xlab="True lfsr",ylab="Estimated lfsr",xlim=c(0,0.2),ylim=c(0,0.2),legend.position="bottom"){
   p=ggplot(lfsr,
          aes(val.x,val.y,colour=method.y)) +
-    facet_grid(. ~ scenario) + 
+    facet_grid(. ~ scenario) +
     guides(alpha=FALSE) +
     geom_abline(colour = "black") +
     geom_abline(colour= "red", slope=2) +
     xlab(xlab) +
     ylab(ylab) +
-    geom_point(shape=1,size=0.1,alpha=0.2) 
+    geom_point(shape=1,size=0.1,alpha=0.2)
 
   p +scale_y_continuous(limits=ylim) +
         scale_x_continuous(limits=xlim)
-         
+
 }
 
 lfsr = process_score_for_plotting_against_gold(res$lfsr,PLOTSEEDS=1:100,PLOTMETHODS="ash.n")
@@ -101,10 +107,8 @@ print(p1.s.nn+theme(legend.position="none",axis.text.x = element_text(size = 8,a
 
 ```
 
-
-## Session information
+## Session information.
 
 ```{r info}
-sessionInfo()
+print(sessionInfo())
 ```
-

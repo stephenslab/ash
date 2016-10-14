@@ -114,7 +114,6 @@ Now plot lfsr against z scores, colored according to the (square root of)
 precision.
 
 ```{r plot_lfsr}
-
 z_lfsr_plot = function(df,ylab = "Observed Z score",xlab = "lfsr")
   ggplot(df,aes(x = lfsr,y = betahat/s,color = 1/s)) +
     xlab(xlab) + ylab(ylab) + geom_point() + facet_grid(.~scenario) +
@@ -174,7 +173,7 @@ hist(s,main = "histogram of standard errors")
 print(summary(s))
 ```
 
-Session information.
+## Session information.
 
 ```{r info}
 print(sessionInfo())
