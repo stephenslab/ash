@@ -66,49 +66,55 @@ effects.
 set.seed(1234)
 nsamp      = 1000
 betahat.se = rgamma(nsamp,1,1)
-beta       = betahat.se * rnorm(nsamp) #simulate effects under the alternative assumption
+beta       = betahat.se * rnorm(nsamp)
 betahat    = rnorm(nsamp,beta,betahat.se)
 zscore     = betahat/betahat.se
 pval       = pchisq(zscore^2,df=1,lower.tail=FALSE)
-plot(betahat,-log(pval))
+plot(betahat,-log(pval),pch = 20)
 ```
 
 Here is the EE analysis.
-```{r}
-  library(ashr)
-  ashEE.res = ash(betahat, betahat.se,method="fdr",alpha=0)
+
+```{r analysis_ee}
+library(ashr)
+ashEE.res = ash(betahat,betahat.se,method = "fdr",alpha = 0)
 ```
 
-And here is how we can perform the ET analysis,
-```{r}
-  ashET.res = ash(betahat, betahat.se,method="fdr", alpha=1)
-```
+And here is how we can perform the ET analysis.
 
+```{r analysis_et}
+ashET.res = ash(betahat,betahat.se,method = "fdr",alpha = 1)
+```
 
 Now we compare the EE vs ET models:
-```{r}
-  ashEE.res$loglik-ashET.res$loglik
+```{r compare_analyses}
+print(ashEE.res$loglik - ashET.res$loglik)
 ```
 
-Then the log likelihood ratio is loglikEE-loglikET=`r ashEE.res$loglik-ashET.res$loglik`. This highly negative
-loglikelihood indicate that the data strongly favor
-the ET model, which is expected because the data were generated under this model.
-(One might be tempted to ask whether the log likelihood ratio is ``significant". We don't
-know how to address this question, but suggest in practice it doesn't matter: if the loglikelihood ratio is positive then use EE, if it is negative then use ET.)
+Then the log likelihood ratio is loglikEE - loglikET =
+`r ashEE.res$loglik - ashET.res$loglik`. This highly negative loglikelihood
+indicates that the data strongly favor the ET model, which is expected
+because the data were generated under this model. (One might be tempted to ask
+whether the log likelihood ratio is "significant". We don't know how to address
+this question, but suggest in practice it doesn't matter: if the loglikelihood
+ratio is positive then use EE, if it is negative then use ET.)
 
-The above illustrates these ideas on simulations from the ET model. For comparison,
-we now provide results for simulations under the EE model.
-```{r}
-  set.seed(1234)
-  nsamp=1000
-  betahat.se = rgamma(nsamp,1,1)
-  beta = rnorm(nsamp) #simulate effects under the original assumption
-  betahat = rnorm(nsamp,beta,betahat.se)
-  zscore = betahat/betahat.se
-  pval = pchisq(zscore^2,df=1,lower.tail=FALSE)
-  ashEE.res = ash(betahat, betahat.se,method="fdr",alpha=0)
-  ashET.res = ash(betahat, betahat.se, method="fdr",alpha=1)
-  ashEE.res$loglik-ashET.res$loglik
+The above illustrates these ideas on simulations from the ET model. For
+comparison, we now provide results for simulations under the EE model.
+
+```{r generate_data_from_ee_model}
+set.seed(1234)
+samp       = 1000
+betahat.se = rgamma(nsamp,1,1)
+beta       = rnorm(nsamp)
+betahat    = rnorm(nsamp,beta,betahat.se)
+zscore     = betahat/betahat.se
+pval       = pchisq(zscore^2,df = 1,lower.tail = FALSE)
+ashEE.res  = ash(betahat,betahat.se,method = "fdr",alpha = 0)
+ashET.res  = ash(betahat,betahat.se,method = "fdr",alpha = 1)
+print(ashEE.res$loglik - ashET.res$loglik)
 ```
-So here the log likelihood ratio is positive, indicating that the EE model is preferred
-(which is expected since the data were generated under that model).
+
+So here the log likelihood ratio is positive, indicating that the EE model
+is preferred (which is expected since the data were generated under that
+model).
