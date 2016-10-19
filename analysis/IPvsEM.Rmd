@@ -54,31 +54,43 @@ for(method in c("fdr","shrink")) {
   }
 }
 cat("\n")
+
+# Summarize the results in a table.
+cat("Average computation time (seconds):\n")
+print(as.table(by(df,df[c("method","optmethod")],
+                  function (x) mean(x$elapsed.time))))
 ```
 
 # Results
 
 Now plot time as a function of $n$:
 
-```{r plot_results1}
-qplot(x = n,y = elapsed.time,data = df,col=optmethod,facets=.~method,ylab="elapsed time (s)")
+```{r plot_results}
+qplot(x = n,y = elapsed.time,data = df,col = optmethod,facets = .~method,
+      ylab = "elapsed time (s)")
 ```
 
-And a zoom-in on "small" problems with $n<5000$.
+Zoom-in on "small" problems with $n < 5000$.
 
-```{r plot_results2}
-ggplot2::qplot(x=n,y=elapsed.time,data=dplyr::filter(df,n<5000),col=optmethod,facets=.~method,ylab="elapsed time (s)")
+```{r plot_results_magnified}
+qplot(x = n,y = elapsed.time, data = subset(df,n < 5000),
+      col = optmethod,facets = .~method,ylab = "elapsed time (s)")
 ```
 
 # Summary
 
-The IP method clearly scales to large problem much better than EM. It is faster, and also more reliable (sometimes reaches higher log-likelihood than EM, never smaller); see
-[checkIP.html](checkIP.html).
+The IP method clearly scales to large problem much better than EM. It is faster,
+and also more reliable (sometimes reaches higher log-likelihood than EM,
+never smaller); see [checkIP.html](checkIP.html).
 
-However, for small problems (n<5000) the EM is adequate for many practical purposes, solving within a few seconds. This is particularly true for the penalty term (method=fdr), which
- helps the EM converge, presumably because it is helping identifiability, removing the large flat parts of the likelihood objective function.
+However, for small problems (n < 5000) the EM is adequate for many practical
+purposes, solving within a few seconds. This is particularly true for the
+penalty term (method = fdr), which helps the EM converge, presumably because
+it is helping identifiability, removing the large flat parts of the likelihood
+objective function.
 
-Indeed, for small problems with the penalty term (n<2000) EM with squarem acceleration is a little faster in these comparisons than IP.
+Indeed, for small problems with the penalty term (n < 2000) EM with squarem
+acceleration is a little faster in these comparisons than IP.
 
 ## Session information
 
