@@ -8,7 +8,7 @@ date: YYYY-MM-DD
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
-```{r chunk-options, include=FALSE}
+```{r chunk_options, include=FALSE}
 source("chunk-options.R")
 ```
 
@@ -27,4 +27,3 @@ cp analysis/template.Rmd analysis/newfile.Rmd
 ```{r info}
 sessionInfo()
 ```
-

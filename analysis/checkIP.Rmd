@@ -8,23 +8,24 @@ date: 2015-11-18
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
-```{r chunk-options, include=FALSE}
+```{r chunk_options, include=FALSE}
 source("chunk-options.R")
 ```
 
-
-We want to compare the likelihoods achieved by the newly implemented interior point method with the EM algorithm.
+We want to compare the likelihoods achieved by the newly implemented
+interior point method with the EM algorithm.
 
 ## Log-likelihood comparison
 
-The 'dsc-opt' simply runs both methods (IP and EM) on the same data sets, 
+The 'dsc-opt' simply runs both methods (IP and EM) on the same data sets,
 and compares the difference in the log-likelihoods. We can see that
 in >90% of cases the difference is negligible. Then there is a tail of
-cases where the IP loglik is higher - presumably where the EM doesn't really converge so well.
+cases where the IP loglik is higher - presumably where the EM doesn't
+really converge so well.
 
 ```{r}
-  load("../output/dsc-opt-files/dsc_opt.RData")
-  plot(ecdf(dsc_opt$res$diff1),main="ECDF of log-likelihood difference (IP-EM)")
+load("../output/dsc-opt-files/dsc_opt.RData")
+plot(ecdf(dsc_opt$res$diff1),main="ECDF of log-likelihood difference (IP-EM)")
 ```
 
 ## lfsr comparison
@@ -38,15 +39,15 @@ we ran both the IP method and EM method (nocxx) in dsc-shrink.
   library("dplyr")
   library("reshape2")
   # select out the lfsr estimates for each method
-  
+
   df1 = res$lfsr %>% dplyr::filter(method %in% c("ash.hu.nocxx")) %>% select(-user.self,-sys.self,-elapsed,-user.child,-sys.child) %>%
     melt(id.vars=c("method","scenario","seed",".id"),value.name="lfsr.nocxx")
   df2 = res$lfsr %>% dplyr::filter(method %in% c("ash.hu")) %>% select(-user.self,-sys.self,-elapsed,-user.child,-sys.child) %>%
     melt(id.vars=c("method","scenario","seed",".id"),value.name="lfsr.IP")
-  
+
   df = inner_join(df1,df2,by=c("scenario","seed","variable"))
   ggplot(df,aes(lfsr.nocxx,lfsr.IP)) +geom_point(shape=1) +
-  facet_wrap(~ scenario, nrow=2) + 
+  facet_wrap(~ scenario, nrow=2) +
   geom_abline(colour = "black") +
   xlab("EM algorithm (no cxx)") +
   ylab("IP method")
@@ -58,4 +59,3 @@ we ran both the IP method and EM method (nocxx) in dsc-shrink.
 ```{r info}
 sessionInfo()
 ```
-

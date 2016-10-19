@@ -11,14 +11,14 @@ date: 2016-01-26
 First, we load the necessary libraries, and specify settings for
 displaying the plots in the rendered document.
 
-```{r chunk-options, include=FALSE}
+```{r chunk_options, include=FALSE}
 library(REBayes)
 library(ashr)
 library(ggplot2)
 source("chunk-options.R")
 ```
 
-# Set up simulation
+## Set up simulation
 
 The following simulation assumes $\beta \sim N(0,\sigma_{\sf betasd}^2)$ and
 with $\hat{\beta}$ having standard deviation 1.
@@ -61,7 +61,7 @@ print(as.table(by(df,df[c("method","optmethod")],
                   function (x) mean(x$elapsed.time))))
 ```
 
-# Results
+## Results
 
 Now plot time as a function of $n$:
 
@@ -77,7 +77,7 @@ qplot(x = n,y = elapsed.time, data = subset(df,n < 5000),
       col = optmethod,facets = .~method,ylab = "elapsed time (s)")
 ```
 
-# Summary
+## Summary
 
 The IP method clearly scales to large problem much better than EM. It is faster,
 and also more reliable (sometimes reaches higher log-likelihood than EM,
