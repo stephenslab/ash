@@ -26,6 +26,7 @@ First, we load the necessary libraries, and specify settings for
 displaying the plots in the rendered document.
 
 ```{r chunk_options, include=FALSE}
+library(REBayes)
 library(ashr)
 library(ggplot2)
 library(scales)
@@ -64,7 +65,6 @@ cat("Summary of observed beta-hats:\n")
 print(rbind(spiky     = quantile(sim.spiky$input$betahat,seq(0,1,0.1)),
             bignormal = quantile(sim.bignormal$input$betahat,seq(0,1,0.1))),
       digits = 3)
-
 ```
 
 Now we run ash on both data sets.

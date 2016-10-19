@@ -8,43 +8,49 @@ date: 2015-10-26
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
-```{r chunk-options, include=FALSE}
-source("chunk-options.R")
-```
-
 This file makes two figures:
 
-1. illustrates basic idea of way q value does FDR analysis in p value space
-2. compares methods in the way they decompose p values and z scores into two groups 
+1. Illustrates basic idea of way q value does FDR analysis in p value space.
 
+2. Compares methods in the way they decompose p values and z scores into
+two groups.
 
-```{r}
+First, we load the necessary libraries, and specify settings for
+displaying the plots in the rendered document.
+
+```{r chunk-options, include=FALSE}
 require(ashr)
 require(qvalue)
 require(locfdr)
 require(mixfdr)
-source("../R/plot_FDReg_hist.R") #some plotting functions
+source("chunk-options.R")
+source("../R/plot_FDReg_hist.R")
 source("../R/nullalthist.R")
+```
 
-############################ FDReg_hist.pdf ##################################################################
+## Simple simulated example
 
-#simple simulated example
-ncz = 100 # number of bins in z score histograms
+Generates DReg_hist.pdf?
+
+```{r add_label_here}
+
+# ncz is the number of bins in the z score histograms.
+ncz   = 100
 ntest = 10000
 set.seed(111)
 
-#simulate (with all tests alternative, true effects $\beta \sim N(0,1)$)
-beta = rnorm(ntest)
+# Simulate (with all tests alternative, true effects $\beta \sim N(0,1)$).
+beta      = rnorm(ntest)
 sebetahat = 1
-betahat = beta + rnorm(ntest, 0, sebetahat)
-zscore = betahat/sebetahat
-pval = pchisq(zscore^2,df=1,lower.tail=F)
+betahat   = beta + rnorm(ntest,0,sebetahat)
+zscore    = betahat/sebetahat
+pval      = pchisq(zscore^2,df = 1,lower.tail = FALSE)
 
-#apply the different methods
+# Apply the different methods.
 res.qvalue = qvalue(pval)
-res.locfdr = locfdr(zscore,nulltype=0,plot=0)
-res.mixfdr = mixFdr(zscore,noiseSD=1,theonull=TRUE,plot=FALSE)
-res.ash = ash(betahat,1,method="fdr")
+res.locfdr = locfdr(zscore,nulltype = 0,plot = 0)
+res.mixfdr = mixFdr(zscore,noiseSD = 1,theonull = TRUE,plot = FALSE)
+res.ash    = ash(betahat,1,method = "fdr")
 
 #roughly compute a local fdr for qvalue (to aid the plotting of the decomposition in zscore space)
 temp=hist(pval,nclass=50)
@@ -155,4 +161,3 @@ dev.off()
 ```{r info}
 sessionInfo()
 ```
-
