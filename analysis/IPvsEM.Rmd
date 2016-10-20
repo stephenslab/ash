@@ -56,7 +56,7 @@ for(method in c("fdr","shrink")) {
 cat("\n")
 
 # Summarize the results in a table.
-cat("Average computation time (seconds):\n")
+cat("Average computation time (in seconds):\n")
 print(as.table(by(df,df[c("method","optmethod")],
                   function (x) mean(x$elapsed.time))))
 ```

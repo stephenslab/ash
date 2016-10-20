@@ -24,7 +24,7 @@ require(qvalue)
 require(locfdr)
 require(mixfdr)
 source("chunk-options.R")
-source("../R/plot_FDReg_hist.R")
+source("../R/plot_FDReg_hist.R")t/
 source("../R/nullalthist.R")
 ```
 
