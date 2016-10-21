@@ -24,7 +24,7 @@ The following simulation assumes $\beta \sim N(0,\sigma_{\sf betasd}^2)$ and
 with $\hat{\beta}$ having standard deviation 1.
 
 ```{r simulation_setup}
-timed_sims = function(ash.args,nsim = 20,nmin = 100,nmax = 1000,betasd = 1) {
+timed_sims = function(ash.args,nsim = 20,nmin = 100,nmax = 1e3,betasd = 1) {
   n = 10^seq(log10(nmin),log10(nmax),length = nsim)
   elapsed.time = rep(0,nsim)
   for (i in 1:nsim) {
@@ -50,7 +50,7 @@ for(method in c("fdr","shrink")) {
   for(optmethod in c("mixIP","cxxMixSquarem")) {
     df = rbind(df,data.frame(method = method,optmethod = optmethod,
            timed_sims(list(method = method,optmethod = optmethod),
-                           nsim = 50,nmin = 10,nmax = 100000)))
+                           nsim = 50,nmin = 10,nmax = 1e5)))
   }
 }
 cat("\n")

@@ -42,7 +42,7 @@ Now we fit the NPMLE using 'ashr' and compare with the REBayes solution.
 grid = seq(from = min(z$x),to = max(z$x),length = 1000)
 k    = length(grid)
 y.ash.npmle =
-  ash(y,1,g = unimix(pi=rep(1/(k-1),(k-1)),a = grid[-k],b = grid[-1]),
+  ash(y,1,g = unimix(pi = rep(1/(k-1),(k-1)),a = grid[-k],b = grid[-1]),
       method = "shrink")
 
 # Plot the model fitted using GLmix against the fitted ash model.

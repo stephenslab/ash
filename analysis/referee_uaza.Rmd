@@ -12,8 +12,7 @@ date: 2016-03-21
 source("chunk-options.R")
 ```
 
-
-# Simulation
+## Simulation
 
 A referee reported a simulation of 10,000 hypotheses, a fraction 0.8 are null ($\mu_i=0$), and a fraction 0.2 are alternative with effect $\mu_i \sim N(0,1)$. For each effect $i$ there
 are n=30 observations from $x_{i,j} \sim N(\mu_i,1)$ and a one-sample t test is used to compute a $p$ value. The referee correctly notes that these simulations i) obey the
@@ -65,7 +64,7 @@ lfdr.true=get_lfdr(ash(x.est,1/sqrt(30),g=trueg,fixg=TRUE))
 nullalthist(zscore,lfdr.true,main="true partition of z \n into null and alternative",ncz=60,cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6),xlab="z score")
 ```
 
-# Explanation
+## Explanation
 
 In estimating $\pi_0$ qvalue assumes that *all* p values near 1 are null.
 This is equivalent to assuming that *all* z scores near 0 are null. Thus,
@@ -79,4 +78,3 @@ necessarily creates a hole in the $z$ score distribution at 0 under the alternat
 ```{r info}
 sessionInfo()
 ```
-
