@@ -8,42 +8,48 @@ date: 2015-10-26
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
-```{r chunk-options, include=FALSE}
+Here we check that mixfdr actually does OK at fitting the bimodal distribution
+when noise is small compared with bimodality.
+
+First, we load the necessary libraries, and specify settings for
+displaying the plots in the rendered document.
+
+```{r chunk_options, include=FALSE}
 source("chunk-options.R")
 ```
 
-Here we check that mixfdr actually does OK at fitting the bimodal distribution when 
-noise is small compared with bimodality.
+Simulate bimodal data with well-separated peaks. The histogram shows the
+multi-modal nature of the underlying g is clear.
 
-First simulate bimodal data with well-separated peaks. The histogram
-shows the multi-modal nature of the underlying g is clear.
-```{r}
-  source("../code/dsc-shrink/datamakers/datamaker.R")
-  sim.bimodal=rnormmix_datamaker(
-              args=list(g=normalmix(c(0.5,0.5),c(-5,5),c(1,1)),
-              min_pi0=0.4,
-              max_pi0=0.4,
-              nsamp=1000,
-              betahatsd=1)
-            )
-  hist(sim.bimodal$input$betahat,nclass=20,xlim=c(-10,10),prob=TRUE,main="histogram of simulated betahat values")
+```{r sim_data}
+source("../code/dsc-shrink/datamakers/datamaker.R")
+sim.bimodal =
+  rnormmix_datamaker(args = list(g = normalmix(c(0.5,0.5),c(-5,5),c(1,1)),
+                                 min_pi0   = 0.4,
+                                 max_pi0   = 0.4,
+                                 nsamp     = 1000,
+                                 betahatsd = 1))
+hist(sim.bimodal$input$betahat,nclass = 20,xlim = c(-10,10),prob = TRUE,
+     main="histogram of simulated betahat values")
 ```
 
-Now run mixfdr on it. Note that the fit captures the multi-modal nature of g, 
-although mixfdr continues to overestimate pi0.
-```{r}
-  source("../code/dsc-shrink/methods/mixfdr.wrapper.R")
-  sim.bimodal.mixfdroutput = mixfdr.wrapper(sim.bimodal$input,args=list(theonull=TRUE))
-  g = mixfdr2fitted.g(sim.bimodal.mixfdroutput)$fitted.g
-  x=seq(-10,10,length=100)
-  plot(ecdf(sim.bimodal$meta$beta),main="Cdf of true beta: empirical (black) and fitted (red)")
-  lines(x,mixcdf(g,x),col=2)
-```
+Now run mixfdr on the simulated data. Note that the fit captures the
+multi-modal nature of g, although mixfdr continues to overestimate pi0.
 
+```{r fit_models}
+source("../code/dsc-shrink/methods/mixfdr.wrapper.R")
+sim.bimodal.mixfdroutput =
+  mixfdr.wrapper(sim.bimodal$input,args = list(theonull = TRUE))
+g = mixfdr2fitted.g(sim.bimodal.mixfdroutput)$fitted.g
+x = seq(-10,10,length = 100)
+par(cex.main = 1,font.main = 1)
+plot(ecdf(sim.bimodal$meta$beta),cex = 0.6,
+     main = "CDF of true beta: empirical (black) and fitted (red)")
+lines(x,mixcdf(g,x),lwd = 2,lty = "dotted",col = "orangered")
+```
 
 ## Session information
 
 ```{r info}
 sessionInfo()
 ```
-
