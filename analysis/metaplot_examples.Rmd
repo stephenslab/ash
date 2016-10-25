@@ -1,0 +1,33 @@
+---
+title: "DDD plots"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Simulate Z scores
+
+```{r}
+library(rmeta)
+library(ashr)
+n=50
+set.seed(1)
+beta = c(rep(0,n/2),rnorm(n/2,0,2))
+betahat = beta+rnorm(n)
+beta.ash=ashr::ash(betahat,1)
+o = order(betahat)
+```
+
+# Meta Plots
+
+```{r unshrunk}
+rmeta::metaplot(betahat[o],rep(1,n),ylab="",xlab="",xlim=c(-6,6),colors = meta.colors(box=c(rep("red",n/2),rep("black",n/2))[o]))
+```
+
+```{r shrunk}
+rmeta::metaplot(get_pm(beta.ash)[o],get_psd(beta.ash)[o],ylab="",xlab="",xlim=c(-6,6),colors = meta.colors(box=c(rep("red",n/2),rep("black",n/2))[o]))
+```
+
+
