@@ -12,6 +12,8 @@ title: "Home"
 *  [Figures illustrating FDR](makefig_FDReg.html)
 *  [Illustatrate dilution effect of low-precision observations](make_GOODPOOR_figs.html)
 *  [Adaptive Shrinkage](adaptive_shrinkage.html)
+*  [Adaptive Shrinkage: shrunken interval estimates](metaplot_examples.html)
+
 *  [Comparing models: EE vs ET models](CompareEEvsETmodel.html)
 *  [Checking how qvalue behaves in simulation suggested by referee](referee_uaza.html)
 *  [Comparison of methods, and example of Credible Interval behaviour when UA does not hold](efron.fcr.html)
