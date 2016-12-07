@@ -4,12 +4,13 @@ sessionInfo()
 
 dsc_shrink=new_dsc("shrink","../../output/dsc-shrink-files")
 source("add_named_scenarios.R")
-add_named_scenarios(dsc_shrink,c("spiky","near-normal","flat-top","skew","big-normal","bimodal","near-normal-nn"))
+add_named_scenarios(dsc_shrink,c("spiky","near-normal","flat-top","skew","big-nqormal","bimodal","near-normal-nn"))
 add_named_scenarios(dsc_shrink,c("spiky","near-normal","flat-top","skew","big-normal","bimodal"),min_pi0=0,max_pi0=0,suffix="-nn")
 
 source("add_methods.R")
 
-add_output_parser(dsc_shrink,"ash2beta",ash2beta_est,"ash_output","beta_est_output")
+add_output_parser(dsc_shrink,"ash2beta",ash2beta_est,"ash_output",
+                  "beta_est_output")
 add_output_parser(dsc_shrink,"mixfdr2beta",mixfdr2beta_est,"mixfdr_output","beta_est_output")
 
 add_output_parser(dsc_shrink,"ash2pi0",ash2pi0_est,"ash_output","pi0_est_output")
@@ -19,8 +20,6 @@ add_output_parser(dsc_shrink,"qvalue2pi0",qvalue2pi0_est,"qvalue_output","pi0_es
 
 add_output_parser(dsc_shrink,"ash2fitted.g",ash2fitted.g,"ash_output","g_output")
 add_output_parser(dsc_shrink,"mixfdr2fitted.g",mixfdr2fitted.g,"mixfdr_output","g_output")
-
-
 
 source("score.R")
 add_score(dsc_shrink,score,"beta_err","beta_est_output")
@@ -33,8 +32,5 @@ add_score(dsc_shrink,score_betahat,"betahat","mixfdr_output") #just extracts the
 add_score(dsc_shrink,score_lfsr,"lfsr","ash_output") #just extracts the lfsr
 add_score(dsc_shrink,score_lfdr,"lfdr","ash_output") #just extracts the lfdr
 
-
 res=run_dsc(dsc_shrink)
 save(res,dsc_shrink,file="../../output/dsc-shrink-files/res.RData")
-
-
