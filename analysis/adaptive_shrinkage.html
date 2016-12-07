@@ -124,8 +124,8 @@ $(document).ready(function () {
 </div>
 
 
-<p><strong>Last updated:</strong> 2016-12-06</p>
-<p><strong>Code version:</strong> 086ebe047ee2b5b8b0e5bc1815eae4ed40f2aba1</p>
+<p><strong>Last updated:</strong> 2016-12-07</p>
+<p><strong>Code version:</strong> 329c1965003b54ea99cbf56baec045fba005e6ba</p>
 <p>The goal here is to illustrate the “adaptive” nature of the adaptive shrinkage. The shrinkage is adaptive in two senses. First, the amount of shrinkage depends on the distribution <span class="math inline">\(g\)</span> of the true effects, which is learned from the data: when <span class="math inline">\(g\)</span> is very peaked about zero then ash learns this and deduces that signals should be more strongly shrunk towards zero than when <span class="math inline">\(g\)</span> is less peaked about zero. Second, the amount of shrinkage of each observation depends on its standard error: the smaller the standard error, the more informative the data, and so the less shrinkage that occurs. From an Empirical Bayesian perspective both of these points are entirely natural: the posterior depends on both the prior and the likelihood; the prior, <span class="math inline">\(g\)</span>, is learned from the data, and the likelihood incorporates the standard error of each observation.</p>
 <p>First, we load the necessary libraries, and specify settings for displaying the plots in the rendered document.</p>
 <p>We simulate from two scenarios: in the first scenario, the effects are more peaked about zero (<strong>sim.spiky</strong>); in the second scenario, the effects are less peaked at zero (<strong>sim.bignormal</strong>). A summary of the two data sets is printed at the end of this chunk.</p>
@@ -251,7 +251,7 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] knitr_1.14    scales_0.4.0  ggplot2_2.1.0 ashr_2.0.0.0  REBayes_0.63 
+[1] knitr_1.14    scales_0.4.0  ggplot2_2.1.0 ashr_2.0.4    REBayes_0.63 
 [6] Matrix_1.2-6 
 
 loaded via a namespace (and not attached):
