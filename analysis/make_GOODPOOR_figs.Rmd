@@ -8,14 +8,15 @@ date: 2015-10-26
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
-First, we load the necessary libraries, and specify settings for displaying 
-the plots in the rendered document.
+First, we load the necessary libraries and function definitions, and specify 
+settings for displaying the plots in the rendered document.
 
 ```{r chunk-options, include=FALSE}
 library(ashr)
 library(qvalue)
 library(locfdr)
 library(mixfdr)
+library(ggplot2)
 source("chunk-options.R")
 source("../R/plot_FDReg_hist.R")
 ```
@@ -28,15 +29,15 @@ ntest = 10000
 set.seed(112)
 
 null_alt  = rbinom(ntest,1,0.5)
-beta      = rnorm(ntest,0,sd=1)
-beta      = ifelse(null_alt==1,beta,0)
+beta      = rnorm(ntest,0,sd = 1)
+beta      = ifelse(null_alt == 1,beta,0)
 GOOD      = 1:(ntest/2)
 sebetahat = rep(1,ntest)
 sebetahat[-GOOD] = 10
 
 betahat = beta + rnorm(ntest, 0, sebetahat)
 zscore  = betahat/sebetahat
-pval    = pchisq(zscore^2,df=1,lower.tail=F)
+pval    = pchisq(zscore^2,df = 1,lower.tail = F)
 ```
 
 Show how poor precision observations dilute good ones.
@@ -55,91 +56,112 @@ plot_FDReg_hist(pval,1,type = 1,title = "Combined",yaxt = 'n',ylab = "",
 axis(side = 2, labels = FALSE,tck = -0.01)
 ```
 
+Apply alternative methods to the same data set:
 
-Apply different methods
-```{r}
+```{r other_methods}
 res.qvalue = qvalue(pval)
-res.locfdr = locfdr(zscore,nulltype=0,plot=0)
-res.ash = ash(betahat,sebetahat,method="fdr",outputlevel=4)
+res.locfdr = locfdr(zscore,nulltype = 0,plot = 0)
+res.ash    = ash(betahat,sebetahat,method = "fdr",outputlevel = 4)
 
 res.qvalue.good = qvalue(pval[GOOD])
-res.locfdr.good = locfdr(zscore[GOOD],nulltype=0,plot=0)
-res.ash.good = ash(betahat[GOOD],sebetahat[GOOD],method="fdr")
+res.locfdr.good = locfdr(zscore[GOOD],nulltype = 0,plot = 0)
+res.ash.good    = ash(betahat[GOOD],sebetahat[GOOD],method = "fdr")
 ```
 
+Compare the ash's accuracy against the alternative approaches.
 
 ```{r GOODPOOReg_scatter, dev='pdf', fig.width=6.5, fig.height=3}
-res = rbind(data.frame(x= res.qvalue.good$qvalues, y = res.qvalue$qvalues[GOOD],type="qvalue"),
-            data.frame(x=res.locfdr.good$fdr,y=res.locfdr$fdr[GOOD],type='locfdr'), 
-            data.frame(x=get_lfsr(res.ash.good),y=get_lfsr(res.ash)[GOOD],type="ashr"))
+res = rbind(data.frame(x    = res.qvalue.good$qvalues,
+                       y    = res.qvalue$qvalues[GOOD],
+                       type = "qvalue"),
+            data.frame(x    = res.locfdr.good$fdr,
+                       y    = res.locfdr$fdr[GOOD],
+                       type = 'locfdr'), 
+            data.frame(x    = get_lfsr(res.ash.good),
+                       y    = get_lfsr(res.ash)[GOOD],
+                       type = "ashr"))
 
-library("ggplot2")
-pp= ggplot(data=res,aes(x,y)) +geom_point(shape=1) +
+pp = ggplot(data = res,aes(x,y)) + geom_point(shape = 1) +
   facet_grid(. ~ type) +
   geom_abline(colour = "red") +
   xlab("Analysing good-precision data only") +
   ylab("Analysing combined data")
-
-
-print(pp +scale_y_continuous(limits=c(0,1)) +
-        scale_x_continuous(limits=c(0,1))  +
-        coord_equal(ratio=1))
-
+print(pp + scale_y_continuous(limits = c(0,1)) +
+      scale_x_continuous(limits = c(0,1))  +
+      coord_equal(ratio = 1))
 ```
 
+Compare the LFSR against the p-values with different prior choices, and at
+different levels of precision in the observations.
+
 ```{r lfsr_vs_pval_GOODPOOR, dev='pdf', fig.width=6.5, fig.height=3}
-make_df_for_pval=function(ash,method="default"){
-  df = data.frame(p=pnorm(-abs(ash$data$x/ash$data$s)),lfsr=get_lfsr(ash),s=ash$data$s,method=method)
-}
+make_df_for_pval = function(ash,method = "default")
+  data.frame(p      = pnorm(-abs(ash$data$x/ash$data$s)),
+             lfsr   = get_lfsr(ash),
+             s      = ash$data$s,
+             method = method)
 
 plot_pval_vs_lfsr=function(df,plot.it=TRUE){
-  if(length(unique(df$s))>2){df$s = log(df$s)} else{ df$s=as.factor(df$s)}
+  if (length(unique(df$s)) > 2) {
+    df$s = log(df$s)
+  } else { 
+    df$s = as.factor(df$s)
+  }
   
-  p=ggplot(df,aes(x=p,y=lfsr,color=s)) + geom_point() +facet_grid(. ~ method) +xlim(c(0, 0.025)) + xlab("p value") + ylab("lfsr")
+  p = ggplot(df,aes(x = p,y = lfsr,color = s)) + geom_point() +
+      facet_grid(. ~ method) + xlim(c(0, 0.025)) + xlab("p value") + 
+      ylab("lfsr")
   
-  if(length(unique(df$s))>2){
-    p = p+scale_colour_gradient2(midpoint = 1, low="blue", mid="white", high="red", space="Lab")
-  } 
-  if(plot.it){print(p)}
+  if (length(unique(df$s)) > 2)
+    p = p + scale_colour_gradient2(midpoint = 1,low = "blue",mid = "white", 
+                                   high = "red",space = "Lab")
+  if (plot.it)
+    print(p)
   return(p)
 }
 
-res.ash.ET = ash(betahat,sebetahat,method="fdr",alpha=1,mixcompdist="normal",outputlevel=4)
-p=plot_pval_vs_lfsr(rbind(
-  make_df_for_pval(res.ash,method="Default prior (alpha=0)"),
-  make_df_for_pval(res.ash.ET,method="p-value prior (alpha=1)")))
-print(p+ theme(axis.text.x = element_text(size = 8,angle=45)) + 
-        scale_colour_manual(values=c("blue","red")))
-
+res.ash.ET = ash(betahat,sebetahat,method = "fdr",alpha = 1,
+                 mixcompdist = "normal",outputlevel = 4)
+p = plot_pval_vs_lfsr(rbind(
+  make_df_for_pval(res.ash,method = "Default prior (alpha=0)"),
+  make_df_for_pval(res.ash.ET,method = "p-value prior (alpha=1)")))
+print(p + theme(axis.text.x = element_text(size = 8,angle = 45)) + 
+      scale_colour_manual(values = c("blue","red")))
 ```
 
-```{r  lfsr_vs_pval_GOODPOOR_single, dev='pdf', fig.width=4.5, fig.height=3}
-#now plot one at a time
-p=plot_pval_vs_lfsr(make_df_for_pval(res.ash,method="ash"))
-print(p+ theme(axis.text.x = element_text(size = 8,angle=45)))
+Now plot one at a time.
 
-p=plot_pval_vs_lfsr(make_df_for_pval(res.ash.ET,method="ash (p-value prior)"))
-print(p+ theme(axis.text.x = element_text(size = 8,angle=45)))
+```{r  lfsr_vs_pval_GOODPOOR_single, dev='pdf', fig.width=4.5, fig.height=3}
+p = plot_pval_vs_lfsr(make_df_for_pval(res.ash,method =" ash"))
+print(p + theme(axis.text.x = element_text(size = 8,angle = 45)))
+
+p = plot_pval_vs_lfsr(make_df_for_pval(res.ash.ET,method = "ash (p-value prior)"))
+print(p + theme(axis.text.x = element_text(size = 8,angle = 45)))
 ```
 
 Compare the log-likelihoods:
-```{r}
+
+```{r compare_ash_likelihoods}
 res.ash.ET$logLR
 res.ash$logLR
 ```
 
+Plot number of true positives against false positives (an "ROC curve"):
 
-Plot number of true positives against false positives
-```{r tp-fp, dev='pdf', fig.width=4.5, fig.height=3}
-  df0 = cbind(make_df_for_pval(res.ash,method="Default prior (alpha=0)"),beta=beta)
-  df1 = cbind(make_df_for_pval(res.ash.ET,method="p-value prior (alpha=1)"),beta=beta)
-  #false positives and true positives
-  fp = function(df){cumsum((df$beta==0)[order(df$lfsr,decreasing = FALSE)])}
-  tp = function(df){cumsum((df$beta!=0)[order(df$lfsr,decreasing = FALSE)])}
-  df.fptp = rbind(data.frame(method="ash lfsr", tp = tp(df0), fp = fp(df0)),
-             data.frame(method="p values", tp = tp(df1), fp = fp(df1)))
-             
-  ggplot(df.fptp,aes(x=fp,y=tp,col=method)) + geom_line()  + xlab("False positives") + ylab("True positives") + xlim(c(0,100)) + ylim(c(0,400)) + scale_colour_manual(values=c("black","green")) 
+```{r tp_vs_fp, dev='pdf', fig.width=4.5, fig.height=3}
+df0 = cbind(make_df_for_pval(res.ash,method = "Default prior (alpha=0)"), 
+            beta = beta)
+df1 = cbind(make_df_for_pval(res.ash.ET,method = "p-value prior (alpha=1)"),
+            beta = beta)
+  
+# False positives (fp) and true positives (tp).
+fp = function(df) cumsum((df$beta == 0)[order(df$lfsr,decreasing = FALSE)])
+tp = function(df) cumsum((df$beta != 0)[order(df$lfsr,decreasing = FALSE)])
+df.fptp = rbind(data.frame(method = "ash lfsr",tp = tp(df0),fp = fp(df0)),
+                data.frame(method = "p values",tp = tp(df1),fp = fp(df1)))
+ggplot(df.fptp,aes(x = fp,y = tp,col = method)) + geom_line() + 
+  xlab("False positives") + ylab("True positives") + xlim(c(0,100)) + 
+  ylim(c(0,400)) + scale_colour_manual(values = c("black","green")) 
 ```
 
 ## Session information
@@ -147,4 +169,3 @@ Plot number of true positives against false positives
 ```{r info}
 sessionInfo()
 ```
-
