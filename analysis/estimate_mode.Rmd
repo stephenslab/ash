@@ -14,7 +14,7 @@ option.
 First, we load the necessary libraries, and specify settings for
 displaying the plots in the rendered document.
 
-```{r chunk-options, include=FALSE}
+```{r chunk_options, include=FALSE}
 library(ashr)
 source("chunk-options.R")
 ```
