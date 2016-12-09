@@ -19,10 +19,10 @@ First, we load the necessary libraries, and specify settings for
 displaying the plots in the rendered document.
 
 ```{r chunk-options, include=FALSE}
-require(ashr)
-require(qvalue)
-require(locfdr)
-require(mixfdr)
+library(ashr)
+library(qvalue)
+library(locfdr)
+library(mixfdr)
 source("chunk-options.R")
 source("../R/plot_FDReg_hist.R")
 source("../R/nullalthist.R")
@@ -30,7 +30,7 @@ source("../R/nullalthist.R")
 
 ## Simple simulated example
 
-Generates DReg_hist.pdf?
+Generate a small data set, and run the different methods on this data set.
 
 ```{r qvalue_analysis}
 
@@ -53,22 +53,23 @@ res.mixfdr = mixFdr(zscore,noiseSD = 1,theonull = TRUE,plot = FALSE)
 res.ash    = ash(betahat,1,method = "fdr")
 
 # Roughly compute a local fdr for qvalue (to aid the plotting of the
-# decomposition in zscore space).
+# decomposition in zscore space) in each bin of histogram. I set the 
+# threshold at 1 so that fdr is never larger than 1.
 temp     = hist(pval,nclass = 50)
-bin_fdr  = res.qvalue$pi0/temp$density # compute local fdr in each bin of histogram
+bin_fdr  = res.qvalue$pi0/temp$density 
 qval_fdr = bin_fdr[as.numeric(cut(pval,temp$breaks))]
-qval_fdr = pmin(1,qval_fdr) # threshold at 1, so fdr never bigger than 1
+qval_fdr = pmin(1,qval_fdr)
 qval_fdr = qvalue::lfdr(pval)
 ```
+
 Here's an example of how qvalue decomposes $p$ values into null and alternative components. First the $p$ values:
 
 ```{r plot_pvalues}
 plot_FDReg_hist(pval,res.qvalue$pi0,type = 1,title = "p values",
                 cex.axis = 0.8,cex.main = 0.8)
-
 ```
 
-Now the decomposition:
+Now plot the decomposition:
 
 ```{r decompose_pvalues}
 plot_FDReg_hist(pval,res.qvalue$pi0,type = 4,cex.axis = 0.8,yaxt = 'n',
@@ -76,6 +77,9 @@ plot_FDReg_hist(pval,res.qvalue$pi0,type = 4,cex.axis = 0.8,yaxt = 'n',
                 title = "Decomposition into null/alternative")
 axis(side = 2,labels = FALSE,tck = -0.01)
 ```
+
+Show the distribution of the p-values and the z-scores, stratified by their
+classification into the "null" and "alternative".
 
 ```{r decomp_ZA, dev='pdf', fig.width=6, fig.height=6, crop=TRUE}
 layout(matrix(1:12,ncol = 3,byrow = FALSE))
@@ -91,62 +95,73 @@ plotlabel("ash")
 par(mar = c(1.3,2,1.5,0.2),mgp = c(3, 0.5, 0))
 
 # p value histograms
-altnullhist(pval,qval_fdr,main="p values",ncz=50,xaxt='n',cex.axis=0.8)
-axis(side=1, labels=FALSE,tck=-0.01)
-altnullhist(pval,res.locfdr$fdr,main="",ncz=50,xaxt='n',cex.axis=0.8)
-axis(side=1, labels=FALSE,tck=-0.01)
-altnullhist(pval,res.mixfdr$fdr,main="",ncz=50,xaxt='n',cex.axis=0.8)
-axis(side=1, labels=FALSE,tck=-0.01)
-altnullhist(pval,get_lfdr(res.ash),main="",ncz=50,xaxt='n',cex.axis=0.8)
-axis(side=1, labels=TRUE,tck=-0.01,cex.axis=0.8)
+altnullhist(pval,qval_fdr,main = "p values",ncz = 50,xaxt = 'n',cex.axis = 0.8)
+axis(side = 1, labels = FALSE,tck = -0.01)
+altnullhist(pval,res.locfdr$fdr,main = "",ncz = 50,xaxt = 'n',cex.axis = 0.8)
+axis(side = 1, labels = FALSE,tck = -0.01)
+altnullhist(pval,res.mixfdr$fdr,main = "",ncz = 50,xaxt = 'n',cex.axis = 0.8)
+axis(side = 1, labels = FALSE,tck = -0.01)
+altnullhist(pval,get_lfdr(res.ash),main = "",ncz = 50,xaxt = 'n',cex.axis = 0.8)
+axis(side = 1, labels = TRUE,tck = -0.01,cex.axis = 0.8)
 
 # z score histograms
-nullalthist(zscore,qval_fdr,main="z scores",ncz=50,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
-axis(side=1, labels=FALSE,tck=-0.01)
-nullalthist(zscore,res.locfdr$fdr,main="",ncz=50,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
-axis(side=1, labels=FALSE,tck=-0.01)
-nullalthist(zscore,res.mixfdr$fdr,main="",ncz=50,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
-axis(side=1, labels=FALSE,tck=-0.01)
-nullalthist(zscore,get_lfdr(res.ash),main="",ncz=50,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
-axis(side=1, labels=TRUE,tck=-0.01,cex.axis=0.8)
+nullalthist(zscore,qval_fdr,main = "z scores",ncz = 50,xaxt = 'n',
+            cex.axis = 0.8,ylim = c(0,0.3),xlim = c(-6,6))
+axis(side = 1,labels = FALSE,tck = -0.01)
+nullalthist(zscore,res.locfdr$fdr,main = "",ncz = 50,xaxt = 'n',
+            cex.axis = 0.8,ylim = c(0,0.3),xlim = c(-6,6))
+axis(side = 1,labels = FALSE,tck = -0.01)
+nullalthist(zscore,res.mixfdr$fdr,main = "",ncz = 50,xaxt = 'n',
+            cex.axis = 0.8,ylim = c(0,0.3),xlim = c(-6,6))
+axis(side = 1,labels = FALSE,tck = -0.01)
+nullalthist(zscore,get_lfdr(res.ash),main = "",ncz = 50,xaxt = 'n',
+            cex.axis = 0.8,ylim = c(0,0.3),xlim = c(-6,6))
+axis(side = 1,labels = TRUE,tck = -0.01,cex.axis = 0.8)
 ```
 
 This one is a different layout (4 columns, 2 rows) for my Tukey poster
 
 ```{r decomp_ZA_poster, dev='pdf', fig.width=6, fig.height=2, crop=TRUE}
-#pdf("../figures/decomp_ZA_poster.pdf",width=6,height=2)
-layout(matrix(1:8,ncol=4,byrow=TRUE))
+# pdf("../figures/decomp_ZA_poster.pdf",width=6,height=2)
+layout(matrix(1:8,ncol = 4,byrow = TRUE))
 par(mar = c(1.3,2,1.5,0.2),mgp = c(3, 0.5, 0))
-ncz=25
+ncz = 25
 
-#p value histograms
-altnullhist(pval,qval_fdr,main="p values: qvalue",ncz=ncz,xaxt='n',cex.axis=0.8)
-#plot_FDReg_hist(pval,res.qvalue$pi0,type=2,title="p values",xaxt='n',cex.axis=0.8)
-axis(side=1, labels=FALSE,tck=-0.01)
-#mtext(side=3,"p values",line=1)
-altnullhist(pval,res.locfdr$fdr,main="locfdr",ncz=ncz,xaxt='n',cex.axis=0.8)
-axis(side=1, labels=FALSE,tck=-0.01)
-altnullhist(pval,res.mixfdr$fdr,main="mixfdr",ncz=ncz,xaxt='n',cex.axis=0.8)
-axis(side=1, labels=FALSE,tck=-0.01)
-altnullhist(pval,get_lfdr(res.ash),main="ash",ncz=ncz,xaxt='n',cex.axis=0.8)
-axis(side=1, labels=TRUE,tck=-0.01,cex.axis=0.8)
-#mtext(side=1,"p values",line=2)
+# p value histograms
+altnullhist(pval,qval_fdr,main = "p values: qvalue",ncz = ncz,
+            xaxt = 'n',cex.axis = 0.8)
+# plot_FDReg_hist(pval,res.qvalue$pi0,type = 2,title = "p values", 
+#                 xaxt = 'n',cex.axis = 0.8)
+axis(side = 1,labels = FALSE,tck = -0.01)
+# mtext(side = 3,"p values",line = 1)
+altnullhist(pval,res.locfdr$fdr,main = "locfdr",ncz = ncz,xaxt = 'n',
+            cex.axis = 0.8)
+axis(side = 1,labels = FALSE,tck = -0.01)
+altnullhist(pval,res.mixfdr$fdr,main = "mixfdr",ncz = ncz,xaxt = 'n',
+            cex.axis = 0.8)
+axis(side = 1,labels = FALSE,tck = -0.01)
+altnullhist(pval,get_lfdr(res.ash),main = "ash",ncz = ncz,xaxt = 'n',
+            cex.axis = 0.8)
+axis(side = 1,labels = TRUE,tck = -0.01,cex.axis = 0.8)
+# mtext(side = 1,"p values",line = 2)
 
 #z score histograms
-nullalthist(zscore,qval_fdr,main="z scores: qvalue",ncz=ncz,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
-axis(side=1, labels=FALSE,tck=-0.01)
-#mtext(side=3,"z scores",line=1)
-nullalthist(zscore,res.locfdr$fdr,main="locfdr",ncz=ncz,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
-axis(side=1, labels=FALSE,tck=-0.01)
-nullalthist(zscore,res.mixfdr$fdr,main="mixfdr",ncz=ncz,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
-axis(side=1, labels=FALSE,tck=-0.01)
-nullalthist(zscore,get_lfdr(res.ash),main="ash",ncz=ncz,xaxt='n',cex.axis=0.8,ylim=c(0,0.3),xlim=c(-6,6))
-axis(side=1, labels=TRUE,tck=-0.01,cex.axis=0.8)
-#mtext(side=1,"z scores",line=2)
-
-dev.off()
+nullalthist(zscore,qval_fdr,main = "z scores: qvalue",ncz = ncz,xaxt = 'n',
+            cex.axis = 0.8,ylim = c(0,0.3),xlim = c(-6,6))
+axis(side = 1,labels = FALSE,tck = -0.01)
+# mtext(side = 3,"z scores",line = 1)
+nullalthist(zscore,res.locfdr$fdr,main = "locfdr",ncz = ncz,xaxt = 'n',
+            cex.axis = 0.8,ylim = c(0,0.3),xlim = c(-6,6))
+axis(side = 1,labels = FALSE,tck = -0.01)
+nullalthist(zscore,res.mixfdr$fdr,main = "mixfdr",ncz = ncz,xaxt = 'n',
+            cex.axis = 0.8,ylim = c(0,0.3),xlim = c(-6,6))
+axis(side = 1,labels = FALSE,tck = -0.01)
+nullalthist(zscore,get_lfdr(res.ash),main = "ash",ncz = ncz,xaxt = 'n',
+            cex.axis = 0.8,ylim = c(0,0.3),xlim = c(-6,6))
+axis(side = 1,labels = TRUE,tck = -0.01,cex.axis = 0.8)
+# mtext(side = 1,"z scores",line = 2)
+# dev.off()
 ```
-
 
 ## Session information
 
