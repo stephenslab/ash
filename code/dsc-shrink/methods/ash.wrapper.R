@@ -34,7 +34,7 @@ bayes.wrapper = function(input, meta, args=NULL){
 }
 
 ash2beta_est =function(output){
-    return (list(beta_est=get_pm(output)))
+  return (list(beta_est=get_pm(output)))
 } 
 
 ash2pi0_est =function(output){

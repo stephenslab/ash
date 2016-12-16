@@ -23,7 +23,8 @@ score2 = function(data, output){
 
 score3 = function(data, output){
   return(c(S=pcdf_post(output$fitted.g,data$meta$beta,
-              data$input$betahat,data$input$sebetahat,v=NULL)))
+                       set_data(data$input$betahat,
+                                data$input$sebetahat))))
 }
 
 score_neg = function(data, output){
