@@ -52,5 +52,6 @@ score_betahat = function(data, output){
 }
 
 score_logLR = function(data,output){
-  return(c(logLR=ashr::calc_logLR(output,data$input$betahat,data$input$sebetahat,NULL)))
+  return(c(logLR = ashr::calc_logLR(output,set_data(data$input$betahat,
+                                                    data$input$sebetahat))))
 }
