@@ -36,22 +36,22 @@ your architecture.)
 package; see [here](http://github.com/stephens999/dscr).
 
 If this does not work first time - e.g. because you don't have some
-dependencies installed - then install the dependencies and try
-again. This time on entering `R` you will have to tell `packrat` to
-try again yourself by typing `packrat::restore()`.  If this still does
-not work for you, or you already have the packages you need installed
-then you may prefer to remove the packrat subdirectory and install the
-packages you need yourself. Quit `R`.
+dependencies installed - then install the dependencies and try again.
+This time on entering `R` you will have to tell `packrat` to try again
+yourself by typing `packrat::restore()`.  If this still does not work
+for you, or you already have the packages you need installed then you
+may prefer to remove the packrat subdirectory and install the packages
+you need yourself. Quit `R`.
 
 4. Within the repository directory type `make clean`. This will remove
 figure etc files that I have already included in the repository.
 
 5. Within the repository directory type `make`. This will try to:
 
-      i) Run all the code for the simulation studies. It will take a while
-(hours), so you might want to run it overnight. This should create a
-bunch of output files in the `output` directory. Particularly you will
-know that it worked iff you can find the files
+      i) Run all the code for the simulation studies. It will take a
+while (hours), so you might want to run it overnight. This should
+create a bunch of output files in the `output` directory. Particularly
+you will know that it worked iff you can find the files
 `dsc-shrink-files/res.RData` and `dsc-robust-files/dsc_robust.RData`.
 
       ii) Build/render the .Rmd files in the `analysis` directory. If

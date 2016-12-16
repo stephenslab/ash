@@ -11,7 +11,7 @@ date: 2015-10-26
 First, we load the necessary libraries, and specify settings for
 displaying the plots in the rendered document.
 
-```{r chunk-options, include=FALSE}
+```{r chunk_options, include=FALSE}
 library(dplyr)
 library(ggplot2)
 source("chunk-options.R")
