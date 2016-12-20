@@ -8,37 +8,37 @@ date: 2015-10-26
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
+First, we load the necessary libraries, and specify settings for
+displaying the plots in the rendered document.
+
 ```{r chunk_options, include=FALSE}
+library(ashr)
+library(reshape2)
+library(ggplot2)
+library(dplyr)
 source("chunk-options.R")
 ```
-
 
 ```{r}
 load("../output/dsc-shrink-files/res.RData")
 
-library("dscr")
-library("ashr")
-library(reshape2)
-library(ggplot2)
-library(dplyr)
-
-
+out <- res$negprob
 neglong = 
-  res$negprob %>% 
+  out %>% 
     select(-user.self,-sys.self,-elapsed,-user.child,-sys.child) %>%
-    melt(id.vars=c("method","scenario","seed",".id"),value.name="negprob") %>%
+    melt(id.vars=c("method","scenario","seed",".id"),value.name = "negprob") %>%
     filter(negprob > 0.95)
  
 poslong = 
   res$posprob %>% 
     select(-user.self,-sys.self,-elapsed,-user.child,-sys.child) %>%
-    melt(id.vars=c("method","scenario","seed",".id"),value.name="posprob") %>%
+    melt(id.vars = c("method","scenario","seed",".id"),value.name="posprob") %>%
     filter(posprob > 0.95)
 
 reslong = 
   res$cdf_score %>% 
     select(-user.self,-sys.self,-elapsed,-user.child,-sys.child) %>%    
-    melt(id.vars=c("method","scenario","seed",".id"))
+    melt(id.vars = c("method","scenario","seed",".id"))
 
 reslong.pos = inner_join(reslong,poslong)
 reslong.neg = inner_join(reslong,neglong)
