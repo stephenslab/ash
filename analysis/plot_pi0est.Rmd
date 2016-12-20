@@ -18,7 +18,9 @@ source("chunk-options.R")
 source("../R/set_plot_colors.R")
 ```
 
-*Explain here what this chunk does.*
+Generate scatterplots compare the estimated estimate of pi0 against the 
+ground-truth value, colored by the method used, and split by the scenario
+type.
 
 ```{r plot_pi0est, dev='pdf', crop=TRUE}
 load("../output/dsc-shrink-files/res.RData")
