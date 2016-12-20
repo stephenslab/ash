@@ -14,16 +14,18 @@ displaying the plots in the rendered document.
 ```{r chunk_options, include=FALSE}
 library(plyr)
 library(dplyr)
-library(dscr)
 library(magrittr)
 library(ashr)
 library(ggplot2)
+library(dscr)
 source("chunk-options.R")
 source("../code/dsc-shrink/methods/mixfdr.wrapper.R")
 source("../R/set_plot_colors.R")
 ```
 
-```{r}
+*Explain here what this chunk does.*
+
+```{r chunk_label}
 load("../output/dsc-shrink-files/res.RData")
 
 #df is a list with components method,seed, scenario
@@ -51,8 +53,8 @@ get_cdf = function(df,dsc=dsc_shrink,x=seq(-6,6,length=100),homedir="../code/dsc
 }
 
 plot_mean_cdf = function(SEEDS,PLOTMETHODS=c("ash.n","ash.u","ash.hu","truth","mixfdr.tnull"),
-      PLOTSCENARIOS=c("spiky","near-normal","flat-top","skew","big-normal","bimodal"),pi0filter=FALSE,...){
-  PLOTNAMES=PLOTSCENARIOS
+      PLOTSCENARIOS=c("spiky","near-normal","flat-top","skew","bimodal"),pi0filter=FALSE,...){
+  PLOTNAMES = PLOTSCENARIOS
   #set up dataframe with cdf for all methods and all datasets
   df= expand.grid(seed=SEEDS,scenario=PLOTSCENARIOS, method=PLOTMETHODS,stringsAsFactors = FALSE)
   df.cdf=ddply(df,.(seed,scenario,method), get_cdf)
@@ -104,7 +106,6 @@ plot_mean_cdf(1:100,PLOTMETHODS=c("ash.n.s","truth"),PLOTSCENARIOS = c("spiky","
 source("../R/set_plot_colors.R")
 ```
 
-
 I wanted to add the npmle to the plot...
 
 ```{r egcdf-reduce-with-npmle, dev='pdf',fig.height=4.5, fig.width=6, crop=TRUE}
@@ -139,16 +140,10 @@ plot_mean_cdf_with_npmle = function(SEED=1,PLOTMETHODS=c("ash.n","ash.u","ash.hu
 }
 
 plot_mean_cdf_with_npmle(1,PLOTMETHODS=c("truth","ash.hu"),PLOTSCENARIOS = c("spiky","near-normal","flat-top","skew","big-normal","bimodal")) + facet_wrap(~ scenario, nrow=2)
-
-
 ```
-
-
-
 
 ## Session information
 
 ```{r info}
 sessionInfo()
 ```
-

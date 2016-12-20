@@ -8,25 +8,22 @@ date: 2015-10-26
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
+First, we load the necessary libraries, and specify settings for
+displaying the plots in the rendered document.
+
 ```{r chunk_options, include=FALSE}
-source("chunk-options.R")
-```
-
----
-title: "Summarize Coverage"
-output: html_document
----
-
-```{r}
-load("../output/dsc-shrink-files/res.RData")
-coverthresh = 0.05 # threshold at which we look at coverage
-findthresh=0.95 #threshold at we define a discovery significant
-library("dscr")
-library("ashr")
+library(dscr)
+library(ashr)
 library(reshape2)
 library(ggplot2)
 library(dplyr)
+source("chunk-options.R")
+```
 
+```{chunk_label r}
+load("../output/dsc-shrink-files/res.RData")
+coverthresh = 0.05 # threshold at which we look at coverage
+findthresh  = 0.95 # threshold at we define a discovery significant
 
 neglong = 
   res$negprob %>% 

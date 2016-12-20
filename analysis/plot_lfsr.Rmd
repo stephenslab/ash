@@ -28,9 +28,11 @@ load("../output/dsc-shrink-files/res.RData")
 #' @return tall dataframe with columns of scores for each method and the "goldmethod" against which plot is to be made
 process_score_for_plotting_against_gold=function(df,PLOTMETHODS=c("ash.n","ash.u","ash.hu"),
                                                  GOLDMETHOD="bayes",PLOTSEEDS=1:100,
-                                                 PLOTSCENARIOS=c("spiky","near-normal","flat-top","skew","big-normal","bimodal"),
-                                                 PLOTNAMES=PLOTSCENARIOS){
-  df %<>% filter(seed %in% PLOTSEEDS) %>% filter(scenario %in% PLOTSCENARIOS) %>% filter(method %in% c(PLOTMETHODS,GOLDMETHOD))
+                                                   PLOTSCENARIOS=c("spiky","near-normal","flat-top","skew","big-normal","bimodal")
+  PLOTNAMES=PLOTSCENARIOS
+  df %<>% filter(seed %in% PLOTSEEDS) %>% 
+    filter(scenario %in% PLOTSCENARIOS) %>% 
+    filter(method %in% c(PLOTMETHODS,GOLDMETHOD))
   df$scenario = factor(df$scenario,levels=PLOTSCENARIOS)
   levels(df$scenario)= PLOTNAMES
   #create tall version of dataframe

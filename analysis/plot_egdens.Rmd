@@ -18,7 +18,7 @@ source("chunk-options.R")
 Load the results of the simulation experiments, and generate the density
 data for all the simulation scenarios in a single data frame ("df").
 
-```{r chunk_label}
+```{r retrieve_sim_results}
 load("../output/dsc-shrink-files/res.RData")
 PLOTSCENARIOS = c("spiky","near-normal","flat-top","skew","bimodal")
 PLOTNAMES     = PLOTSCENARIOS
