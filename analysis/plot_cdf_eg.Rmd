@@ -8,19 +8,22 @@ date: 2015-10-26
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
-```{r chunk_options, include=FALSE}
-source("chunk-options.R")
-```
+First, we load the necessary libraries, and specify settings for
+displaying the plots in the rendered document.
 
-```{r}
+```{r chunk_options, include=FALSE}
 library(plyr)
 library(dplyr)
 library(dscr)
 library(magrittr)
 library(ashr)
 library(ggplot2)
+source("chunk-options.R")
 source("../code/dsc-shrink/methods/mixfdr.wrapper.R")
 source("../R/set_plot_colors.R")
+```
+
+```{r}
 load("../output/dsc-shrink-files/res.RData")
 
 #df is a list with components method,seed, scenario
@@ -83,7 +86,6 @@ colScale <- scale_colour_manual(name = "method",values = myColors)
 plot_mean_cdf(1:100,PLOTMETHODS=c("ash.n.s","ash.u.s","ash.hu.s","truth"),pi0filter=TRUE)
 source("../R/set_plot_colors.R") #reset color scale for other plots
 ```
-
 
 The following plots have fewer methods and scenarios for more clarity
 

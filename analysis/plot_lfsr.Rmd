@@ -15,6 +15,7 @@ displaying the plots in the rendered document.
 library(dplyr)
 library(ggplot2)
 source("chunk-options.R")
+source("../R/set_plot_colors.R")
 ```
 
 TO DO: Add note here about having to first run script to generate data sets
@@ -22,7 +23,6 @@ required to run the analysis.
 
 ```{r}
 load("../output/dsc-shrink-files/res.RData")
-source("../R/set_plot_colors.R")
 
 #' @param df dataframe of scores for many methods/scenrios etc
 #' @return tall dataframe with columns of scores for each method and the "goldmethod" against which plot is to be made
@@ -43,7 +43,6 @@ process_score_for_plotting_against_gold=function(df,PLOTMETHODS=c("ash.n","ash.u
 #join bayes with others, so each line has both the bayes and the non-bayes version
   return(inner_join(df.bayes, df.rest, by=c("scenario","seed","variable")))
 }
-
 
 plot_lfsr=function(lfsr,xlab="True lfsr",ylab="Estimated lfsr",xlim=c(0,0.2),ylim=c(0,0.2),legend.position="bottom"){
   p=ggplot(lfsr,
