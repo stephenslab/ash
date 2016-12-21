@@ -39,11 +39,11 @@ score_fdr = function(data, output){ #for mixfdr output
 }
 
 score_lfsr = function(data, output){
-  return(c(S=get_lfsr(a)))
+  return(c(S=get_lfsr(output)))
 }
 
 score_lfdr = function(data, output){
-  return(c(S=get_lfdr(a)))
+  return(c(S=get_lfdr(output)))
 }
 
 score_betahat = function(data, output){
