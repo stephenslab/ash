@@ -1,11 +1,11 @@
 #' @title compute score for shrinkage DSC
 #'
-#' @description Outputs the RMSE and MAE of estimated beta values 
+#' @description Outputs the RMSE and MAE of estimated beta values
 #' @details None
-#' 
+#'
 #' @param data
 #' @param output
-#' 
+#'
 #' @return score a list with
 #' \item{RMSE}{root mean squared error of estimated beta values}
 #' \item{MAE}{Median absolute error of estimated beta values}
@@ -27,23 +27,23 @@ score3 = function(data, output){
 }
 
 score_neg = function(data, output){
-  return(c(S=output$NegativeProb))
+  return(c(S=get_np(output)))
 }
 
 score_pos = function(data, output){
-  return(c(S=output$PositiveProb))
+  return(c(S=get_pp(output)))
 }
 
-score_fdr = function(data, output){
-  return(c(S=output$res$fdr))
+score_fdr = function(data, output){ #for mixfdr output
+  return(c(S=output$fdr))
 }
 
 score_lfsr = function(data, output){
-  return(c(S=output$lfsr))
+  return(c(S=get_lfsr(a)))
 }
 
 score_lfdr = function(data, output){
-  return(c(S=output$lfdr))
+  return(c(S=get_lfdr(a)))
 }
 
 score_betahat = function(data, output){
