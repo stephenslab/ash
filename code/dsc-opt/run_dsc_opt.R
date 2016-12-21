@@ -23,9 +23,9 @@ add_method(dsc_opt,"ash.n",ash.multiopt.wrapper,
 ####### Define Score and Add it #######
 
 score = function(data, output) {
-  x = output$loglik
-  return(list(diff1 = x[1] - x[2])) 
-}
+  # This loglik is a vector of length 2 with logliks from two
+  # different optimizations.
+  x = output$loglik 
 
 add_score(dsc_opt,score)
 

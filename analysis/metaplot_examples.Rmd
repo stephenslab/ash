@@ -1,0 +1,52 @@
+---
+title: "DDD plots"
+author: "Matthew Stephens"
+date: 2016-10-25
+---
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+
+```{r chunk-options, include=FALSE}
+source("chunk-options.R")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+This file produces ``meta-analysis" style plots that illustrate the shrinkage behaviour of ash on some simple simulated data.
+
+# Simulate Data
+
+We simulate 50 effects ($\beta$), half of which are truly "null" (ie 0) and the other half are $N(0,2^2)$. The observed effects ($\hat\beta$) all have standard error 1 here.
+
+```{r}
+library(rmeta)
+library(ashr)
+n=50
+set.seed(1)
+beta = c(rep(0,n/2),rnorm(n/2,0,2))
+betahat = beta+rnorm(n)
+beta.ash=ashr::ash(betahat,1)
+```
+
+# Meta Plots
+
+Here we plot the standard Confidence Intervals, ordered by the observed effect sizes. The red colors indicate observations correspondign to effects that were truly 0.
+```{r unshrunk}
+o = order(betahat)
+rmeta::metaplot(betahat[o],rep(1,n),ylab="",xlab="",xlim=c(-6,6),colors = meta.colors(box=c(rep("red",n/2),rep("black",n/2))[o]))
+```
+
+Here we plot the shrunken Confidence Intervals (more formally, posterior Credible Intervals), in the same order, with same color code. (We use the approximation of the posterior mean $\pm$ 2 posterior standard deviation; really we should compute the posterior intervals using `ashci`, but this simple approximation suffices for illustrating the idea.)
+
+Notice how the CIs are strongly shrunk towards 0, except for those that correspond to large effects, where the shrinkage is more modest. What is happening here is that ash recognizes that although many effects are null, others are quite big, so it avoids shrinking too much the intervals whose data are sufficiently strong to convince it that they are non-null.
+```{r shrunk}
+rmeta::metaplot(get_pm(beta.ash)[o],get_psd(beta.ash)[o],ylab="",xlab="",xlim=c(-6,6),colors = meta.colors(box=c(rep("red",n/2),rep("black",n/2))[o]))
+```
+
+

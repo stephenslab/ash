@@ -1,0 +1,52 @@
+---
+title: "Plot two densities for strong vs weak shrinkage"
+author: "Matthew Stephens"
+date: 2016-10-25
+---
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+
+```{r chunk-options, include=FALSE}
+source("chunk-options.R")
+```
+
+```{r}
+library("ashr")
+library("ggplot2")
+library("dplyr")
+library("dscr")
+load("../output/dsc-shrink-files/res.RData")
+PLOTSCENARIOS = c("spiky","big-normal")
+PLOTNAMES = c("Strong Shrinkage","Weak Shrinkage")
+
+df=data.frame()
+
+for(i in PLOTSCENARIOS){
+  s=dsc_shrink$scenarios[[i]]
+  g=s$args$g
+  x = seq(-6,6,length=100)
+  y = as.numeric(dens(g,x))
+  df = rbind(df,data.frame(x=x,y=y,scenario=i))
+}
+
+
+df$scenario = factor(df$scenario,levels=PLOTSCENARIOS)
+levels(df$scenario)= PLOTNAMES
+```
+
+
+```{r scenario_density_2, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
+#pdf(PLOTFILE,height=3,width=9)
+ggplot(df, aes(x=x,y=y)) + geom_line(size=1.2,linetype=1) + facet_grid(.~scenario) + ylab("density")
+#dev.off()
+```
+
+
+## Session information
+
+```{r info}
+sessionInfo()
+```
+

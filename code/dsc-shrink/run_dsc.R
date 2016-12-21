@@ -28,7 +28,7 @@ add_score(dsc_shrink,score3,"cdf_score","g_output")
 add_score(dsc_shrink,score_neg,"negprob","ash_output") #just extract the negativeprobs
 add_score(dsc_shrink,score_pos,"posprob","ash_output") #just extracts the positiveprobs
 add_score(dsc_shrink,score_fdr,"fdr","mixfdr_output") #just extracts the fdr
-add_score(dsc_shrink,score_betahat,"betahat","mixfdr_output") #just extracts the fdr
+add_score(dsc_shrink,score_betahat,"betahat","mixfdr_output") #just extracts betahat
 add_score(dsc_shrink,score_lfsr,"lfsr","ash_output") #just extracts the lfsr
 add_score(dsc_shrink,score_lfdr,"lfdr","ash_output") #just extracts the lfdr
 
