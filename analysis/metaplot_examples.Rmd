@@ -59,7 +59,7 @@ happening here is that ash recognizes that although many effects are null,
 others are quite big, so it avoids shrinking too much the intervals whose 
 data are sufficiently strong to convince it that they are non-null.
 
-```{r shrunk}
+```{r plot_shrunk}
 metaplot(get_pm(beta.ash)[i],get_psd(beta.ash)[i],
          ylab = "",xlab = "",xlim = c(-6,6),
          colors = meta.colors(box = c(rep("red",n/2),rep("black",n/2))[i]))
