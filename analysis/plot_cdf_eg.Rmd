@@ -19,6 +19,7 @@ library(ashr)
 library(ggplot2)
 library(dscr)
 library(REBayes)
+library(ashr)
 source("chunk-options.R")
 source("../code/dsc-shrink/methods/mixfdr.wrapper.R")
 source("../R/set_plot_colors.R")
@@ -47,9 +48,10 @@ get_cdf = function (df,dsc = dsc_shrink,x = seq(-6,6,length = 100),
                      c(0,comp_mean(galt)),
                      c(0,comp_sd(galt)))
   } else {
-    if (grepl("mixfdr",df$method))
-      temp$output = mixfdr2fitted.g(temp$output)
-    g = temp$output$fitted.g
+    if (grepl("mixfdr",df$method)) {
+      temp$output$fitted_g = mixfdr2fitted.g(temp$output)$fitted.g
+    }
+    g = temp$output$fitted_g
   }
   return(data.frame(x = x,y = as.numeric(mixcdf(g,x)),pi0 = pi0))
 }
@@ -89,7 +91,8 @@ plot_mean_cdf(1)
 TO DO: Explain here what this chunk does.
 
 ```{r mean_cdf, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
-plot_mean_cdf(1:100,PLOTMETHODS=c("ash.n","ash.u","ash.hu","truth"),pi0filter=TRUE)
+plot_mean_cdf(1:100,PLOTMETHODS = c("ash.n","ash.u","ash.hu","truth"),
+              pi0filter = TRUE)
 ```
 
 TO DO: Explain here what this chunk does.
@@ -107,7 +110,7 @@ source("../R/set_plot_colors.R")
 
 The following plots have fewer methods and scenarios for more clarity
 
-```{r egcdf-reduce, dev='pdf',fig.height=3, fig.width=6, crop=TRUE}
+```{r egcdf-reduce, fig.height=3, fig.width=6, crop=TRUE, dev='pdf'}
 plot_mean_cdf(1,PLOTMETHODS = c("ash.n","truth"),
               PLOTSCENARIOS = c("spiky","near-normal","bimodal"))
 ```
@@ -122,7 +125,7 @@ plot_mean_cdf(1:100,PLOTMETHODS = c("ash.n","truth"),
 
 TO DO: Explain here what this chunk does.
 
-```{r mean_cdf_nopen-reduce, dev='pdf',fig.height=3, fig.width=6, crop=TRUE}
+```{r mean_cdf_nopen-reduce, fig.height=3, fig.width=6, crop=TRUE, dev='pdf'}
 names(myColors) <- c("truth","ash.hu.s","ash.n.s","ash.u.s","qvalue","locfdr",
                      "mixfdr.tnull")
 colScale        <- scale_colour_manual(name = "method",values = myColors)
@@ -134,6 +137,8 @@ source("../R/set_plot_colors.R")
 
 I wanted to add the npmle to the plot...
 
+TO DO (maybe): Add more details here about this chunk?
+
 ```{r egcdf-reduce-with-npmle, dev='pdf',fig.height=4.5, fig.width=6, crop=TRUE}
 run_nplme = function(SEED = 1,
                      PLOTSCENARIOS = c("spiky","near-normal","flat-top","skew",
@@ -141,34 +146,45 @@ run_nplme = function(SEED = 1,
   df = data.frame(seed = NULL,scenario = NULL,method = NULL,x = NULL,
                   y = NULL,pi0 = NULL)
   for(SCENARIO in PLOTSCENARIOS) {
-    temp = dscr::load_example(dsc_shrink,SEED,SCENARIO,"ash.n","../output/dsc-shrink-files/")
-    z    = REBayes::GLmix(temp$input$betahat)
-    df = rbind(df,data.frame(seed=SEED,scenario=SCENARIO,method="NPMLE",x=z$x,y=cumsum(z$y)/sum(z$y),pi0=NA))
+    temp = load_example(dsc_shrink,SEED,SCENARIO,"ash.n","../output/dsc-shrink-files/")
+    z    = GLmix(temp$input$betahat)
+    df = rbind(df,data.frame(seed = SEED,scenario = SCENARIO,method = "NPMLE",
+                             x = z$x,y = cumsum(z$y)/sum(z$y),pi0 = NA))
   }
   return(df)
 }
 
-
-plot_mean_cdf_with_npmle = function(SEED=1,PLOTMETHODS=c("ash.n","ash.u","ash.hu","truth","mixfdr.tnull"),
-      PLOTSCENARIOS=c("spiky","near-normal","flat-top","skew","big-normal","bimodal"),pi0filter=FALSE,...){
-  if(length(SEED)>1){stop("plot with npmle only implemented for a single seed")}
-  PLOTNAMES=PLOTSCENARIOS
-  #set up dataframe with cdf for all methods and all datasets
-  df= expand.grid(seed=SEED,scenario=PLOTSCENARIOS, method=PLOTMETHODS,stringsAsFactors = FALSE)
-  df.cdf=plyr::ddply(df,.(seed,scenario,method), get_cdf)
+plot_mean_cdf_with_npmle = 
+  function(SEED          = 1,
+           PLOTMETHODS   = c("ash.n","ash.u","ash.hu","truth","mixfdr.tnull"),
+           PLOTSCENARIOS = c("spiky","near-normal","flat-top","skew",
+                             "big-normal","bimodal"),
+           pi0filter     = FALSE,...) {
+  if (length(SEED) > 1)
+    stop("plot with npmle only implemented for a single seed")
+  PLOTNAMES = PLOTSCENARIOS
   
+  # Set up dataframe with cdf for all methods and all datasets.
+  df = expand.grid(seed = SEED,scenario = PLOTSCENARIOS,method = PLOTMETHODS,
+                   stringsAsFactors = FALSE)
+  df.cdf = ddply(df,.(seed,scenario,method),get_cdf)
   
-  df.cdf$scenario=factor(df.cdf$scenario,levels=PLOTSCENARIOS)
-  levels(df.cdf$scenario)=PLOTNAMES
+  df.cdf$scenario         = factor(df.cdf$scenario,levels = PLOTSCENARIOS)
+  levels(df.cdf$scenario) = PLOTNAMES
   
   df.npmle = run_nplme(SEED, PLOTSCENARIOS)
-  df.cdf = rbind(df.cdf,df.npmle)
+  df.cdf   = rbind(df.cdf,df.npmle)
   
-  p=ggplot(df.cdf,aes(x=x,y=y,color=method),...) +  xlim(c(-4,4)) + colScale + geom_line(lwd=1.2,alpha=0.7)  + theme(legend.position = "bottom")
+  p = ggplot(df.cdf,aes(x = x,y = y,color = method),...) + 
+    xlim(c(-4,4)) + colScale + geom_line(lwd = 1.2,alpha = 0.7) + 
+    theme(legend.position = "bottom")
   return(p)
 }
 
-plot_mean_cdf_with_npmle(1,PLOTMETHODS=c("truth","ash.hu"),PLOTSCENARIOS = c("spiky","near-normal","flat-top","skew","big-normal","bimodal")) + facet_wrap(~ scenario, nrow=2)
+plot_mean_cdf_with_npmle(1,PLOTMETHODS = c("truth","ash.hu"),
+                         PLOTSCENARIOS = c("spiky","near-normal","flat-top","skew",
+                                           "big-normal","bimodal")) + 
+  facet_wrap(~ scenario, nrow = 2)
 ```
 
 ## Session information
