@@ -25,7 +25,8 @@ source("../code/dsc-shrink/methods/mixfdr.wrapper.R")
 source("../R/set_plot_colors.R")
 ```
 
-TO DO: Explain here what this chunk does.
+Define a couple functions that compile CDF data in such a way that it is 
+easy to plot the CDFs using ggplot2.
 
 ```{r chunk_label}
 load("../output/dsc-shrink-files/res.RData")
@@ -41,7 +42,7 @@ get_cdf = function (df,dsc = dsc_shrink,x = seq(-6,6,length = 100),
   temp = load_example(dsc,df$seed,df$scenario,m,homedir)
   pi0  = temp$meta$pi0
   
-  if (df$method == "truth"){
+  if (df$method == "truth") {
     s    = dsc$scenarios[[df$scenario]]
     galt = s$args$g
     g    = normalmix(c(pi0,(1 - pi0) * mixprop(galt)),
@@ -82,20 +83,21 @@ plot_mean_cdf =
 }
 ```
 
-TO DO: Explain here what this chunk does.
+Show the CDFs for all methods and all scenarios, based on a single data set.
 
 ```{r egcdf, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
 plot_mean_cdf(1)
 ```
 
-TO DO: Explain here what this chunk does.
+Show the CDFs for all scenarios, this time averaged over 100 simulated data 
+sets.
 
 ```{r mean_cdf, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
 plot_mean_cdf(1:100,PLOTMETHODS = c("ash.n","ash.u","ash.hu","truth"),
               pi0filter = TRUE)
 ```
 
-TO DO: Explain here what this chunk does.
+Same as above, but with custom colours.
 
 ```{r mean_cdf_nopen, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
 names(myColors) <- c("truth","ash.hu.s","ash.n.s","ash.u.s","qvalue",
@@ -115,7 +117,7 @@ plot_mean_cdf(1,PLOTMETHODS = c("ash.n","truth"),
               PLOTSCENARIOS = c("spiky","near-normal","bimodal"))
 ```
 
-TO DO: Explain here what this chunk does.
+Same as above, but this time the CDFs are averaged over 100 simulated data sets.
 
 ```{r mean_cdf-reduce, dev='pdf',fig.height=3, fig.width=6, crop=TRUE}
 plot_mean_cdf(1:100,PLOTMETHODS = c("ash.n","truth"),
@@ -123,7 +125,7 @@ plot_mean_cdf(1:100,PLOTMETHODS = c("ash.n","truth"),
               pi0filter = TRUE)
 ```
 
-TO DO: Explain here what this chunk does.
+Now with custom colours.
 
 ```{r mean_cdf_nopen-reduce, fig.height=3, fig.width=6, crop=TRUE, dev='pdf'}
 names(myColors) <- c("truth","ash.hu.s","ash.n.s","ash.u.s","qvalue","locfdr",
@@ -135,21 +137,18 @@ plot_mean_cdf(1:100,PLOTMETHODS = c("ash.n.s","truth"),
 source("../R/set_plot_colors.R")
 ```
 
-I wanted to add the npmle to the plot...
-
-TO DO (maybe): Add more details here about this chunk?
+I wanted to add the npmle method (fit using the GLmix function) to the plot...
 
 ```{r egcdf-reduce-with-npmle, dev='pdf',fig.height=4.5, fig.width=6, crop=TRUE}
-run_nplme = function(SEED = 1,
-                     PLOTSCENARIOS = c("spiky","near-normal","flat-top","skew",
-                                       "big-normal","bimodal")) {
+run_nplme = function (SEED = 1,PLOTSCENARIOS = c("spiky","near-normal",
+                                                 "flat-top","skew","bimodal")) {
   df = data.frame(seed = NULL,scenario = NULL,method = NULL,x = NULL,
                   y = NULL,pi0 = NULL)
-  for(SCENARIO in PLOTSCENARIOS) {
+  for (SCENARIO in PLOTSCENARIOS) {
     temp = load_example(dsc_shrink,SEED,SCENARIO,"ash.n","../output/dsc-shrink-files/")
     z    = GLmix(temp$input$betahat)
-    df = rbind(df,data.frame(seed = SEED,scenario = SCENARIO,method = "NPMLE",
-                             x = z$x,y = cumsum(z$y)/sum(z$y),pi0 = NA))
+    df   = rbind(df,data.frame(seed = SEED,scenario = SCENARIO,method = "NPMLE",
+                               x = z$x,y = cumsum(z$y)/sum(z$y),pi0 = NA))
   }
   return(df)
 }
@@ -157,8 +156,7 @@ run_nplme = function(SEED = 1,
 plot_mean_cdf_with_npmle = 
   function(SEED          = 1,
            PLOTMETHODS   = c("ash.n","ash.u","ash.hu","truth","mixfdr.tnull"),
-           PLOTSCENARIOS = c("spiky","near-normal","flat-top","skew",
-                             "big-normal","bimodal"),
+           PLOTSCENARIOS = c("spiky","near-normal","flat-top","skew","bimodal"),
            pi0filter     = FALSE,...) {
   if (length(SEED) > 1)
     stop("plot with npmle only implemented for a single seed")
@@ -172,7 +170,7 @@ plot_mean_cdf_with_npmle =
   df.cdf$scenario         = factor(df.cdf$scenario,levels = PLOTSCENARIOS)
   levels(df.cdf$scenario) = PLOTNAMES
   
-  df.npmle = run_nplme(SEED, PLOTSCENARIOS)
+  df.npmle = run_nplme(SEED,PLOTSCENARIOS)
   df.cdf   = rbind(df.cdf,df.npmle)
   
   p = ggplot(df.cdf,aes(x = x,y = y,color = method),...) + 
@@ -181,9 +179,9 @@ plot_mean_cdf_with_npmle =
   return(p)
 }
 
-plot_mean_cdf_with_npmle(1,PLOTMETHODS = c("truth","ash.hu"),
-                         PLOTSCENARIOS = c("spiky","near-normal","flat-top","skew",
-                                           "big-normal","bimodal")) + 
+plot_mean_cdf_with_npmle(1,PLOTMETHODS = c("ash.hu","truth"),
+                         PLOTSCENARIOS = c("spiky","near-normal","flat-top",
+                                           "skew","bimodal")) +
   facet_wrap(~ scenario, nrow = 2)
 ```
 
