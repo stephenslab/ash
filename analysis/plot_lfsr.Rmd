@@ -80,7 +80,7 @@ p2 = plot_lfsr(lfdr,ylim = c(0,1),xlim = c(0,0.2),
 Separately for each model, create a scatterplot comparing the estimated LFSR 
 against the "gold-standard" LFSR.
 
-```{r plot_lfsr, dev='png', fig.width=9, fig.height=3, crop=TRUE}
+```{r plot_lfsr, dev=c('png','pdf'), fig.width=9, fig.height=3, crop=TRUE}
 print(p1 + theme(legend.position = "none",
                  axis.text.x = element_text(size = 8,angle = 45)) +
       coord_equal(ratio = 1/5) + colScale)
@@ -89,7 +89,7 @@ print(p1 + theme(legend.position = "none",
 Separately for each model, create a scatterplot comparing the estimated LFDR 
 against the "gold-standard" LFDR.
 
-```{r plot_lfdr, dev='png', fig.width=9, fig.height=3, crop=TRUE}
+```{r plot_lfdr, dev=c('png','pdf'), fig.width=9, fig.height=3, crop=TRUE}
 print(p2 + theme(legend.position = "none",
                  axis.text.x = element_text(size = 8,angle = 45)) +
       coord_equal(ratio = 1/5) + colScale)
@@ -98,7 +98,7 @@ print(p2 + theme(legend.position = "none",
 Separately for each of the ash.n.s methods, create a scatterplot comparing the 
 estimated LFSR against the "gold-standard" LFSR.
 
-```{r plot_lfsr_s, dev='png', fig.width=9, fig.height=3, crop=TRUE}
+```{r plot_lfsr_s, dev=c('png','pdf'), fig.width=9, fig.height=3, crop=TRUE}
 lfsr.s = process_score_for_plotting_against_gold(res$lfsr,PLOTSEEDS = 1:100,
                                                  PLOTMETHODS = "ash.n.s")
 p1.s   = plot_lfsr(lfsr.s,ylim = c(0,1),xlim = c(0,0.2))
@@ -111,7 +111,7 @@ Separately for each of the ash.n.s methods with the -nn data sets,
 create a scatterplot comparing the estimated LFSR against the 
 "gold-standard" LFSR.
 
-```{r plot_lfsr_s_nn, dev='png', fig.width=9, fig.height=3, crop=TRUE}
+```{r plot_lfsr_s_nn, dev=c('png','pdf'), fig.width=9, fig.height=3, crop=TRUE}
 lfsr.s.nn = 
   process_score_for_plotting_against_gold(res$lfsr,PLOTSEEDS = 1:100,
     PLOTMETHODS = "ash.n.s",
