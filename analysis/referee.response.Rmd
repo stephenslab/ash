@@ -9,62 +9,70 @@ date: 2016-03-21
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
 ```{r chunk_options, include=FALSE}
+# Specify settings for displaying the plots in the rendered document.
 source("chunk-options.R")
 ```
 
 ## Referee 1
 
-I agree with a lot of what the referee says, although there are some points of 
-disagreement. The most fundamental disagreement regards Figure 1. This Figure 
-shows not the detectable effects (as the referee believed) but the decomposition
-of *all* effects into null and alternative components. Since this seems to be an 
-important misunderstanding I have revised the text to try to make it clearer how
+I agree with a lot of what the referee says, although there are some
+points of disagreement. The most fundamental disagreement regards
+Figure 1. This Figure shows not the detectable effects (as the referee
+believed) but the decomposition of *all* effects into null and
+alternative components. Since this seems to be an important
+misunderstanding I have revised the text to try to make it clearer how
 this figure was derived. Specifically the revised text says:
 
-"We used each of the methods qvalue, locfdr, mixfdr and ash to decompose the $z$ 
-scores ($z_j = \hat{\beta}_j$), or their corresponding p values, into null and 
-alternative components. Here we are using the fact that these methods all 
-provide an estimate of the lfdr for each observation, which implies such a 
-decomposition; specifically the average lfdr within each histogram bin estimates
-the fraction of observations in that bin that come from the null vs the 
+"We used each of the methods qvalue, locfdr, mixfdr and ash to
+decompose the $z$ scores ($z_j = \hat{\beta}_j$), or their
+corresponding p values, into null and alternative components. Here we
+are using the fact that these methods all provide an estimate of the
+lfdr for each observation, which implies such a decomposition;
+specifically the average lfdr within each histogram bin estimates the
+fraction of observations in that bin that come from the null vs the
 alternative component.”
 
-Since the referee objected to the presentation of the ZA and UA as opposing 
-assumptions I have removed all explicit reference to the ZA. (This also
-solves the issue that I had defined the ZA differently than Efron’s original 
-definition — see below — which may have created confusion.) Instead, as the 
-referee suggested, I have presented the UA as an additional assumption “not 
-made by other methods”, and - as the editor suggested — I have focussed on 
-contrasting the behavior of ash with the behavior of the other methods (which, 
-as Figure 1 demonstrates, is to create a hole at 0 in the distribution of the 
+Since the referee objected to the presentation of the ZA and UA as
+opposing assumptions I have removed all explicit reference to the
+ZA. (This also solves the issue that I had defined the ZA differently
+than Efron’s original definition — see below — which may have created
+confusion.) Instead, as the referee suggested, I have presented the UA
+as an additional assumption “not made by other methods”, and - as the
+editor suggested — I have focussed on contrasting the behavior of ash
+with the behavior of the other methods (which, as Figure 1
+demonstrates, is to create a hole at 0 in the distribution of the
 alternative Z scores) rather than contrasting their assumptions.
 
-However, it seems unsatisfactory to merely point out this behavioral difference
-between methods without giving any explanation for the reason behind it. So I 
-have provided my best attempt to give the reason. Essentially the reason is 
-that the existing methods (locfdr and qvalue), when estimating $\pi_0$, make 
-the assumption that *all* p values near 1 are null, or *all* z scores near 0 
-are null. (This was how I defined the ZA in the original paper; however this 
-is stronger than Efron’s original statement of the ZA, which the referee - 
-understandably - uses in his/her report, that ``most” z scores near 0 are null. 
-So I don’t refer to this as the ZA any more.) This assumption necessarily 
-creates a hole in the implied distribution of z scores under the alternative,
-and explains the behavior.
+However, it seems unsatisfactory to merely point out this behavioral
+difference between methods without giving any explanation for the
+reason behind it. So I have provided my best attempt to give the
+reason. Essentially the reason is that the existing methods (locfdr
+and qvalue), when estimating $\pi_0$, make the assumption that *all* p
+values near 1 are null, or *all* z scores near 0 are null. (This was
+how I defined the ZA in the original paper; however this is stronger
+than Efron’s original statement of the ZA, which the referee -
+understandably - uses in his/her report, that ``most” z scores near 0
+are null.  So I don’t refer to this as the ZA any more.) This
+assumption necessarily creates a hole in the implied distribution of z
+scores under the alternative, and explains the behavior.
 
-To underscore that this behavior is general, and not just a feature of the 
-particular simulation I did in Figure 1, I provide results using qvalue under
-the setting suggested by the referee at; see  (http://stephenslab.github.io/ash/analysis/referee_uaza.html).
+To underscore that this behavior is general, and not just a feature of
+the particular simulation I did in Figure 1, I provide results using
+qvalue under the setting suggested by the referee at; see
+(http://stephenslab.github.io/ash/analysis/referee_uaza.html).
 
 ### Minor Concerns
 
 - I added the citation, thank you.
 
-- I took up the suggestion to define FSR-hat and the s-value, thank you.
+- I took up the suggestion to define FSR-hat and the s-value, thank
+you.
 
-- I agree that returning the length J results as a dataframe would have been 
-better, but unfortunately changing this would break other packages that 
-depend on ashr. So instead I have provided a method `as.data.frame` to 
-extract the most important components of the ash object into a dataframe.
+- I agree that returning the length J results as a dataframe would
+have been better, but unfortunately changing this would break other
+packages that depend on ashr. So instead I have provided a method
+`as.data.frame` to extract the most important components of the ash
+object into a dataframe.
 
 - I fixed the typo, thank you.
 
@@ -72,70 +80,77 @@ extract the most important components of the ash object into a dataframe.
 
 ### Major Concern
 
-The referee says: "it would be interesting to include distributions that 
-favor other models, such as a bimodal distribution with no mass at zero, an 
-assymmetrical distribution,. . . The unimodality is a strong assumption so it 
-would be good to see how anti-conservative the results would get under 
-different alternative distributions."
+The referee says: "it would be interesting to include distributions
+that favor other models, such as a bimodal distribution with no mass
+at zero, an assymmetrical distribution,. . . The unimodality is a
+strong assumption so it would be good to see how anti-conservative the
+results would get under different alternative distributions."
 
-I found this puzzling since both an assymetrical distribution and a strongly 
-bimodal distribution are already included in the simulation results (Figure 2, 
-Figure 3, Table 1). I believe these existing results address the referee comment. 
-I also want to emphasise that the unimodal assumption is actually less strong 
-than the assumptions usually made in variable selection for regression, which 
-is directly analogous to the fdr context. For example, it is common to assume 
-that effects are a mixture of a point mass at zero and a single normal, which 
-is considerably more restrictive than the general unimodal assumption.
+I found this puzzling since both an assymetrical distribution and a
+strongly bimodal distribution are already included in the simulation
+results (Figure 2, Figure 3, Table 1). I believe these existing
+results address the referee comment.  I also want to emphasise that
+the unimodal assumption is actually less strong than the assumptions
+usually made in variable selection for regression, which is directly
+analogous to the fdr context. For example, it is common to assume that
+effects are a mixture of a point mass at zero and a single normal,
+which is considerably more restrictive than the general unimodal
+assumption.
 
-However, to help reassure the referee, I have added another example to 
-illustrate an assymetric situation where the unimodal-at-zero assumption is 
-badly contradicted 
+However, to help reassure the referee, I have added another example to
+illustrate an assymetric situation where the unimodal-at-zero
+assumption is badly contradicted
 [here](http://stephenslab.github.io/ash/analysis/efron.fcr.html). As
-the referee will see, the resulting estimates of the lfdr from ashr are
-reasonably close to the true values (and also to those from locfdr).
+the referee will see, the resulting estimates of the lfdr from ashr
+are reasonably close to the true values (and also to those from
+locfdr).
 
 ### Minor Concern
 
-*Is there a way to model the distribution as a mixture of both uniforms and 
-normals? If not: why?*
+*Is there a way to model the distribution as a mixture of both
+uniforms and normals? If not: why?*
 
-This is straightforward in principle. However, it would require non-trivial 
-code modifications because of the way I implemented the mixture class (assuming 
-that all components  come from the same family.) Another way to achieve an 
-assymetric distribution without the "hard" tails of the uniform might be to use 
-a mixture of truncated normals. I have a student investigating this option. 
-However, the uniform mixture has the advantage of allowing not only the 
-assymetry, but also the $t$ likelihood. Although the paper does not focus on 
-this, I believe this is likely to be an important issue in practice. So I 
-suspect that the mixture of uniforms is often going to be the method of choice 
-in practice.
+This is straightforward in principle. However, it would require
+non-trivial code modifications because of the way I implemented the
+mixture class (assuming that all components come from the same
+family.) Another way to achieve an assymetric distribution without the
+"hard" tails of the uniform might be to use a mixture of truncated
+normals. I have a student investigating this option.  However, the
+uniform mixture has the advantage of allowing not only the assymetry,
+but also the $t$ likelihood. Although the paper does not focus on
+this, I believe this is likely to be an important issue in
+practice. So I suspect that the mixture of uniforms is often going to
+be the method of choice in practice.
 
 *How would the model perform with moderate correlations?*
 
-There seems to be no reason to think that moderate correlations among tests 
-will have a substantial detrimental effect. But I do not want to focus on this 
-because I think it will give the reader the wrong message: I think that users 
-of both ashr and other fdr methods should very much worry about correlations 
-in practice (which I believe will often be large, and not moderate).
+There seems to be no reason to think that moderate correlations among
+tests will have a substantial detrimental effect. But I do not want to
+focus on this because I think it will give the reader the wrong
+message: I think that users of both ashr and other fdr methods should
+very much worry about correlations in practice (which I believe will
+often be large, and not moderate).
 
-*In equation 3, the null component (I think) is represented as delta0, but 
-delta0 hasn’t been defined. What is assumed for the distribution of delta0?*
+*In equation 3, the null component (I think) is represented as delta0,
+but delta0 hasn’t been defined. What is assumed for the distribution
+of delta0?*
 
-Thank you for noticing this. I now define $\delta_0$ (which represents a point 
-mass on 0).
+Thank you for noticing this. I now define $\delta_0$ (which represents
+a point mass on 0).
 
-*Figure 3: the truth is hard to distinguish from the different methods. And in
-general this figure is hard to read.*
+*Figure 3: the truth is hard to distinguish from the different
+methods. And in general this figure is hard to read.*
 
-I agree. I have completely rethought this figure, which now has fewer, larger,
-panels, and compares just two  methods (ash.hu and the NPMLE) against the truth 
-on a few examples. The less important point - the effect of the penalty term on 
-pi0 -is now illustrated in an additional figure included in the appendix.
+I agree. I have completely rethought this figure, which now has fewer,
+larger, panels, and compares just two methods (ash.hu and the NPMLE)
+against the truth on a few examples. The less important point - the
+effect of the penalty term on pi0 -is now illustrated in an additional
+figure included in the appendix.
 
-*I particularly like the idea that the ordering of the tests differs from the
-classical p-values. Which influence does this have on the balance between
-sensitivity and specificity (for example with ROC curves)? It should change, 
-but does it get better?*
+*I particularly like the idea that the ordering of the tests differs
+from the classical p-values. Which influence does this have on the
+balance between sensitivity and specificity (for example with ROC
+curves)? It should change, but does it get better?*
 
 Thanks for the question. This is now addressed in the new Figure 4d.
 

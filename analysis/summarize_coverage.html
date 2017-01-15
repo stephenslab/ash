@@ -124,10 +124,25 @@ $(document).ready(function () {
 </div>
 
 
-<p><strong>Last updated:</strong> 2017-01-02</p>
-<p><strong>Code version:</strong> c81d5ed098db03e34e60afd2321035f6ffa99dcd</p>
+<p><strong>Last updated:</strong> 2017-01-15</p>
+<p><strong>Code version:</strong> 92038b69c4d891ab8162d54630d341956dc6e573</p>
 <p>Note that rendering this RMarkdown document may take a few minutes because it involves loading and processing tables with millions of rows.</p>
-<p>First, we load the necessary libraries, and specify settings for displaying the plots in the rendered document.</p>
+<p>First, we load the necessary libraries.</p>
+<pre class="r"><code>library(dscr)
+library(ashr)
+library(reshape2)
+library(ggplot2)
+library(magrittr)
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(xtable)</code></pre>
 <p>Compile the results on the simulated data sets for the summaries below.</p>
 <pre class="r"><code>load(&quot;../output/dsc-shrink-files/res.RData&quot;)
 coverthresh = 0.05  # threshold at which we look at coverage
@@ -277,7 +292,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),
                           &quot;table/coverage_neg.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:26:55 2017
+% Sun Jan 15 17:52:28 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.07 &amp; 0.06 &amp; 0.00 &amp; 0.06 &amp; 0.00 &amp; 0.02 \\ 
@@ -289,7 +304,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),
                           &quot;table/coverage_pos.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:26:56 2017
+% Sun Jan 15 17:52:29 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.06 &amp; 0.06 &amp; 0.06 &amp; 0.14 &amp; 0.00 &amp; 0.04 \\ 
@@ -301,7 +316,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),
                           &quot;table/coverage_all.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:26:59 2017
+% Sun Jan 15 17:52:31 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.10 &amp; 0.06 &amp; 0.05 &amp; 0.06 &amp; 0.00 &amp; 0.04 \\ 
@@ -313,7 +328,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),
                           &quot;table/coverage_neg_nopen.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:26:59 2017
+% Sun Jan 15 17:52:31 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.05 &amp; 0.05 &amp; 0.02 &amp; 0.07 &amp; 0.00 &amp; 0.03 \\ 
@@ -325,7 +340,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),
                           &quot;table/coverage_pos_nopen.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:26:59 2017
+% Sun Jan 15 17:52:31 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.06 &amp; 0.06 &amp; 0.08 &amp; 0.12 &amp; 0.00 &amp; 0.06 \\ 
@@ -337,7 +352,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),
                           &quot;table/coverage_all_nopen.tex&quot;)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:27:02 2017
+% Sun Jan 15 17:52:34 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.05 &amp; 0.05 &amp; 0.05 &amp; 0.05 &amp; 0.00 &amp; 0.04 \\ 
@@ -350,7 +365,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),
                           &quot;table/scoverage_neg.tex&quot;,switch = TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:27:03 2017
+% Sun Jan 15 17:52:34 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.93 &amp; 0.94 &amp; 1.00 &amp; 0.94 &amp; 1.00 &amp; 0.98 \\ 
@@ -362,7 +377,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),
                           &quot;table/scoverage_pos.tex&quot;,switch = TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:27:03 2017
+% Sun Jan 15 17:52:34 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.94 &amp; 0.94 &amp; 0.94 &amp; 0.86 &amp; 1.00 &amp; 0.96 \\ 
@@ -374,7 +389,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n&quot;,&quot;ash.u&quot;,&quot;ash.hu&quot;),
                           &quot;table/scoverage_all.tex&quot;,switch=TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:27:05 2017
+% Sun Jan 15 17:52:37 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n &amp; 0.90 &amp; 0.94 &amp; 0.95 &amp; 0.94 &amp; 1.00 &amp; 0.96 \\ 
@@ -386,7 +401,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),
                           &quot;table/scoverage_neg_nopen.tex&quot;,switch = TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:27:05 2017
+% Sun Jan 15 17:52:37 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.95 &amp; 0.95 &amp; 0.98 &amp; 0.93 &amp; 1.00 &amp; 0.97 \\ 
@@ -398,7 +413,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),
                           &quot;table/scoverage_pos_nopen.tex&quot;,switch = TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:27:05 2017
+% Sun Jan 15 17:52:37 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.94 &amp; 0.94 &amp; 0.92 &amp; 0.88 &amp; 1.00 &amp; 0.94 \\ 
@@ -410,7 +425,7 @@ save_latex_coverage_table(reslong.neg %&gt;% group_by(scenario,method) %&gt;%
                           c(&quot;ash.n.s&quot;,&quot;ash.u.s&quot;,&quot;ash.hu.s&quot;),
                           &quot;table/scoverage_all_nopen.tex&quot;,switch = TRUE)</code></pre>
 <pre><code>% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Mon Jan  2 09:27:08 2017
+% Sun Jan 15 17:52:40 2017
 \begin{tabular}{rrrrrrr}
   \toprule  &amp; spiky &amp; near-normal &amp; flat-top &amp; skew &amp; big-normal &amp; bimodal \\ 
   \midrule ash.n.s &amp; 0.95 &amp; 0.95 &amp; 0.95 &amp; 0.95 &amp; 1.00 &amp; 0.96 \\ 
@@ -441,7 +456,7 @@ loaded via a namespace (and not attached):
 [10] foreach_1.4.3     DBI_0.5-1         shiny_0.14.2     
 [13] yaml_2.1.14       parallel_3.3.2    stringr_1.1.0    
 [16] rprojroot_1.1     grid_3.3.2        R6_2.2.0         
-[19] rmarkdown_1.2     backports_1.0.4   scales_0.4.1     
+[19] rmarkdown_1.3     backports_1.0.4   scales_0.4.1     
 [22] codetools_0.2-15  htmltools_0.3.5   MASS_7.3-45      
 [25] assertthat_0.1    mime_0.5          colorspace_1.2-6 
 [28] httpuv_1.3.3      stringi_1.1.2     lazyeval_0.2.0   
