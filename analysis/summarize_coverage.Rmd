@@ -11,10 +11,9 @@ date: 2015-10-26
 Note that rendering this RMarkdown document may take a few minutes because 
 it involves loading and processing tables with millions of rows.
 
-First, we load the necessary libraries, and specify settings for
-displaying the plots in the rendered document.
+First, we load the necessary libraries.
 
-```{r chunk_options, include=FALSE}
+```{r packages}
 library(dscr)
 library(ashr)
 library(reshape2)
@@ -22,6 +21,10 @@ library(ggplot2)
 library(magrittr)
 library(dplyr)
 library(xtable)
+```
+
+```{r chunk_options, include=FALSE}
+# Specify settings for displaying the plots in the rendered document.
 source("chunk-options.R")
 ```
 

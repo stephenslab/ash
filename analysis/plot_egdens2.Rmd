@@ -8,7 +8,8 @@ date: 2016-10-25
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
-```{r chunk-options, include=FALSE}
+```{r chunk_options, include=FALSE}
+# Specify settings for displaying the plots in the rendered document.
 source("chunk-options.R")
 ```
 
@@ -35,7 +36,6 @@ for(i in PLOTSCENARIOS){
 df$scenario = factor(df$scenario,levels=PLOTSCENARIOS)
 levels(df$scenario)= PLOTNAMES
 ```
-
 
 ```{r scenario_density_2, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
 #pdf(PLOTFILE,height=3,width=9)

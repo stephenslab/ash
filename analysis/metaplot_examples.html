@@ -124,10 +124,14 @@ $(document).ready(function () {
 </div>
 
 
-<p><strong>Last updated:</strong> 2017-01-01</p>
-<p><strong>Code version:</strong> b1ad8aa76b20a4214ad80c4cfc1729de91b7c15a</p>
+<p><strong>Last updated:</strong> 2017-01-15</p>
+<p><strong>Code version:</strong> b05decc05714ddcb20aa04e56b557d5123d178fb</p>
 <p>This file produces ``meta-analysis&quot; style plots that illustrate the shrinkage behaviour of ash on some simple simulated data.</p>
-<p>First, we load the necessary libraries, and specify settings for displaying the plots in the rendered document.</p>
+<p>First, we load the necessary libraries.</p>
+<pre class="r"><code>library(knitr)
+library(rmeta)</code></pre>
+<pre><code>## Loading required package: grid</code></pre>
+<pre class="r"><code>library(ashr)</code></pre>
 <div id="simulate-data" class="section level2">
 <h2>Simulate Data</h2>
 <p>We simulate 50 effects (<span class="math inline">\(\beta\)</span>), half of which are truly “null” (ie 0) and the other half are <span class="math inline">\(N(0,2^2)\)</span>. The observed effects (<span class="math inline">\(\hat\beta\)</span>) all have standard error 1 here.</p>

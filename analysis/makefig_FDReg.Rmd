@@ -15,17 +15,20 @@ This file makes two figures:
 2. Compares methods in the way they decompose p values and z scores into
 two groups.
 
-First, we load the necessary libraries, and specify settings for
-displaying the plots in the rendered document.
+First, we load the necessary libraries and function definitions.
 
-```{r chunk_options, include=FALSE}
+```{r packages}
 library(ashr)
 library(qvalue)
 library(locfdr)
 library(mixfdr)
-source("chunk-options.R")
 source("../R/plot_FDReg_hist.R")
 source("../R/nullalthist.R")
+```
+
+```{r chunk_options, include=FALSE}
+# Specify settings for displaying the plots in the rendered document.
+source("chunk-options.R")
 ```
 
 ## Simple simulated example

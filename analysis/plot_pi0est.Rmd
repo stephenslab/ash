@@ -11,11 +11,15 @@ date: 2015-10-26
 First, we load the necessary libraries, and specify settings for
 displaying the plots in the rendered document.
 
-```{r chunk_options, include=FALSE}
+```{r packages}
 library(magrittr)
 library(dplyr)
-source("chunk-options.R")
 source("../R/set_plot_colors.R")
+```
+
+```{r chunk_options, include=FALSE}
+# Specify settings for displaying the plots in the rendered document.
+source("chunk-options.R")
 ```
 
 Generate scatterplots compare the estimated estimate of pi0 against the 

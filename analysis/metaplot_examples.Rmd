@@ -10,13 +10,16 @@ date: 2016-10-25
 
 This file produces ``meta-analysis" style plots that illustrate the shrinkage behaviour of ash on some simple simulated data.
 
-First, we load the necessary libraries, and specify settings for
-displaying the plots in the rendered document.
+First, we load the necessary libraries.
 
-```{r chunk_options, include=FALSE}
+```{r packages}
 library(knitr)
 library(rmeta)
 library(ashr)
+```
+
+```{r chunk_options, include=FALSE}
+# Specify settings for displaying the plots in the rendered document.
 source("chunk-options.R")
 opts_chunk$set(echo = TRUE)
 ```
