@@ -8,6 +8,12 @@ date: YYYY-MM-DD
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
+First, we load the necessary libraries.
+
+```{r packages}
+library(ggplot2) # For illustration only.
+```
+
 ```{r chunk_options, include=FALSE}
 source("chunk-options.R")
 ```

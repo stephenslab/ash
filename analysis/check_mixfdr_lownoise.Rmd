@@ -11,10 +11,8 @@ date: 2015-10-26
 Here we check that mixfdr actually does OK at fitting the bimodal distribution
 when noise is small compared with bimodality.
 
-First, we load the necessary libraries, and specify settings for
-displaying the plots in the rendered document.
-
 ```{r chunk_options, include=FALSE}
+# Specify settings for displaying the plots in the rendered document.
 source("chunk-options.R")
 ```
 

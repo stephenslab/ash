@@ -22,14 +22,17 @@ depends on both the prior and the likelihood; the prior, $g$, is
 learned from the data, and the likelihood incorporates the standard
 error of each observation.
 
-First, we load the necessary libraries, and specify settings for
-displaying the plots in the rendered document.
+First, we load the necessary libraries.
 
-```{r chunk_options, include=FALSE}
+```{r packages}
 library(REBayes)
 library(ashr)
 library(ggplot2)
 library(scales)
+```
+
+```{r chunk_options, include=FALSE}
+# Specify settings for displaying the plots in the rendered document.
 source("chunk-options.R")
 ```
 

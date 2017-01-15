@@ -8,12 +8,15 @@ date: 2016-05-31
 
 **Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
 
-First, we load the necessary libraries, and specify settings for
-displaying the plots in the rendered document.
+First, we load the necessary libraries.
 
-```{r chunk_options, include=FALSE}
+```{r packages}
 library(REBayes)
 library(ashr)
+```
+
+```{r chunk_options, include=FALSE}
+# Specify settings for displaying the plots in the rendered document.
 source("chunk-options.R")
 ```
 

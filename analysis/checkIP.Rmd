@@ -16,13 +16,16 @@ render in R or RStudio because it uses ggplot to plot more than a million data
 points. Also, it it may not be possible to run the last code chunk 
 interactively in RStudio.
 
-First, we load the necessary libraries, and specify settings for
-displaying the plots in the rendered document.
+First, we load the necessary libraries.
 
-```{r chunk_options, include=FALSE}
+```{r packages}
 library(ggplot2)
 library(dplyr)
 library(reshape2)
+```
+
+```{r chunk_options, include=FALSE}
+# Specify settings for displaying the plots in the rendered document.
 source("chunk-options.R")
 ```
 

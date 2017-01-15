@@ -124,11 +124,22 @@ $(document).ready(function () {
 </div>
 
 
-<p><strong>Last updated:</strong> 2017-01-02</p>
-<p><strong>Code version:</strong> 76558cb403a53e359d4540fb02c9fa2cf758c0f0</p>
+<p><strong>Last updated:</strong> 2017-01-15</p>
+<p><strong>Code version:</strong> 94a3347615361216b39b8a9333bfa8354794e0ff</p>
 <p>Here we compare the likelihoods achieved by the newly implemented interior point method against the EM algorithm.</p>
 <p><strong>Note:</strong> the last code chunk (“compare_lfsr”) may take several minutes to render in R or RStudio because it uses ggplot to plot more than a million data points. Also, it it may not be possible to run the last code chunk interactively in RStudio.</p>
-<p>First, we load the necessary libraries, and specify settings for displaying the plots in the rendered document.</p>
+<p>First, we load the necessary libraries.</p>
+<pre class="r"><code>library(ggplot2)
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(reshape2)</code></pre>
 <div id="log-likelihood-comparison" class="section level2">
 <h2>Log-likelihood comparison</h2>
 <p>The ‘dsc-opt’ script simply runs both methods (IP and EM) on the same data sets, and compares the difference in the log-likelihoods. We can see that in &gt;90% of cases the difference is negligible. Then there is a tail of cases where the IP log-likelihood is higher - presumably where the EM doesn’t really converge so well.</p>
@@ -183,7 +194,7 @@ loaded via a namespace (and not attached):
  [9] tools_3.3.2      grid_3.3.2       gtable_0.2.0     DBI_0.5-1       
 [13] dscr_0.1.1       htmltools_0.3.5  yaml_2.1.14      lazyeval_0.2.0  
 [17] rprojroot_1.1    digest_0.6.10    assertthat_0.1   tibble_1.2      
-[21] shiny_0.14.2     mime_0.5         evaluate_0.10    rmarkdown_1.2   
+[21] shiny_0.14.2     mime_0.5         evaluate_0.10    rmarkdown_1.3   
 [25] labeling_0.3     stringi_1.1.2    scales_0.4.1     backports_1.0.4 
 [29] httpuv_1.3.3    </code></pre>
 </div>

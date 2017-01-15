@@ -11,11 +11,14 @@ date: 2016-02-01
 The purpose of this analysis is to check the performance of the non-zero mode
 option.
 
-First, we load the necessary libraries, and specify settings for
-displaying the plots in the rendered document.
+First, we load the necessary libraries.
+
+```{r packages}
+library(ashr)
+```
 
 ```{r chunk_options, include=FALSE}
-library(ashr)
+# Specify settings for displaying the plots in the rendered document.
 source("chunk-options.R")
 ```
 

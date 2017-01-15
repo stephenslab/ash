@@ -124,9 +124,12 @@ $(document).ready(function () {
 </div>
 
 
-<p><strong>Last updated:</strong> 2016-12-07</p>
-<p><strong>Code version:</strong> 329c1965003b54ea99cbf56baec045fba005e6ba</p>
-<p>First, we load the necessary libraries, and specify settings for displaying the plots in the rendered document.</p>
+<p><strong>Last updated:</strong> 2017-01-15</p>
+<p><strong>Code version:</strong> 94a3347615361216b39b8a9333bfa8354794e0ff</p>
+<p>First, we load the necessary libraries.</p>
+<pre class="r"><code>library(ashr)
+library(qvalue)
+library(locfdr)</code></pre>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>This example comes from Efron (2008) p16 when examining the false coverage rate (FCR). I selected this example because the distribution of the non-zero effects is highly assymetric and not at all unimodal at zero, both issues a referee asked me to elaborate on. Specifically, the distribution of the non-zero effects is N(-3,1). Here I simulate data, and apply ash (with the “halfuniform” option to allow for asymmetric g).</p>
@@ -228,9 +231,9 @@ CImatrix.VB = ashci(res.ash.VB,level = 0.95)</code></pre>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.3.1 (2016-06-21)
+<pre><code>R version 3.3.2 (2016-10-31)
 Platform: x86_64-apple-darwin13.4.0 (64-bit)
-Running under: OS X 10.12.1 (Sierra)
+Running under: macOS Sierra 10.12.2
 
 locale:
 [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -239,21 +242,22 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] knitr_1.14   locfdr_1.1-8 qvalue_2.4.2 ashr_2.0.4  
+[1] knitr_1.15.1 locfdr_1.1-8 qvalue_2.4.2 ashr_2.0.5  
 
 loaded via a namespace (and not attached):
  [1] Rcpp_0.12.8       magrittr_1.5      REBayes_0.63     
- [4] splines_3.3.1     MASS_7.3-45       munsell_0.4.3    
+ [4] splines_3.3.2     MASS_7.3-45       munsell_0.4.3    
  [7] doParallel_1.0.10 pscl_1.4.9        colorspace_1.2-6 
-[10] SQUAREM_2016.8-2  lattice_0.20-33   foreach_1.4.3    
-[13] plyr_1.8.4        stringr_1.0.0     tools_3.3.1      
-[16] parallel_3.3.1    grid_3.3.1        gtable_0.2.0     
+[10] SQUAREM_2016.8-2  lattice_0.20-34   foreach_1.4.3    
+[13] plyr_1.8.4        stringr_1.1.0     tools_3.3.2      
+[16] parallel_3.3.2    grid_3.3.2        gtable_0.2.0     
 [19] htmltools_0.3.5   iterators_1.0.8   assertthat_0.1   
-[22] yaml_2.1.13       rprojroot_1.1     digest_0.6.10    
-[25] Matrix_1.2-6      reshape2_1.4.1    ggplot2_2.1.0    
-[28] formatR_1.4       codetools_0.2-14  evaluate_0.9     
-[31] rmarkdown_1.2     stringi_1.1.1     Rmosek_7.1.3     
-[34] scales_0.4.0      backports_1.0.4   truncnorm_1.0-7  </code></pre>
+[22] lazyeval_0.2.0    yaml_2.1.14       rprojroot_1.1    
+[25] digest_0.6.10     tibble_1.2        Matrix_1.2-7.1   
+[28] reshape2_1.4.2    ggplot2_2.2.0     codetools_0.2-15 
+[31] evaluate_0.10     rmarkdown_1.3     stringi_1.1.2    
+[34] Rmosek_7.1.3      scales_0.4.1      backports_1.0.4  
+[37] truncnorm_1.0-7  </code></pre>
 </div>
 
 
