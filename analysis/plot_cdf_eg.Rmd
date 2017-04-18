@@ -1,7 +1,7 @@
 ---
 title: "Various examples of cdf plots"
 author: "Matthew Stephens"
-date: 2015-10-26
+date: '2015-10-26'
 ---
 
 **Last updated:** `r Sys.Date()`
@@ -88,21 +88,27 @@ plot_mean_cdf =
 
 Show the CDFs for all methods and all scenarios, based on a single data set.
 
-```{r egcdf, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
+```{r egcdf, fig.height=3, fig.width=9}
+# These chunk options were used to create the figure for the paper:
+# dev='pdf', fig.height=3, fig.width=9, crop=TRUE
 plot_mean_cdf(1)
 ```
 
 Show the CDFs for all scenarios, this time averaged over 100 simulated data 
 sets.
 
-```{r mean_cdf, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
+```{r mean_cdf, fig.height=3, fig.width=9}
+# These chunk options were used to create the figure for the paper:
+# dev='pdf', fig.height=3, fig.width=9, crop=TRUE
 plot_mean_cdf(1:100,PLOTMETHODS = c("ash.n","ash.u","ash.hu","truth"),
               pi0filter = TRUE)
 ```
 
 Same as above, but with custom colours.
 
-```{r mean_cdf_nopen, dev='pdf',fig.height=3, fig.width=9, crop=TRUE}
+```{r mean_cdf_nopen, fig.height=3, fig.width=9}
+# These chunk options were used to create the figure for the paper:
+# dev='pdf', fig.height=3, fig.width=9, crop=TRUE
 names(myColors) <- c("truth","ash.hu.s","ash.n.s","ash.u.s","qvalue",
                      "locfdr","mixfdr.tnull")
 colScale <- scale_colour_manual(name = "method",values = myColors)
@@ -115,14 +121,18 @@ source("../R/set_plot_colors.R")
 
 The following plots have fewer methods and scenarios for more clarity
 
-```{r egcdf-reduce, fig.height=3, fig.width=6, crop=TRUE, dev='pdf'}
+```{r egcdf-reduce, fig.height=3.5, fig.width=7}
+# These chunk options were used to create the figure for the paper:
+# fig.height=3, fig.width=6, crop=TRUE, dev='pdf'
 plot_mean_cdf(1,PLOTMETHODS = c("ash.n","truth"),
               PLOTSCENARIOS = c("spiky","near-normal","bimodal"))
 ```
 
 Same as above, but this time the CDFs are averaged over 100 simulated data sets.
 
-```{r mean_cdf-reduce, dev='pdf',fig.height=3, fig.width=6, crop=TRUE}
+```{r mean_cdf-reduce, fig.height=3.5, fig.width=7}
+# These chunk options were used to create the figure for the paper:
+# dev='pdf', fig.height=3, fig.width=6, crop=TRUE
 plot_mean_cdf(1:100,PLOTMETHODS = c("ash.n","truth"),
               PLOTSCENARIOS = c("spiky","near-normal","bimodal"),
               pi0filter = TRUE)
@@ -130,7 +140,9 @@ plot_mean_cdf(1:100,PLOTMETHODS = c("ash.n","truth"),
 
 Now with custom colours.
 
-```{r mean_cdf_nopen-reduce, fig.height=3, fig.width=6, crop=TRUE, dev='pdf'}
+```{r mean_cdf_nopen-reduce, fig.height=3.5, fig.width=7}
+# These chunk options were used to create the figure for the paper:
+# fig.height=3, fig.width=6, crop=TRUE, dev='pdf'
 names(myColors) <- c("truth","ash.hu.s","ash.n.s","ash.u.s","qvalue","locfdr",
                      "mixfdr.tnull")
 colScale        <- scale_colour_manual(name = "method",values = myColors)
@@ -142,7 +154,9 @@ source("../R/set_plot_colors.R")
 
 I wanted to add the npmle method (fit using the GLmix function) to the plot...
 
-```{r egcdf-reduce-with-npmle, dev='pdf',fig.height=4.5, fig.width=6, crop=TRUE}
+```{r egcdf-reduce-with-npmle, fig.height=5.25, fig.width=7}
+# These chunk options were used to create the figure for the paper:
+# dev='pdf', fig.height=4.5, fig.width=6, crop=TRUE
 run_nplme = function (SEED = 1,PLOTSCENARIOS = c("spiky","near-normal",
                                                  "flat-top","skew","bimodal")) {
   df = data.frame(seed = NULL,scenario = NULL,method = NULL,x = NULL,
